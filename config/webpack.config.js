@@ -35,8 +35,8 @@ const shouldInlineRuntimeChunk = process.env.INLINE_RUNTIME_CHUNK !== 'false';
 const useTypeScript = fs.existsSync(paths.appTsConfig);
 
 // style files regexes
-const cssRegex = /\.css$/;
-const cssModuleRegex = /\.module\.css$/;
+const cssRegex = /\.(css|pcss)$/;
+const cssModuleRegex = /\.module\.(css|pcss)$/;
 const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
 
@@ -90,7 +90,10 @@ module.exports = function(webpackEnv) {
           // https://github.com/facebook/create-react-app/issues/2677
           ident: 'postcss',
           plugins: () => [
-            require('postcss-flexbugs-fixes'),
+            require('postcss-mixins'),
+            require('postcss-nested'),
+            require('postcss-conditionals'),
+            require('postcss-simple-vars'),
             require('postcss-preset-env')({
               autoprefixer: {
                 flexbox: 'no-2009',
