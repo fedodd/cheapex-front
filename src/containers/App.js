@@ -14,6 +14,11 @@ class App extends Component {
 
   titleEnding = declOfNum(this.state.totalItems,  ['компании', 'компаний', 'компаний']);
 
+  componentDidMount() {
+
+    console.log('didMount Appp');
+  }
+
   render () {
     return (
       <div className={classes.holder}>
