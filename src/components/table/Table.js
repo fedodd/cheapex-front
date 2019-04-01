@@ -14,36 +14,41 @@ class Table extends Component {
   state = {
     companies: [],
     tablerows: [],
-    tableHeader: []
+    tableHeader: {},
+    tableHeaderShort: {}
   };
 
   componentDidMount() {
   axios.get('http://localhost:4000/').then(response => {
-    /* Обработать здесь - отдельно сохранить в стейт заголовок, отдельно данные, причем удалить последние две колонки */
-    this.setState({ tablerows: response.data});
+    const fullData = response.data;
+  
+    Object.keys(fullData).map(key => {
+      delete fullData[key]._id;
+      delete fullData[key].__v;
+    });
+   
+    const header = Object.values(fullData[0]);
+    const headerShort = Object.values(fullData[1]);
+    const data = fullData;
+    data.splice(0, 2);
+    this.setState({ tablerows: data,
+                    tableHeaderShort: headerShort,
+                    tableHeader: header });
     console.log('componentDidMount this.state.tablerows ', this.state.tablerows);
-  });
-    
-/*     fetch('http://localhost:4000/').then(res => res.json()).then(res => this.setState({ tablerows: res })); */
+    });
   }
 
   render() {
     
-    const { data } = this.state.tablerows.splice(0, 2);
-    console.log('data ', data);
+    const data = this.state.tablerows;
+    console.log('data', data);
     const tableHeader = [];
+    const headerFromData = this.state.tableHeader;
     
-    const headerFromData = this.state.tablerows[0];
-    console.log('headerFromData: ', headerFromData);
-    
-    if (typeof headerFromData === 'object' ) {
-      console.log('data: ', this.state.tablerows);
-      Object.keys(headerFromData).map((key, index) => {
-
-        tableHeader[index] = { 'Header': headerFromData[key] };
-      });
-      console.log(tableHeader);
-    }
+    Object.keys(headerFromData).map((key, index) => {
+      tableHeader[index] = { 'Header': headerFromData[key], accessor: key };
+    });
+    console.log('tableHeader', tableHeader);
    
     return (
       <div>
