@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
 import ReactTable from "react-table";
-import 'react-table/react-table.css';
 import axios from "axios";
-
-
-//import Header from './Header/Header';
-//import Row from './Row/Row';
-//import classes from './Table.pcss';
+import './Table.pcss';
 
 
 class Table extends Component {
@@ -14,8 +9,8 @@ class Table extends Component {
   state = {
     companies: [],
     tablerows: [],
-    tableHeader: {},
-    tableHeaderShort: {}
+    tableHeader: [],
+    tableHeaderShort: []
   };
 
   componentDidMount() {
@@ -26,7 +21,7 @@ class Table extends Component {
       delete fullData[key]._id;
       delete fullData[key].__v;
     });
-   
+    
     const header = Object.values(fullData[0]);
     const headerShort = Object.values(fullData[1]);
     const data = fullData;
@@ -41,20 +36,72 @@ class Table extends Component {
   render() {
     
     const data = this.state.tablerows;
-    console.log('data', data);
-    const tableHeader = [];
-    const headerFromData = this.state.tableHeader;
     
-    Object.keys(headerFromData).map((key, index) => {
-      tableHeader[index] = { 'Header': headerFromData[key], accessor: key };
+    let tableHeader = [];
+    const headerFromData = this.state.tableHeader;
+    console.log('headerFromData ', headerFromData );
+
+    const headerMap = headerFromData.reduce((acc, el, index) => {
+      // Пробуем взять элемент с нужным ключом
+      let currentRow = acc.get(el);
+      // Если такого ещё нет, берём пустой массив
+      if (!currentRow) {
+        currentRow = {};
+        currentRow['Header'] = el;
+        currentRow['accessor'] = String(index);
+        currentRow['columns'] = [];
+      } else {
+        if (currentRow['columns'].length === 0) {
+          
+          currentRow.columns = currentRow.columns.concat([
+            { 'Header': currentRow['Header'], 'accessor': currentRow['accessor']},
+            { 'Header': el, 'accessor': String(index) }]);
+          currentRow['accessor'] = null;
+        } else {
+          currentRow.columns = currentRow.columns.concat({ 'Header': el, 'accessor': String(index) });
+        }
+        
+      }
+
+      // Добавляем элемент в массив
+      
+
+      // Обновляем запись с нужным ключом
+      return acc.set(el, currentRow);
+    }, new Map());
+
+    // Теперь у тебя есть map
+    console.log([...headerMap]);
+    headerMap.forEach((value, key) => {
+      console.log('value:  ', value);
+      tableHeader = tableHeader.concat(value);
     });
-    console.log('tableHeader', tableHeader);
-   
+    
+    console.log('tableHeader:  ', tableHeader);
+
+
+/*     Object.keys(headerFromData).reduce((result, column, index) => {
+     
+      const previousColumn = headerFromData[column - 1];
+      const currentColumn = headerFromData[column];
+      
+      if (previousColumn === currentColumn) {
+        result[index] = { 'Header': currentColumn, accessor: column };
+      } else  {
+        result[index] = { 'Header': currentColumn, accessor: column };
+      }
+      return result;
+
+    }, tableHeader);
+     */
+
+    
+
     return (
       <div>
         <ReactTable 
-          data={data}
-          columns={tableHeader}
+          data={data} 
+          columns={tableHeader}          
         />
       </div>
      );
@@ -62,19 +109,3 @@ class Table extends Component {
 };
 
 export default Table;
-
-
-/* {
-  this.state.tablerows.map((row, index) => {
-    return (
-      <div className={classes.row}>{
-        Object.keys(row).map(key => {
-          if (key !== '_id' && key !== '__v') {
-            return <span className={classes.cell} key={row._id}>{row[key]}</span>
-          }
-          return null;
-        })
-      }</div>
-    )
-  })
-} */

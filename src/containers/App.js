@@ -16,7 +16,6 @@ class App extends Component {
 
   componentDidMount() {
 
-    console.log('didMount Appp');
   }
 
   render () {
