@@ -1,5 +1,16 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: 'Helvetica Neue' , Arial;
+}
+
+@font-face {
+  font-family: 'Helvetica Neue';
+  src: url('../src/fonts/HelveticaNeueCyr-Roman.woff') format("woff"); 
+}
+
+@font-face {
+  font-family: 'Helvetica Neue';
+  font-weight: bold;
+  src: url('../src/fonts/HelveticaNeueCyr-Bold.woff') format("woff");
 }

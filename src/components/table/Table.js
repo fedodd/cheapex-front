@@ -80,10 +80,12 @@ class Table extends Component {
     return (
       
       <div>
-        {console.log(data, tableHeader[0])}
+        {console.log('render method in: ', data.length, tableHeader[0])}
         <ReactTable 
           data={data}   
-          columns={tableHeader}          
+          columns={tableHeader}
+          showPaginationBottom={false}      
+          defaultPageSize={data.length}  
           />
       </div>
      );
