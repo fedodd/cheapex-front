@@ -44,28 +44,28 @@ class Table extends Component {
     const headerMap = headerFromData.reduce((acc, el, index) => {
       // Пробуем взять элемент с нужным ключом
       let currentRow = acc.get(el);
-      // Если такого ещё нет, берём пустой массив
+      // Если такого ещё нет, берём пустой объект  и задаем ему свойства колонок таблицы
       if (!currentRow) {
         currentRow = {};
         currentRow['Header'] = el;
-        currentRow['accessor'] = String(index);
-        currentRow['columns'] = [];
+        //currentRow['accessor'] = String(index);
+        currentRow['columns'] = [{ 'Header': el, 'accessor': String(index) }];
       } else {
-        if (currentRow['columns'].length === 0) {
+      // если такая колонка уже есть, то спрашиваем - есть ли уже дочерние колонки. если нет - создаем подколонки, переместив в нижний уровень колонку с тем же названием
+      
+        //(currentRow['columns']) ? null : currentRow['columns'] = [];
+
+        if (currentRow['columns'].length === 0) { 
           
           currentRow.columns = currentRow.columns.concat([
             { 'Header': currentRow['Header'], 'accessor': currentRow['accessor']},
             { 'Header': el, 'accessor': String(index) }]);
           currentRow['accessor'] = null;
+          // если уже есть подколонки - просто добавляем ещу одну
         } else {
           currentRow.columns = currentRow.columns.concat({ 'Header': el, 'accessor': String(index) });
         }
-        
       }
-
-      // Добавляем элемент в массив
-      
-
       // Обновляем запись с нужным ключом
       return acc.set(el, currentRow);
     }, new Map());
@@ -73,36 +73,18 @@ class Table extends Component {
     // Теперь у тебя есть map
     console.log([...headerMap]);
     headerMap.forEach((value, key) => {
-      console.log('value:  ', value);
       tableHeader = tableHeader.concat(value);
     });
     
     console.log('tableHeader:  ', tableHeader);
-
-
-/*     Object.keys(headerFromData).reduce((result, column, index) => {
-     
-      const previousColumn = headerFromData[column - 1];
-      const currentColumn = headerFromData[column];
-      
-      if (previousColumn === currentColumn) {
-        result[index] = { 'Header': currentColumn, accessor: column };
-      } else  {
-        result[index] = { 'Header': currentColumn, accessor: column };
-      }
-      return result;
-
-    }, tableHeader);
-     */
-
-    
-
     return (
+      
       <div>
+        {console.log(data, tableHeader[0])}
         <ReactTable 
-          data={data} 
+          data={data}   
           columns={tableHeader}          
-        />
+          />
       </div>
      );
   }
