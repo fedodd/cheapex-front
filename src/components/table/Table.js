@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactTable from "react-table";
 import axios from "axios";
 import './Table.pcss';
+import Aux from "../../hoc/Aux";
 
 class Table extends Component {
 
@@ -100,14 +101,14 @@ class Table extends Component {
     const tableHeader = this.tableColumnsHandler(headerFromData, []);
     
     return (
-      <div>
+      <Aux>
         <ReactTable 
           data={data}   
           columns={tableHeader}
           showPaginationBottom={false}      
           defaultPageSize={data.length}  
           />
-      </div>
+      </Aux>
      );
   }
 };

@@ -1,9 +1,12 @@
-.table {
+:global .ReactTable {
+  overflow-x: scroll;
   width: 100%;
 }
 
 :global .rt-tr {
+  position: relative;
   display: flex;
+  width: 100%;
 }
 
 :global .rt-thead.-header {
@@ -12,4 +15,32 @@
 
 :global .-loading {
   display: none;
+}
+
+:global .rt-tr .rt-th:nth-last-child(-n+2),
+:global .rt-tr .rt-td:nth-last-child(-n+4) {
+  position: sticky;
+  right: 0;
+  background-color: red;
+}
+
+:global .rt-tr .rt-th:last-child,
+:global .rt-tr .rt-td {
+  right: 0;
+}
+
+:global .rt-tr .rt-th:nth-last-child(2) {
+  right: 200px;
+}
+
+:global .rt-tr .rt-td:nth-last-child(4) {
+  right: 300px;
+}
+
+:global .rt-tr .rt-td:nth-last-child(3) {
+  right: 200px;
+}
+
+:global .rt-tr .rt-td:nth-last-child(2) {
+  right: 100px;
 }
