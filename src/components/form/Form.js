@@ -36,9 +36,12 @@ const form =(props) => {
           axios.post('https://react-app-bc4e6.firebaseio.com/importedSheet.json', sendData)
             .then(response => {
               console.log('table sent to database!');
+              alert('table sent to database!');
             })
             .catch(error => {
               console.log('error!');
+              alert('error!');
+              // здесь надо прописать сценарии по ошибкам. а где-тоо выше - ловить ошибки - например файл не в том формате или типа того
             });
         },
         error => {
@@ -50,7 +53,7 @@ const form =(props) => {
   }
 
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit} style={{display: 'none'}}>
         <label>
           Name:
           <input type="file" id="input" onChange={(e) => handleChange(e)}/>

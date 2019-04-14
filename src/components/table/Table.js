@@ -14,24 +14,22 @@ class Table extends Component {
   };
 
   componentDidMount() {
-  axios.get('http://localhost:4000/').then(response => {
-    const fullData = response.data;
-    // удаляем ненужные ключи из рядов данных    
-    Object.keys(fullData).map(key => {
-      delete fullData[key]._id;
-      delete fullData[key].__v;
-    });
+    axios.get('https://react-app-bc4e6.firebaseio.com/importedSheet/-LcRs-paw_C6Cl0Z-e8v.json').then(response => {
+      const fullData = response.data.data;
+      console.log('response.data ', response.data);
+      console.log('fullData ', fullData);
     
     // массивы заголовков и их коротких значений и очищенные данные
-    const header = Object.values(fullData[0]);
-    const headerShort = Object.values(fullData[1]);
-    const data = fullData;
-
-    // убираем из данных заголовки
-    data.splice(0, 2);
-    this.setState({ tablerows: data,
-                    tableHeaderShort: headerShort,
-                    tableHeader: header });
+      const header = fullData[0];
+      const headerShort = fullData[1];
+      const data = fullData;
+        // убираем из данных заголовки
+      data.splice(0, 3);
+      this.setState({
+          tablerows: data,
+          tableHeaderShort: headerShort,
+          tableHeader: header
+      });
     });
   }
 
