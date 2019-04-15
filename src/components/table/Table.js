@@ -10,7 +10,17 @@ class Table extends Component {
     companies: [],
     tablerows: [],
     tableHeader: [],
-    tableHeaderShort: []
+    tableHeaderShort: [],
+    fullPrice: [],
+    helpersIndex: {
+      connect: [],
+      transcript: [],
+      connectArrow: [],
+      dMin: [],
+      dMaxconnectDots: [],
+      price: [],
+      image: []
+    }
   };
 
   componentDidMount() {
@@ -22,9 +32,65 @@ class Table extends Component {
     // массивы заголовков и их коротких значений и очищенные данные
       const header = fullData[0];
       const headerShort = fullData[1];
+      const helpHeader = fullData[2];
+
+
+      // распределяем данные по helpHeader
+      const helpersIndexObj = {
+        connect: [],
+        transcript: [],
+        connectArrow: [],
+        dMin: [],
+        dMaxconnectDots: [],
+        price: [],
+        image: []
+      };
+
+      helpHeader.map((helper, index) => {
+        switch (helper) {
+          case "concat":
+            helpersIndexObj.connect = helpersIndexObj.connect.concat(index);
+            break;
+          case "transcript":
+            helpersIndexObj.transcript = helpersIndexObj.transcript.concat(index);
+            break;
+          case "concat(arrow)":
+            helpersIndexObj.connectArrow = helpersIndexObj.connectArrow.concat(index);
+            break;
+          case "dMin":
+            helpersIndexObj.dMin = helpersIndexObj.dMin.concat(index);
+            break;
+          case "dMax(concat(…))":
+            helpersIndexObj.dMaxconnectDots = helpersIndexObj.dMaxconnectDots.concat(index);
+            break;
+          case "price":
+            helpersIndexObj.price = helpersIndexObj.price.concat(index);
+            break;
+          case "image":
+            helpersIndexObj.image = helpersIndexObj.image.concat(index);
+            break;
+          default:
+        }
+      });
+      
+      console.log(helpersIndexObj);
+
       const data = fullData;
         // убираем из данных заголовки
       data.splice(0, 3);
+
+      const fullPrice = data.map(row => {
+        console.log('row ', row);
+        let rowFullPrice = 0;
+        helpersIndexObj.price.map(indexOfPrice => {
+          console.log(row[indexOfPrice]);
+/*           rowFullPrice += row.indexOfPrice;
+ */        });
+
+        console.log('rowFullPrice ', rowFullPrice);
+      })
+
+
       this.setState({
           tablerows: data,
           tableHeaderShort: headerShort,
@@ -97,6 +163,7 @@ class Table extends Component {
     //создаем колонки с их заголовками и уровнями для react-table
     const headerFromData = this.state.tableHeader;
     const tableHeader = this.tableColumnsHandler(headerFromData, []);
+    
     
     return (
       <Aux>
