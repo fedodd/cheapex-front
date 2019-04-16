@@ -41,7 +41,7 @@ class Table extends Component {
         transcript: [],
         connectArrow: [],
         dMin: [],
-        dMaxconnectDots: [],
+        dMaxConnectDots: [],
         price: [],
         image: []
       };
@@ -61,7 +61,7 @@ class Table extends Component {
             helpersIndexObj.dMin = helpersIndexObj.dMin.concat(index);
             break;
           case "dMax(concat(…))":
-            helpersIndexObj.dMaxconnectDots = helpersIndexObj.dMaxconnectDots.concat(index);
+            helpersIndexObj.dMaxConnectDots = helpersIndexObj.dMaxConnectDots.concat(index);
             break;
           case "price":
             helpersIndexObj.price = helpersIndexObj.price.concat(index);
@@ -80,22 +80,40 @@ class Table extends Component {
         // убираем из данных заголовки
       data.splice(0, 3);
 
-      const priceColumnIndex = helpersIndexObj.price;
+      //собираем колонки которые будем считать
+      const priceColumns = helpersIndexObj.price;
+      const dMinColumns = helpersIndexObj.dMin;
+      const dMaxColumns = helpersIndexObj.dMaxConnectDots;
 
-      const fullPrice = data.reduce((acc, row) => {
-        const rowFullPrice = priceColumnIndex.reduce(((acc, indexOfPrice) => {
+      // функция -кальукулятор значений ряда
+      const dataCounter = (dataRow, targetArray) => {
+        return targetArray.reduce(((acc, columnIndex) => {
+          if (isNaN(dataRow[columnIndex])) {
+            return acc;
+          } else {
+            return acc + dataRow[columnIndex];
+          };
+        }), 0);
+      }
+;
+      
+      const countedData = data.reduce((acc, row) => {
 
+        const rowDMin = dataCounter(row, dMinColumns);
+        const rowDMax = dataCounter(row, dMaxColumns);
+        const rowFullPrice = dataCounter(row, priceColumns);
+        //считаем полную стоимость
+/*         const rowFullPrice = priceColumns.reduce(((acc, indexOfPrice) => {
           if (isNaN(row[indexOfPrice])) {
             return acc;
           } else {
             return acc+row[indexOfPrice];
           };
+        }), 0); */
 
-        }), 0);
-        return acc.concat(rowFullPrice);
+        return [...acc, [...row, rowDMin, rowDMax, rowFullPrice]];
       }, []);
-
-      console.log(fullPrice);
+      console.log(countedData);
 
 
       this.setState({
