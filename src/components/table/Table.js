@@ -26,8 +26,8 @@ class Table extends Component {
   componentDidMount() {
     axios.get('https://react-app-bc4e6.firebaseio.com/importedSheet/-LcRs-paw_C6Cl0Z-e8v.json').then(response => {
       const fullData = response.data.data;
-      console.log('response.data ', response.data);
-      console.log('fullData ', fullData);
+      //console.log('response.data ', response.data);
+      //console.log('fullData ', fullData);
     
     // массивы заголовков и их коротких значений и очищенные данные
       const header = fullData[0];
@@ -71,24 +71,31 @@ class Table extends Component {
             break;
           default:
         }
+        return null;
       });
       
-      console.log(helpersIndexObj);
+      //console.log(helpersIndexObj);
 
       const data = fullData;
         // убираем из данных заголовки
       data.splice(0, 3);
 
-      const fullPrice = data.map(row => {
-        console.log('row ', row);
-        let rowFullPrice = 0;
-        helpersIndexObj.price.map(indexOfPrice => {
-          console.log(row[indexOfPrice]);
-/*           rowFullPrice += row.indexOfPrice;
- */        });
+      const priceColumnIndex = helpersIndexObj.price;
 
-        console.log('rowFullPrice ', rowFullPrice);
-      })
+      const fullPrice = data.reduce((acc, row) => {
+        const rowFullPrice = priceColumnIndex.reduce(((acc, indexOfPrice) => {
+
+          if (isNaN(row[indexOfPrice])) {
+            return acc;
+          } else {
+            return acc+row[indexOfPrice];
+          };
+
+        }), 0);
+        return acc.concat(rowFullPrice);
+      }, []);
+
+      console.log(fullPrice);
 
 
       this.setState({
