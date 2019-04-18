@@ -26,14 +26,15 @@ class Table extends Component {
   componentDidMount() {
     axios.get('https://react-app-bc4e6.firebaseio.com/importedSheet/-LcRs-paw_C6Cl0Z-e8v.json').then(response => {
       const fullData = response.data.data;
-      //console.log('response.data ', response.data);
-      //console.log('fullData ', fullData);
+      //console.log('response.data ', response.data.data);
+      //console.log('fullData ', fullData);     
     
-    // массивы заголовков и их коротких значений и очищенные данные
-      const header = fullData[0];
-      const headerShort = fullData[1];
-      const helpHeader = fullData[2];
-
+    // массивы заголовков и их коротких значений и очищенные данные + добавим сразу итоговые колонки
+    
+      const header = [...fullData[0], '= дней', '= дней', '= цена', '= цена'];
+      const headerShort = [...fullData[1], '= дней', '= дней', '= цена', '= цена'];
+      const helpHeader = [...fullData[2], 'total', 'dMax(concat(…))', 'total', 'concat'];
+      console.log('header ', header);
 
       // распределяем данные по helpHeader
       const helpersIndexObj = {
@@ -43,9 +44,11 @@ class Table extends Component {
         dMin: [],
         dMaxConnectDots: [],
         price: [],
-        image: []
+        image: [],
+        total: []
       };
 
+      // соберем индексы колонок с доп функциями
       helpHeader.map((helper, index) => {
         switch (helper) {
           case "concat":
@@ -69,6 +72,9 @@ class Table extends Component {
           case "image":
             helpersIndexObj.image = helpersIndexObj.image.concat(index);
             break;
+          case "total":
+            helpersIndexObj.image = helpersIndexObj.total.concat(index);
+            break;
           default:
         }
         return null;
@@ -85,7 +91,7 @@ class Table extends Component {
       const dMinColumns = helpersIndexObj.dMin;
       const dMaxColumns = helpersIndexObj.dMaxConnectDots;
 
-      // функция -кальукулятор значений ряда
+      // функция -кальукулятор значений колонок
       const dataCounter = (dataRow, targetArray) => {
         return targetArray.reduce(((acc, columnIndex) => {
           if (isNaN(dataRow[columnIndex])) {
@@ -97,27 +103,20 @@ class Table extends Component {
       }
 ;
       
+//вызываем калькулятор и добавляем итоговые значения к нашим данным
       const countedData = data.reduce((acc, row) => {
 
         const rowDMin = dataCounter(row, dMinColumns);
         const rowDMax = dataCounter(row, dMaxColumns);
         const rowFullPrice = dataCounter(row, priceColumns);
-        //считаем полную стоимость
-/*         const rowFullPrice = priceColumns.reduce(((acc, indexOfPrice) => {
-          if (isNaN(row[indexOfPrice])) {
-            return acc;
-          } else {
-            return acc+row[indexOfPrice];
-          };
-        }), 0); */
 
-        return [...acc, [...row, rowDMin, rowDMax, rowFullPrice]];
+        return [...acc, [...row, rowDMin, rowDMax, rowFullPrice, '$']];
       }, []);
       console.log(countedData);
 
 
       this.setState({
-          tablerows: data,
+          tablerows: countedData,
           tableHeaderShort: headerShort,
           tableHeader: header
       });
