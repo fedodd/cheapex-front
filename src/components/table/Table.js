@@ -8,6 +8,8 @@ class Table extends Component {
 
   state = {
     companies: [],
+    numericData: [],
+    noDataCompanies: [],
     tablerows: [],
     tableHeader: [],
     tableHeaderShort: [],
@@ -34,7 +36,6 @@ class Table extends Component {
       const header = [...fullData[0], '= дней', '= дней', '= цена', '= цена'];
       const headerShort = [...fullData[1], '= дней', '= дней', '= цена', '= цена'];
       const helpHeader = [...fullData[2], 'total', 'dMax(concat(…))', 'total', 'concat'];
-      console.log('header ', header);
 
       // распределяем данные по helpHeader
       const helpersIndexObj = {
@@ -80,10 +81,13 @@ class Table extends Component {
         return null;
       });
       
-      //console.log(helpersIndexObj);
+      //отфильтровываем компании без данных и сохраняем их в отдельный массив noDataCompanies
+      const noDataCompanies = fullData.filter(row => row.length <= 3);
+      console.log(noDataCompanies);
 
-      const data = fullData;
-        // убираем из данных заголовки
+
+      const data = fullData.filter(row => row.length > 3);
+      // убираем из данных заголовки
       data.splice(0, 3);
 
       //собираем колонки которые будем считать
@@ -91,18 +95,19 @@ class Table extends Component {
       const dMinColumns = helpersIndexObj.dMin;
       const dMaxColumns = helpersIndexObj.dMaxConnectDots;
 
+      // ФУнкции для обработки helperHeader
+
       // функция -кальукулятор значений колонок
-      const dataCounter = (dataRow, targetArray) => {
-        return targetArray.reduce(((acc, columnIndex) => {
+      const dataCounter = (dataRow, targetColumns) => {
+        return targetColumns.reduce(((acc, columnIndex) => {
           if (isNaN(dataRow[columnIndex])) {
             return acc;
           } else {
             return acc + dataRow[columnIndex];
           };
         }), 0);
-      }
-;
-      
+      };
+
 //вызываем калькулятор и добавляем итоговые значения к нашим данным
       const countedData = data.reduce((acc, row) => {
 
@@ -115,7 +120,36 @@ class Table extends Component {
       console.log(countedData);
 
 
+
+      // Функция соединить колонки с connect
+
+      const dataConnecter = (dataRow, targetColumns) => {
+        //console.log(dataRow, targetColumns);
+        const connectedRow = dataRow;
+        targetColumns.map(columnsIndex => {
+          console.log('connectedRow[i-1] ', connectedRow[columnsIndex - 1], 'connectedRow[i] ', connectedRow[columnsIndex]);
+          const elemToConnect = String(connectedRow[columnsIndex - 1]);
+          
+          connectedRow[columnsIndex - 1] = elemToConnect + connectedRow[columnsIndex];
+          //connectedRow.splice(columnsIndex, 1);
+        });
+        //console.log('connectedRow ', connectedRow);
+      };
+
+      countedData.map(row => dataConnecter(row, helpersIndexObj.connect));
+
+      
+
+      console.log(countedData);
+
+
+
+
+
+
+
       this.setState({
+          numericData: countedData,
           tablerows: countedData,
           tableHeaderShort: headerShort,
           tableHeader: header
