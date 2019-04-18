@@ -126,27 +126,35 @@ class Table extends Component {
       const dataConnecter = (dataRow, targetColumns) => {
         //console.log(dataRow, targetColumns);
         const connectedRow = dataRow;
-        targetColumns.map(columnsIndex => {
+
+        const filteredRow = connectedRow.filter( (element, index) => {
+            return index === 0;
+/*           return targetColumns.map(targetIndex => {
+            if (targetIndex === index) {
+              console.log('false!', index);
+              const elemToConnect = String(connectedRow[index - 1]);
+              connectedRow[index - 1] = elemToConnect + connectedRow[index];
+              return false;
+            } else {
+              return true;
+            }
+          }); */
+        });
+        console.log('filteredRow ', filteredRow);
+/*         targetColumns.filter(columnsIndex => {
           console.log('connectedRow[i-1] ', connectedRow[columnsIndex - 1], 'connectedRow[i] ', connectedRow[columnsIndex]);
           const elemToConnect = String(connectedRow[columnsIndex - 1]);
           
           connectedRow[columnsIndex - 1] = elemToConnect + connectedRow[columnsIndex];
           //connectedRow.splice(columnsIndex, 1);
-        });
+        }); */
         //console.log('connectedRow ', connectedRow);
       };
 
-      countedData.map(row => dataConnecter(row, helpersIndexObj.connect));
-
-      
+      countedData.map(row => dataConnecter(row, helpersIndexObj.connect));      
 
       console.log(countedData);
-
-
-
-
-
-
+      
 
       this.setState({
           numericData: countedData,
