@@ -26,16 +26,16 @@ class Table extends Component {
   };
 
   componentDidMount() {
-    axios.get('https://react-app-bc4e6.firebaseio.com/importedSheet/-LcRs-paw_C6Cl0Z-e8v.json').then(response => {
+    axios.get('https://react-app-bc4e6.firebaseio.com/importedSheet/-Lcr19tpnHO4NsnKfZKY.json').then(response => {
       const fullData = response.data.data;
       //console.log('response.data ', response.data.data);
       //console.log('fullData ', fullData);     
     
     // массивы заголовков и их коротких значений и очищенные данные + добавим сразу итоговые колонки
     
-      const header = [...fullData[0], '= дней', '= дней', '= цена', '= цена'];
-      const headerShort = [...fullData[1], '= дней', '= дней', '= цена', '= цена'];
-      const helpHeader = [...fullData[2], 'total', 'dMax(concat(…))', 'total', 'concat'];
+      const header = [...fullData[0], '= дней', '= дней', '= цена'];
+      const headerShort = [...fullData[1], '= дней', '= дней', '= цена'];
+      const helpHeader = [...fullData[2], 'total', 'dMax(concat(…))', 'total'];
 
       // распределяем данные по helpHeader
       const helpersIndexObj = {
@@ -67,7 +67,7 @@ class Table extends Component {
           case "dMax(concat(…))":
             helpersIndexObj.dMaxConnectDots = helpersIndexObj.dMaxConnectDots.concat(index);
             break;
-          case "price":
+          case "price=$":
             helpersIndexObj.price = helpersIndexObj.price.concat(index);
             break;
           case "image":
@@ -97,14 +97,27 @@ class Table extends Component {
       // функции для обработки helperHeader
 
       // функция -кальукулятор значений колонок
-      const dataCounter = (dataRow, targetColumns) => {
-        return targetColumns.reduce(((acc, columnIndex) => {
-          if (isNaN(dataRow[columnIndex])) {
-            return acc;
-          } else {
-            return acc + dataRow[columnIndex];
-          };
-        }), 0);
+      const dataCounter = (dataRow, targetColumns, connector) => {
+        if (connector) {
+          return targetColumns.reduce(((acc, columnIndex) => {
+            if (isNaN(dataRow[columnIndex])) {
+              return acc;
+            } else {
+              const newAcc = acc + dataRow[columnIndex];
+              dataRow[columnIndex] = String(dataRow[columnIndex]) + ' $';
+              return newAcc;
+            }
+          }), 0);
+
+        } else {
+          return targetColumns.reduce(((acc, columnIndex) => {
+            if (isNaN(dataRow[columnIndex])) {
+              return acc;
+            } else {
+              return acc + dataRow[columnIndex];
+            }
+          }), 0);
+        }
       };
 
 //вызываем калькулятор и добавляем итоговые значения к нашим данным
@@ -112,13 +125,10 @@ class Table extends Component {
 
         const rowDMin = dataCounter(row, dMinColumns);
         const rowDMax = dataCounter(row, dMaxColumns);
-        const rowFullPrice = dataCounter(row, priceColumns);
+        const rowFullPrice = dataCounter(row, priceColumns, true);
 
-        return [...acc, [...row, rowDMin, rowDMax, rowFullPrice, '$']];
+        return [...acc, [...row, rowDMin, rowDMax, rowFullPrice]];
       }, []);
-      console.log('countedData ', countedData);
-
-
 
       // Функция соединить колонки с connect
 
@@ -128,7 +138,6 @@ class Table extends Component {
         return dataRow.reduce((acc, element, index) => {
           //по умолчанию - копируем элемент
           let currentElem = element;
-          console.log(currentElem);
           targetColumns.map(targetIndex => {
             if (targetIndex === index) {
               const prevElement = acc[acc.length - 1];
@@ -155,10 +164,9 @@ class Table extends Component {
       
       };
 
-      const connectedData = countedData.map(row => dataConnecter(row, helpersIndexObj.connect));      
+      //const connectedData = countedData.map(row => dataConnecter(row, helpersIndexObj.connect));      
 
-      console.log('connectedData ', connectedData);
-      
+      const connectedData = countedData;
 
       this.setState({
           numericData: countedData,
