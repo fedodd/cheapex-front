@@ -84,9 +84,8 @@ class Table extends Component {
       //отфильтровываем компании без данных и сохраняем их в отдельный массив noDataCompanies
       const noDataCompanies = fullData.filter(row => row.length <= 3);
       console.log(noDataCompanies);
-
-
       const data = fullData.filter(row => row.length > 3);
+ 
       // убираем из данных заголовки
       data.splice(0, 3);
 
@@ -95,7 +94,7 @@ class Table extends Component {
       const dMinColumns = helpersIndexObj.dMin;
       const dMaxColumns = helpersIndexObj.dMaxConnectDots;
 
-      // ФУнкции для обработки helperHeader
+      // функции для обработки helperHeader
 
       // функция -кальукулятор значений колонок
       const dataCounter = (dataRow, targetColumns) => {
@@ -125,22 +124,48 @@ class Table extends Component {
 
       const dataConnecter = (dataRow, targetColumns) => {
         //console.log(dataRow, targetColumns);
-        const connectedRow = dataRow;
-
-        const filteredRow = connectedRow.filter( (element, index) => {
-            return index === 0;
-/*           return targetColumns.map(targetIndex => {
+       // const connectedRow = ;
+ /*       let connectedRow = [];
+        targetColumns.map(targetIndex => {
+          connectedRow = dataRow.filter((elem, index) => {
+            console.log()
             if (targetIndex === index) {
-              console.log('false!', index);
-              const elemToConnect = String(connectedRow[index - 1]);
-              connectedRow[index - 1] = elemToConnect + connectedRow[index];
+              console.log('dataRow.index = targetIndex', dataRow[index]);
+              connectedRow[index - 1] = String(dataRow[index - 1]) + dataRow[index];
               return false;
             } else {
               return true;
             }
-          }); */
-        });
-        console.log('filteredRow ', filteredRow);
+          });
+          //console.log('checkedArray ', checkedArray);
+
+          return connectedRow;
+   
+        });*/
+        let connectedRow = [];
+        return dataRow.reduce((acc, element, index) => {
+          let currentElem = element;
+          targetColumns.map(targetIndex => {
+            if (targetIndex === index) {
+              console.log('dataRow.index-1', dataRow[index-1], 'dataRow.index = targetIndex', dataRow[index]);
+              console.log(acc[acc.length-1]);
+              acc[acc.length - 1] = (String(acc[acc.length - 1]) + dataRow[index]);
+              currentElem = false;
+            } else {
+
+            }
+            return null;
+          });
+          console.log(acc);
+          if (currentElem ) {
+            return [...acc, currentElem]; 
+          } else {
+            return acc;
+          }
+
+        }, connectedRow);
+        
+
 /*         targetColumns.filter(columnsIndex => {
           console.log('connectedRow[i-1] ', connectedRow[columnsIndex - 1], 'connectedRow[i] ', connectedRow[columnsIndex]);
           const elemToConnect = String(connectedRow[columnsIndex - 1]);
@@ -151,14 +176,14 @@ class Table extends Component {
         //console.log('connectedRow ', connectedRow);
       };
 
-      countedData.map(row => dataConnecter(row, helpersIndexObj.connect));      
+      const connectedData = countedData.map(row => dataConnecter(row, helpersIndexObj.connect));      
 
-      console.log(countedData);
+      console.log('connectedData ', connectedData);
       
 
       this.setState({
           numericData: countedData,
-          tablerows: countedData,
+          tablerows: connectedData,
           tableHeaderShort: headerShort,
           tableHeader: header
       });
