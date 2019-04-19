@@ -116,64 +116,43 @@ class Table extends Component {
 
         return [...acc, [...row, rowDMin, rowDMax, rowFullPrice, '$']];
       }, []);
-      console.log(countedData);
+      console.log('countedData ', countedData);
 
 
 
       // Функция соединить колонки с connect
 
       const dataConnecter = (dataRow, targetColumns) => {
-        //console.log(dataRow, targetColumns);
-       // const connectedRow = ;
- /*       let connectedRow = [];
-        targetColumns.map(targetIndex => {
-          connectedRow = dataRow.filter((elem, index) => {
-            console.log()
-            if (targetIndex === index) {
-              console.log('dataRow.index = targetIndex', dataRow[index]);
-              connectedRow[index - 1] = String(dataRow[index - 1]) + dataRow[index];
-              return false;
-            } else {
-              return true;
-            }
-          });
-          //console.log('checkedArray ', checkedArray);
-
-          return connectedRow;
-   
-        });*/
         let connectedRow = [];
+        //вернем собранный ряд, если обычная колонка - вернем элемент, если из целевой выборки - присоединим значение к предыдущему элементу
         return dataRow.reduce((acc, element, index) => {
+          //по умолчанию - копируем элемент
           let currentElem = element;
+          console.log(currentElem);
           targetColumns.map(targetIndex => {
             if (targetIndex === index) {
-              console.log('dataRow.index-1', dataRow[index-1], 'dataRow.index = targetIndex', dataRow[index]);
-              console.log(acc[acc.length-1]);
-              acc[acc.length - 1] = (String(acc[acc.length - 1]) + dataRow[index]);
+              const prevElement = acc[acc.length - 1];
+              //если предыдущий элемент - не число, то ему не нужна единица измерения
+              if (!isNaN(prevElement)) {
+                acc[acc.length - 1] = (prevElement + dataRow[index]);
+              } else {
+                currentElem = false;
+              }
+              
+              //   Так как не будем прибавлять к ряду этот элемент вернем false
               currentElem = false;
-            } else {
-
             }
             return null;
           });
-          console.log(acc);
-          if (currentElem ) {
-            return [...acc, currentElem]; 
-          } else {
-            return acc;
-          }
-
-        }, connectedRow);
-        
-
-/*         targetColumns.filter(columnsIndex => {
-          console.log('connectedRow[i-1] ', connectedRow[columnsIndex - 1], 'connectedRow[i] ', connectedRow[columnsIndex]);
-          const elemToConnect = String(connectedRow[columnsIndex - 1]);
           
-          connectedRow[columnsIndex - 1] = elemToConnect + connectedRow[columnsIndex];
-          //connectedRow.splice(columnsIndex, 1);
-        }); */
-        //console.log('connectedRow ', connectedRow);
+          
+          if (currentElem === false) {
+            return acc;
+          } else {
+            return [...acc, currentElem];
+          }
+        }, connectedRow);
+      
       };
 
       const connectedData = countedData.map(row => dataConnecter(row, helpersIndexObj.connect));      
