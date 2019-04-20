@@ -33,7 +33,7 @@ const form =(props) => {
           // первая функция-обработчик - запустится при вызове resolve
           sendData = result;
           console.log(sendData); // result - аргумент resolve
-          axios.post('https://react-app-bc4e6.firebaseio.com/importedSheet.json', sendData)
+          axios.post('https://react-app-bc4e6.firebaseio.com/importedSheet/-Lcw7iekBhFuR7ui0wZ5.json', sendData)
             .then(response => {
               console.log('table sent to database!');
               alert('table sent to database!');
