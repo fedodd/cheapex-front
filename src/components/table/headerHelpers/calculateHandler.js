@@ -3,7 +3,7 @@ const calculateHandler = (data, calculators) => {
   //собираем колонки которые будем считать. Здесь надо будет добавить возможность выбирать валюту. Пока загружаем тупо доллар
   const priceColumns = calculators.priceDollar.columns;
   const dMinColumns = calculators.dMin;
-  const dMaxColumns = calculators.dMaxConnectDots;
+  const dMaxColumns = calculators.dMaxConnectDots.columns;
 
   // функция -кальукулятор значений колонок
   const calculator = (dataRow, targetColumns) => {

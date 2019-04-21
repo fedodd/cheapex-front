@@ -1,6 +1,7 @@
 import calculateHandler from "./calculateHandler";
 import addUnitHandler from "./addUnitHandler";
 import imageHandler from "./imageHandler";
+import connectorHandler from "./connectorHandler";
 
 const headerHelpers = (fullData) => {
 
@@ -17,10 +18,11 @@ const headerHelpers = (fullData) => {
     } else {
       headerToTranscript = headerToTranscript.concat(index);
     };
+    return null;
   });
 
   //здесь надо подумать, как потом в другой валюте данные закидывать.
-  const helpHeader = [...fullData[2], 'dMin', 'dMax(concat(…))', 'add($)'];
+  const helpHeader = [...fullData[2], 'dMin', 'dMax(connect(…))', 'add($)'];
 
   //console.log('headerShortIndex', headerToTranscript);
 
@@ -47,11 +49,17 @@ const headerHelpers = (fullData) => {
         columns: []
       },
       dMin: [],
-      dMaxConnectDots: [],
+      dMaxConnectDots: {
+        unit: '...',
+        columns: []
+      },
     },
 
     transcript: [],
-    connectArrow: [],
+    connectArrow: {
+      unit: ' →  ',
+      columns: []
+    },
     images: []
   };
 
@@ -70,14 +78,14 @@ const headerHelpers = (fullData) => {
       case "transcript":
         helpers.transcript = helpers.transcript.concat(index);
         break;
-      case "concat(arrow)":
-        helpers.connectArrow = helpers.connectArrow.concat(index);
+      case "connect(arrow)":
+        helpers.connectArrow.columns = helpers.connectArrow.columns.concat(index);
         break;
       case "dMin":
         helpers.calculators.dMin = helpers.calculators.dMin.concat(index);
         break;
       case "dMax(connect(…))":
-        helpers.calculators.dMaxConnectDots = helpers.calculators.dMaxConnectDots.concat(index);
+        helpers.calculators.dMaxConnectDots.columns = helpers.calculators.dMaxConnectDots.columns.concat(index);
         break;
       case "price($)":
         helpers.calculators.priceDollar.columns = helpers.calculators.priceDollar.columns.concat(index);
@@ -105,48 +113,19 @@ const headerHelpers = (fullData) => {
 
   const calculatedData = calculateHandler(data, helpers.calculators);
 
-  const dataConnecter = (dataRow, targetColumns) => {
-    let connectedRow = [];
-    //вернем собранный ряд, если обычная колонка - вернем элемент, если из целевой выборки - присоединим значение к предыдущему элементу
-    return dataRow.reduce((acc, element, index) => {
-      //по умолчанию - копируем элемент
-      let currentElem = element;
-      targetColumns.map(targetIndex => {
-        if (targetIndex === index) {
-          const prevElement = acc[acc.length - 1];
-          //если предыдущий элемент - не число, то ему не нужна единица измерения
-          if (!isNaN(prevElement)) {
-            acc[acc.length - 1] = (prevElement + dataRow[index]);
-          } else {
-            currentElem = false;
-          }
-          //   Так как не будем прибавлять к ряду этот элемент вернем false
-          currentElem = false;
-        }
-        return null;
-      });
-
-      if (currentElem === false) {
-        return acc;
-      } else {
-        return [...acc, currentElem];
-      }
-    }, connectedRow);
-
-  };
-
   //функция addUnit добавляет единицы измерения и т.п. из headerHelper
   const withUnitsData = addUnitHandler(calculatedData, helpers.addons);
 
   //функция по замене текста на картинки
-  const withImages = imageHandler(withUnitsData, helpers.images);
-  console.log('withImages ', withImages);
-   
-  //console.log('connectedData', connectedData, 'countedData', countedData);
+  const withImagesData = imageHandler(withUnitsData, helpers.images);
+
+  //функция по объединению колонок
+  const connectedArrowData = connectorHandler(withImagesData, helpers.connectArrow);
+  const connectedDaysData = connectorHandler(connectedArrowData, helpers.calculators.dMaxConnectDots);
 
   const exportData = {
     numericData: calculatedData,
-    tablerows: withUnitsData,
+    tablerows: connectedDaysData,
 
     tableHeader: {
       header: header,
