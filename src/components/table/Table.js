@@ -31,7 +31,7 @@ class Table extends Component {
   };
 
   componentDidMount() {
-    axios.get('https://react-app-bc4e6.firebaseio.com/importedSheet/-Lcw7iekBhFuR7ui0wZ5.json').then(response => {
+    axios.get('https://react-app-bc4e6.firebaseio.com/importedSheet/-LcyxfNqNGjdklXJcR-D.json').then(response => {
       const fullData = response.data.data;
       //console.log('response.data ', response.data.data);
       //console.log('fullData ', fullData);     

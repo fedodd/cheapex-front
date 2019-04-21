@@ -1,3 +1,6 @@
+import calculateHandler from "./calculateHandler";
+import addUnitHandler from "./addUnitHandler";
+
 const headerHelpers = (fullData) => {
 
   // массивы заголовков и их коротких значений и очищенные данные + добавим сразу итоговые колонки
@@ -14,77 +17,78 @@ const headerHelpers = (fullData) => {
       headerToTranscript = headerToTranscript.concat(index);
     };
   });
-  const helpHeader = [...fullData[2], 'dMin', 'dMax(concat(…))', 'connect($)'];
+
+  //здесь надо подумать, как потом в другой валюте данные закидывать.
+  const helpHeader = [...fullData[2], 'dMin', 'dMax(concat(…))', 'add($)'];
 
   //console.log('headerShortIndex', headerToTranscript);
 
   // распределяем данные по helpHeader
-  const helpersIndexObj = {
-    connectors: {
-      connectHour: {
-        connector: ' ч.',
+  const helpers = {
+    addons: {
+      addHour: {
+        unit: ' ч.',
         columns: []
       },
-      connectDollar: {
-        connector: ' $',
+      addDollar: {
+        unit: ' $',
         columns: []
       },
-      connectPercent: {
-        connector: ' %',
+      addPercent: {
+        unit: ' %',
         columns: []
       },
-   },
+    },
+
+    calculators: {
+      priceDollar: {
+        unit: ' $',
+        columns: []
+      },
+      dMin: [],
+      dMaxConnectDots: [],
+    },
 
     transcript: [],
     connectArrow: [],
-    dMin: [],
-    dMaxConnectDots: [],
-    priceDollar: {
-      connector: ' $',
-      columns: []
-    },
-    image: [],
-    total: []
+    image: []
   };
 
   // соберем индексы колонок с доп функциями
   helpHeader.map((helper, index) => {
     switch (helper) {
-      case "connect(ч.)":
-        helpersIndexObj.connectors.connectHour.columns = helpersIndexObj.connectors.connectHour.columns.concat(index);
+      case "add(ч.)":
+        helpers.addons.addHour.columns = helpers.addons.addHour.columns.concat(index);
         break;
-      case "connect($)":
-        helpersIndexObj.connectors.connectDollar.columns = helpersIndexObj.connectors.connectDollar.columns.concat(index);
+      case "add($)":
+        helpers.addons.addDollar.columns = helpers.addons.addDollar.columns.concat(index);
         break;
-      case "connect(%)":
-        helpersIndexObj.connectors.connectPercent.columns = helpersIndexObj.connectors.connectPercent.columns.concat(index);
+      case "add(%)":
+        helpers.addons.addPercent.columns = helpers.addons.addPercent.columns.concat(index);
         break;
       case "transcript":
-        helpersIndexObj.transcript = helpersIndexObj.transcript.concat(index);
+        helpers.transcript = helpers.transcript.concat(index);
         break;
       case "concat(arrow)":
-        helpersIndexObj.connectArrow = helpersIndexObj.connectArrow.concat(index);
+        helpers.connectArrow = helpers.connectArrow.concat(index);
         break;
       case "dMin":
-        helpersIndexObj.dMin = helpersIndexObj.dMin.concat(index);
+        helpers.calculators.dMin = helpers.calculators.dMin.concat(index);
         break;
       case "dMax(connect(…))":
-        helpersIndexObj.dMaxConnectDots = helpersIndexObj.dMaxConnectDots.concat(index);
+        helpers.calculators.dMaxConnectDots = helpers.calculators.dMaxConnectDots.concat(index);
         break;
       case "price($)":
-        helpersIndexObj.priceDollar.columns = helpersIndexObj.priceDollar.columns.concat(index);
+        helpers.calculators.priceDollar.columns = helpers.calculators.priceDollar.columns.concat(index);
         break;
       case "image":
-        helpersIndexObj.image = helpersIndexObj.image.concat(index);
-        break;
-      case "total":
-        helpersIndexObj.image = helpersIndexObj.total.concat(index);
+        helpers.image = helpers.image.concat(index);
         break;
       default:
     }
     return null;
   });
-  console.log(helpersIndexObj.connectors);
+
   //отфильтровываем компании без данных и сохраняем их в отдельный массив noDataCompanies
   const noDataCompanies = fullData.filter(row => row.length <= 3);
   console.log(noDataCompanies);
@@ -93,49 +97,12 @@ const headerHelpers = (fullData) => {
   // убираем из данных заголовки
   data.splice(0, 3);
 
-  //собираем колонки которые будем считать. Здесь надо будет добавить возможность выбирать валюту. Пока загружаем тупо доллар
-  const priceColumns = helpersIndexObj.priceDollar.columns;
-  const priceConnector = helpersIndexObj.priceDollar.connector;
-  const dMinColumns = helpersIndexObj.dMin;
-  const dMaxColumns = helpersIndexObj.dMaxConnectDots;
 
   // функции для обработки helperHeader
 
+  //подсчитаем нужные колонки с помощью функции калькулятора, отправив в нее данные и helpers
 
-
-  // функция -кальукулятор значений колонок
-  const dataCounter = (dataRow, targetColumns, connector) => {
-    if (connector) {
-      return targetColumns.reduce(((acc, columnIndex) => {
-        if (isNaN(dataRow[columnIndex])) {
-          return acc;
-        } else {
-          const newAcc = acc + dataRow[columnIndex];
-          dataRow[columnIndex] = String(dataRow[columnIndex]) + connector;
-          return newAcc;
-        }
-      }), 0);
-
-    } else {
-      return targetColumns.reduce(((acc, columnIndex) => {
-        if (isNaN(dataRow[columnIndex])) {
-          return acc;
-        } else {
-          return acc + dataRow[columnIndex];
-        }
-      }), 0);
-    }
-  };
-
-  //вызываем калькулятор и добавляем итоговые значения к нашим данным
-  const countedData = data.reduce((acc, row) => {
-
-    const rowDMin = dataCounter(row, dMinColumns);
-    const rowDMax = dataCounter(row, dMaxColumns);
-    const rowFullPrice = dataCounter(row, priceColumns, priceConnector);
-
-    return [...acc, [...row, rowDMin, rowDMax, rowFullPrice]];
-  }, []);
+  const calculatedData = calculateHandler(data, helpers.calculators);
 
   const dataConnecter = (dataRow, targetColumns) => {
     let connectedRow = [];
@@ -158,7 +125,6 @@ const headerHelpers = (fullData) => {
         return null;
       });
 
-
       if (currentElem === false) {
         return acc;
       } else {
@@ -168,28 +134,14 @@ const headerHelpers = (fullData) => {
 
   };
 
-  //функция connector ддобавляет единицы измерения и т.п. из headerHelper
-  const connector = (dataRow, targetColumns, connector) => {
-    return targetColumns.map(targetIndex => {
-      dataRow[targetIndex] = String(dataRow[targetIndex]) + connector;
-      return null;
-    });
-  };
-
-  const connectedData = countedData.map(row => {
-    Object.keys(helpersIndexObj.connectors).map(connectorType => {
-      const targetConnector = helpersIndexObj.connectors[connectorType]
-      connector(row, targetConnector.columns, targetConnector.connector);
-      return row;
-    });
-    return row;
-  });
+  //функция addUnit добавляет единицы измерения и т.п. из headerHelper
+  const withUnitsData = addUnitHandler(calculatedData, helpers.addons);
    
   //console.log('connectedData', connectedData, 'countedData', countedData);
 
   const exportData = {
-    numericData: countedData,
-    tablerows: connectedData,
+    numericData: calculatedData,
+    tablerows: withUnitsData,
 
     tableHeader: {
       header: header,
