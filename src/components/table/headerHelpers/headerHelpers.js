@@ -1,5 +1,6 @@
 import calculateHandler from "./calculateHandler";
 import addUnitHandler from "./addUnitHandler";
+import imageHandler from "./imageHandler";
 
 const headerHelpers = (fullData) => {
 
@@ -51,7 +52,7 @@ const headerHelpers = (fullData) => {
 
     transcript: [],
     connectArrow: [],
-    image: []
+    images: []
   };
 
   // соберем индексы колонок с доп функциями
@@ -82,7 +83,7 @@ const headerHelpers = (fullData) => {
         helpers.calculators.priceDollar.columns = helpers.calculators.priceDollar.columns.concat(index);
         break;
       case "image":
-        helpers.image = helpers.image.concat(index);
+        helpers.images = helpers.images.concat(index);
         break;
       default:
     }
@@ -136,6 +137,10 @@ const headerHelpers = (fullData) => {
 
   //функция addUnit добавляет единицы измерения и т.п. из headerHelper
   const withUnitsData = addUnitHandler(calculatedData, helpers.addons);
+
+  //функция по замене текста на картинки
+  const withImages = imageHandler(withUnitsData, helpers.images);
+  console.log('withImages ', withImages);
    
   //console.log('connectedData', connectedData, 'countedData', countedData);
 

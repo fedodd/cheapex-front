@@ -100,7 +100,8 @@ class Table extends Component {
     //создаем колонки с их заголовками и уровнями для react-table
     const headerFromData = this.state.tableHeader.headerShort;
     const tableHeader = this.tableColumnsHandler(headerFromData, []);
-    
+
+    //console.log(tableHeader);
     
     return (
       <Aux>

@@ -2,13 +2,11 @@ const calculateHandler = (data, calculators) => {
 
   //собираем колонки которые будем считать. Здесь надо будет добавить возможность выбирать валюту. Пока загружаем тупо доллар
   const priceColumns = calculators.priceDollar.columns;
-  const priceUnit = calculators.priceDollar.unit;
-  console.log(priceUnit);
   const dMinColumns = calculators.dMin;
   const dMaxColumns = calculators.dMaxConnectDots;
 
   // функция -кальукулятор значений колонок
-  const calculator = (dataRow, targetColumns, unit) => {
+  const calculator = (dataRow, targetColumns) => {
     return targetColumns.reduce(((acc, columnIndex) => {
       if (isNaN(dataRow[columnIndex])) {
         return acc;
@@ -23,7 +21,7 @@ const calculateHandler = (data, calculators) => {
 
     const rowDMin = calculator(row, dMinColumns);
     const rowDMax = calculator(row, dMaxColumns);
-    const rowFullPrice = calculator(row, priceColumns, priceUnit);
+    const rowFullPrice = calculator(row, priceColumns);
     return [...acc, [...row, rowDMin, rowDMax, rowFullPrice]];
   }, []);
 
