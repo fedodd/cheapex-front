@@ -2,6 +2,7 @@ import calculateHandler from "./calculateHandler";
 import addUnitHandler from "./addUnitHandler";
 import imageHandler from "./imageHandler";
 import connectorHandler from "./connectorHandler";
+import deleteHandler from "./deleteHandler";
 
 const headerHelpers = (fullData) => {
 
@@ -23,7 +24,7 @@ const headerHelpers = (fullData) => {
 
   //здесь надо подумать, как потом в другой валюте данные закидывать.
   const helpHeader = [...fullData[2], 'dMin', 'dMax(connect(…))', 'add($)'];
-
+  
   //console.log('headerShortIndex', headerToTranscript);
 
   // распределяем данные по helpHeader
@@ -123,9 +124,14 @@ const headerHelpers = (fullData) => {
   const connectedArrowData = connectorHandler(withImagesData, helpers.connectArrow);
   const connectedDaysData = connectorHandler(connectedArrowData, helpers.calculators.dMaxConnectDots);
 
+
+  //функция по удалению вспомогательных колонок
+  const deleteColumns = [...helpers.connectArrow.columns].concat(helpers.calculators.dMaxConnectDots.columns).concat(helpers.transcript);
+  const CleanedData = deleteHandler(connectedDaysData, deleteColumns);
+
   const exportData = {
     numericData: calculatedData,
-    tablerows: connectedDaysData,
+    tablerows: CleanedData,
 
     tableHeader: {
       header: header,
