@@ -1,3 +1,4 @@
+import React from "react";
 const connectorHandler = (data, connector) => {
 
   const connectedData = data.map(row => {
@@ -8,7 +9,7 @@ const connectorHandler = (data, connector) => {
       connector.columns.map(targetIndex => {
         if (targetIndex === index) {
           const prevElement = acc[acc.length - 1];
-          acc[acc.length - 1] = (prevElement + connector.unit + row[index]);
+          acc[acc.length - 1] = <span>{prevElement}{connector.unit}{row[index]}</span>;
           //   Так как не будем прибавлять к ряду этот элемент вернем false
   //        currentElem = false;
         }

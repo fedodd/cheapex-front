@@ -8,8 +8,6 @@ const deleteHandler = (data, deleteColumns) => {
       return currentElem;
     });
   });
-
-  console.log(cleanedData);
   
   return cleanedData;
 }

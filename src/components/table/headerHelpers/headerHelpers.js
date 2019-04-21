@@ -3,6 +3,7 @@ import addUnitHandler from "./addUnitHandler";
 import imageHandler from "./imageHandler";
 import connectorHandler from "./connectorHandler";
 import deleteHandler from "./deleteHandler";
+import transcriptHandler from "./transcriptHanlder";
 
 const headerHelpers = (fullData) => {
 
@@ -117,12 +118,18 @@ const headerHelpers = (fullData) => {
   //функция addUnit добавляет единицы измерения и т.п. из headerHelper
   const withUnitsData = addUnitHandler(calculatedData, helpers.addons);
 
+  //функция добавления transcript
+
+  const transcriptedData = transcriptHandler(withUnitsData, helpers.transcript);
+  console.log('transcriptedData ', transcriptedData);
+
   //функция по замене текста на картинки
-  const withImagesData = imageHandler(withUnitsData, helpers.images);
+  const withImagesData = imageHandler(transcriptedData, helpers.images);
 
   //функция по объединению колонок
   const connectedArrowData = connectorHandler(withImagesData, helpers.connectArrow);
   const connectedDaysData = connectorHandler(connectedArrowData, helpers.calculators.dMaxConnectDots);
+
 
 
   //функция по удалению вспомогательных колонок

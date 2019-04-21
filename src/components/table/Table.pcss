@@ -9,6 +9,11 @@
   width: 100%;
 }
 
+:global .rt-td {
+  position: relative;
+
+}
+
 :global .rt-thead {
   align-items: center;
   background-color: lightgreen;
@@ -59,4 +64,22 @@
 :global .transport {
   margin: 0 5px;
   width: 20px;
+}
+
+:global .transcripted {
+  box-sizing: border-box;
+  & span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    padding: 3px;
+    box-sizing: border-box;
+    border: 1px solid grey;
+    background-color: white;
+  }
+}
+
+:global .rt-td:hover .transcripted span {
+  display: inline-block;
 }
