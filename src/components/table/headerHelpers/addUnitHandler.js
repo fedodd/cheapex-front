@@ -2,7 +2,10 @@ const addUnitHandler = (data, addons) => {
   //функция connector добавляет единицы измерения и т.п. из headerHelper
   const addUnit = (dataRow, targetColumns, unit) => {
     return targetColumns.map(targetIndex => {
-      isNaN(dataRow[targetIndex]) ?  null : dataRow[targetIndex] = String(dataRow[targetIndex]) + unit;
+      const currentElem = dataRow[targetIndex];
+      if ((!isNaN(currentElem)) || (!isNaN(String(currentElem).replace(",", ".")))) {
+        dataRow[targetIndex] = String(currentElem).replace(".", ",") + unit;
+      }
       return null;
     });
   };

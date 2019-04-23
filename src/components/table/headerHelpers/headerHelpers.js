@@ -4,13 +4,14 @@ import imageHandler from "./imageHandler";
 import connectorHandler from "./connectorHandler";
 import deleteHandler from "./deleteHandler";
 import transcriptHandler from "./transcriptHanlder";
+import transcriptHeaderHandler from "./transcriptHeaderHandler";
 
 const headerHelpers = (fullData) => {
 
   // массивы заголовков и их коротких значений и очищенные данные + добавим сразу итоговые колонки
 
   const header = [...fullData[0], '= дней', '= дней', '= цена'];
-  const headerShort = [...fullData[1], '= дней', '= дней', '= цена'];
+  const headerShort = [...fullData[1], null, null, null];
 
   // если сокращенного названия нет, то покажем полное название, сохраним индексы сокращенных колонок, чтобы потом раскрывать их значение
   let headerToTranscript = [];
@@ -25,8 +26,9 @@ const headerHelpers = (fullData) => {
 
   //здесь надо подумать, как потом в другой валюте данные закидывать.
   const helpHeader = [...fullData[2], 'dMin', 'dMax(connect(…))', 'add($)'];
-  
-  //console.log('headerShortIndex', headerToTranscript);
+  console.log(headerToTranscript);
+  const transcriptedHeader = transcriptHeaderHandler(header, headerShort, headerToTranscript);
+  console.log(transcriptedHeader);
 
   // распределяем данные по helpHeader
   const helpers = {
@@ -136,13 +138,14 @@ const headerHelpers = (fullData) => {
   //функция по удалению вспомогательных колонок
   const deleteColumns = [...helpers.connectArrow.columns].concat(helpers.calculators.dMaxConnectDots.columns).concat(helpers.transcript);
   const CleanedData = deleteHandler(connectedDaysData, deleteColumns);
+
+  //удалим колонки из header
   const headerForClean = {
-    header: header,
-    headerShort: headerShort,
+    header: transcriptedHeader,
+    headerShort: transcriptedHeader,
     headerToTranscript: headerToTranscript 
   };
   const CleanedHeader = deleteHandler(headerForClean, deleteColumns);
-  console.log(CleanedHeader);
 
   const exportData = {
     numericData: calculatedData,

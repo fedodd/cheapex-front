@@ -9,18 +9,11 @@ const connectorHandler = (data, connector) => {
       connector.columns.map(targetIndex => {
         if (targetIndex === index) {
           const prevElement = acc[acc.length - 1];
-          acc[acc.length - 1] = <span>{prevElement}{connector.unit}{row[index]}</span>;
-          //   Так как не будем прибавлять к ряду этот элемент вернем false
-  //        currentElem = false;
+          acc[acc.length - 1] = <span><span>{prevElement}</span><span>{connector.unit}</span><span className="alignedValue">{row[index]}</span></span>;
         }
         return null;
       });
-      
-  //    if (currentElem === false) {
-   //     return acc;
-   //   } else {
         return [...acc, currentElem];
-   //   }
     }, []);
   });
   return connectedData;

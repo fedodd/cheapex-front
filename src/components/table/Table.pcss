@@ -9,9 +9,9 @@
   width: 100%;
 }
 
-:global .rt-td {
+:global .rt-td,
+ :global .rt-th {
   position: relative;
-
 }
 
 :global .rt-thead {
@@ -76,6 +76,13 @@
   }
 }
 
-:global .rt-td:hover .transcripted span {
+:global .rt-td:hover .transcripted span,
+:global .rt-th:hover .transcripted span {
   display: inline-block;
+}
+
+:global .alignedValue {
+  display: inline-block;
+  width: 20px;
+  text-align: right;
 }

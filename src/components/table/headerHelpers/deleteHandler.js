@@ -16,12 +16,12 @@ const deleteHandler = (data, deleteColumns) => {
   } else {
     const cleanedData = {};
     Object.keys(data).map(rowKey => {
-      console.log(data[rowKey]);
       cleanedData[rowKey] = data[rowKey].filter((elem, index) => {
         let currentElem = elem;
         deleteColumns.map(deleteIndex => (index === deleteIndex) ? currentElem = false : true);
         return currentElem;
       });
+      return null;
     });
 
     return cleanedData;
