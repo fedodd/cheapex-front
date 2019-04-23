@@ -1,15 +1,34 @@
+import { isArray } from "util";
+
 const deleteHandler = (data, deleteColumns) => {
-  
-  const cleanedData = data.map(row => {
- 
-    return row.filter((elem, index) => {
-      let currentElem = elem;
-      deleteColumns.map(deleteIndex => (index === deleteIndex) ? currentElem = false : true);
-      return currentElem;
+
+  console.log('deleteHandler data ', data, 'deleteHandler data keys: ', Object.keys(data) );
+  if (isArray(data)) {
+    const cleanedData = data.map(row => {
+      return row.filter((elem, index) => {
+        let currentElem = elem;
+        deleteColumns.map(deleteIndex => (index === deleteIndex) ? currentElem = false : true);
+        return currentElem;
+      });
     });
-  });
+
+    return cleanedData;
+  } else {
+    const cleanedData = {};
+    Object.keys(data).map(rowKey => {
+      console.log(data[rowKey]);
+      cleanedData[rowKey] = data[rowKey].filter((elem, index) => {
+        let currentElem = elem;
+        deleteColumns.map(deleteIndex => (index === deleteIndex) ? currentElem = false : true);
+        return currentElem;
+      });
+    });
+
+    return cleanedData;
+  }
+
   
-  return cleanedData;
+  
 }
 
 export default deleteHandler;

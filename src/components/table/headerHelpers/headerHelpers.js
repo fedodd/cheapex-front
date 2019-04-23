@@ -91,6 +91,7 @@ const headerHelpers = (fullData) => {
         break;
       case "price($)":
         helpers.calculators.priceDollar.columns = helpers.calculators.priceDollar.columns.concat(index);
+        helpers.addons.addDollar.columns = helpers.addons.addDollar.columns.concat(index);
         break;
       case "image":
         helpers.images = helpers.images.concat(index);
@@ -135,18 +136,21 @@ const headerHelpers = (fullData) => {
   //функция по удалению вспомогательных колонок
   const deleteColumns = [...helpers.connectArrow.columns].concat(helpers.calculators.dMaxConnectDots.columns).concat(helpers.transcript);
   const CleanedData = deleteHandler(connectedDaysData, deleteColumns);
+  const headerForClean = {
+    header: header,
+    headerShort: headerShort,
+    headerToTranscript: headerToTranscript 
+  };
+  const CleanedHeader = deleteHandler(headerForClean, deleteColumns);
+  console.log(CleanedHeader);
 
   const exportData = {
     numericData: calculatedData,
     tablerows: CleanedData,
 
-    tableHeader: {
-      header: header,
-      headerShort: headerShort,
-      headerToTranscript: headerToTranscript 
-    }
+    tableHeader: CleanedHeader
   };
-
+  
   return exportData;
 }
 
