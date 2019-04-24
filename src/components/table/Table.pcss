@@ -12,21 +12,24 @@
 :global .rt-td,
  :global .rt-th {
   position: relative;
+  display: flex;
+  text-align: center;
 }
 
 :global .rt-thead {
   align-items: center;
-  background-color: lightgreen;
 }
 
 :global .rt-td,
 :global .rt-th  {
   display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 0;
-    box-sizing: border-box;
-    border: 1px solid green;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+:global .rt-th {
+  font-weight: bold;
 }
 
 :global .rt-thead.-header {
@@ -37,25 +40,6 @@
   display: none;
 }
 
-:global .rt-tr .rt-th:nth-last-child(-n+2),
-:global .rt-tr .rt-td:nth-last-child(-n+2) {
-  position: sticky;
-  right: 0;
-  background-color: lightgreen;
-}
-
-:global .rt-tr .rt-th:last-child,
-:global .rt-tr .rt-td {
-  right: 0;
-}
-
-:global .rt-tr .rt-th:nth-last-child(2) {
-  right: 100px;
-}
-
-:global .rt-tr .rt-td:nth-last-child(2) {
-  right: 100px;
-}
 
 :global .transport {
   margin: 0 5px;
@@ -85,4 +69,25 @@
   display: inline-block;
   width: 20px;
   text-align: right;
+}
+
+
+/* крепим итоговые колонки*/
+:global .rt-tr .rt-th:nth-last-child(-n+2),
+:global .rt-tr .rt-td:nth-last-child(-n+2) {
+  position: sticky;
+  right: 0;
+  background-color: white;
+
+}
+
+:global .rt-tr .rt-th:last-child,
+:global .rt-tr .rt-td:last-child {
+  right: 0;
+}
+
+:global .rt-tr .rt-th:nth-last-child(2),
+:global .rt-tr .rt-td:nth-last-child(2) {
+  right: 100px;
+  box-shadow: 0px 5px 5px grey;
 }
