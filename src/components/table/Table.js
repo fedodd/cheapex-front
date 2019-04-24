@@ -3,11 +3,11 @@ import ReactTable from "react-table";
 import axios from "axios";
 import './Table.pcss';
 import Aux from "../../hoc/Aux";
-import headerHelpers from "./headerHelpers/headerHelpers";
+import headerHelpers from "../../containers/headerHelpers/headerHelpers";
 
 class Table extends Component {
 
-  state = {
+  /*state = {
     companies: [],
     numericData: [],
     noDataCompanies: [],
@@ -45,6 +45,8 @@ class Table extends Component {
       });
     });
   }
+
+  */
 
   //создаем колонки с их заголовками и уровнями для react-table
   tableColumnsHandler = (inputHeader, outputHeader) => {
@@ -89,17 +91,12 @@ class Table extends Component {
 
   render() {
     
-    const data = this.state.tablerows;
+    const data = this.props.data;
     // проверяем - если данные еще не загрузились -выводим пустую строку
-    if (data.length === 0) {
-      return (
-        <div>there is no data.</div>
-      )
-    }
+
 
     //создаем колонки с их заголовками и уровнями для react-table
-    const headerFromData = this.state.tableHeader.headerShort;
-    const tableHeader = this.tableColumnsHandler(headerFromData, []);
+    const tableHeader = this.tableColumnsHandler(this.props.header, []);
 
     //console.log(tableHeader);
     
