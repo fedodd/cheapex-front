@@ -59,14 +59,13 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className={classes.holder}>
-          <NavLink to={{ pathname: '/-LcyxfNqNGjdklXJcR-D' }}>Страница c результатами</NavLink>
-          
+          <NavLink to={{ pathname: '/-LcyxfNqNGjdklXJcR-D' }} className={classes.link}>Страница c результатами</NavLink>
           <Route path="/-LcyxfNqNGjdklXJcR-D" 
             render={(routeProps) => (<ResultPage {...routeProps} 
             data={this.state.tablerows}
             header={this.state.tableHeader.headerShort}/>)}/>
 
-          <NavLink to={{pathname: '/import'}}>Страница для загрузки данных</NavLink>
+          <NavLink to={{ pathname: '/import' }} className={classes.link}>Страница для загрузки данных</NavLink>
           <Route path="/import" component={Form} />
         </div>
       </BrowserRouter>
