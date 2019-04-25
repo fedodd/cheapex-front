@@ -3,16 +3,21 @@ import ReactTable from "react-table";
 import axios from "axios";
 import './Table.pcss';
 import Aux from "../../hoc/Aux";
+import headerHelpers from "../../containers/headerHelpers/headerHelpers";
 
 class Table extends Component {
 
-  state = {
+  /*state = {
     companies: [],
     numericData: [],
     noDataCompanies: [],
     tablerows: [],
-    tableHeader: [],
-    tableHeaderShort: [],
+    tableHeader: {
+      header: [],
+      headerShort: [],
+      headerToTranscript: []
+    },
+
     fullPrice: [],
     helpersIndex: {
       connect: [],
@@ -26,169 +31,22 @@ class Table extends Component {
   };
 
   componentDidMount() {
-    axios.get('https://react-app-bc4e6.firebaseio.com/importedSheet/-LcRs-paw_C6Cl0Z-e8v.json').then(response => {
+    axios.get('https://react-app-bc4e6.firebaseio.com/importedSheet/-LcyxfNqNGjdklXJcR-D.json').then(response => {
       const fullData = response.data.data;
       //console.log('response.data ', response.data.data);
       //console.log('fullData ', fullData);     
     
-    // массивы заголовков и их коротких значений и очищенные данные + добавим сразу итоговые колонки
-    
-      const header = [...fullData[0], '= дней', '= дней', '= цена', '= цена'];
-      const headerShort = [...fullData[1], '= дней', '= дней', '= цена', '= цена'];
-      const helpHeader = [...fullData[2], 'total', 'dMax(concat(…))', 'total', 'concat'];
-
-      // распределяем данные по helpHeader
-      const helpersIndexObj = {
-        connect: [],
-        transcript: [],
-        connectArrow: [],
-        dMin: [],
-        dMaxConnectDots: [],
-        price: [],
-        image: [],
-        total: []
-      };
-
-      // соберем индексы колонок с доп функциями
-      helpHeader.map((helper, index) => {
-        switch (helper) {
-          case "concat":
-            helpersIndexObj.connect = helpersIndexObj.connect.concat(index);
-            break;
-          case "transcript":
-            helpersIndexObj.transcript = helpersIndexObj.transcript.concat(index);
-            break;
-          case "concat(arrow)":
-            helpersIndexObj.connectArrow = helpersIndexObj.connectArrow.concat(index);
-            break;
-          case "dMin":
-            helpersIndexObj.dMin = helpersIndexObj.dMin.concat(index);
-            break;
-          case "dMax(concat(…))":
-            helpersIndexObj.dMaxConnectDots = helpersIndexObj.dMaxConnectDots.concat(index);
-            break;
-          case "price":
-            helpersIndexObj.price = helpersIndexObj.price.concat(index);
-            break;
-          case "image":
-            helpersIndexObj.image = helpersIndexObj.image.concat(index);
-            break;
-          case "total":
-            helpersIndexObj.image = helpersIndexObj.total.concat(index);
-            break;
-          default:
-        }
-        return null;
-      });
-      
-      //отфильтровываем компании без данных и сохраняем их в отдельный массив noDataCompanies
-      const noDataCompanies = fullData.filter(row => row.length <= 3);
-      console.log(noDataCompanies);
-      const data = fullData.filter(row => row.length > 3);
- 
-      // убираем из данных заголовки
-      data.splice(0, 3);
-
-      //собираем колонки которые будем считать
-      const priceColumns = helpersIndexObj.price;
-      const dMinColumns = helpersIndexObj.dMin;
-      const dMaxColumns = helpersIndexObj.dMaxConnectDots;
-
-      // функции для обработки helperHeader
-
-      // функция -кальукулятор значений колонок
-      const dataCounter = (dataRow, targetColumns) => {
-        return targetColumns.reduce(((acc, columnIndex) => {
-          if (isNaN(dataRow[columnIndex])) {
-            return acc;
-          } else {
-            return acc + dataRow[columnIndex];
-          };
-        }), 0);
-      };
-
-//вызываем калькулятор и добавляем итоговые значения к нашим данным
-      const countedData = data.reduce((acc, row) => {
-
-        const rowDMin = dataCounter(row, dMinColumns);
-        const rowDMax = dataCounter(row, dMaxColumns);
-        const rowFullPrice = dataCounter(row, priceColumns);
-
-        return [...acc, [...row, rowDMin, rowDMax, rowFullPrice, '$']];
-      }, []);
-      console.log(countedData);
-
-
-
-      // Функция соединить колонки с connect
-
-      const dataConnecter = (dataRow, targetColumns) => {
-        //console.log(dataRow, targetColumns);
-       // const connectedRow = ;
- /*       let connectedRow = [];
-        targetColumns.map(targetIndex => {
-          connectedRow = dataRow.filter((elem, index) => {
-            console.log()
-            if (targetIndex === index) {
-              console.log('dataRow.index = targetIndex', dataRow[index]);
-              connectedRow[index - 1] = String(dataRow[index - 1]) + dataRow[index];
-              return false;
-            } else {
-              return true;
-            }
-          });
-          //console.log('checkedArray ', checkedArray);
-
-          return connectedRow;
-   
-        });*/
-        let connectedRow = [];
-        return dataRow.reduce((acc, element, index) => {
-          let currentElem = element;
-          targetColumns.map(targetIndex => {
-            if (targetIndex === index) {
-              console.log('dataRow.index-1', dataRow[index-1], 'dataRow.index = targetIndex', dataRow[index]);
-              console.log(acc[acc.length-1]);
-              acc[acc.length - 1] = (String(acc[acc.length - 1]) + dataRow[index]);
-              currentElem = false;
-            } else {
-
-            }
-            return null;
-          });
-          console.log(acc);
-          if (currentElem ) {
-            return [...acc, currentElem]; 
-          } else {
-            return acc;
-          }
-
-        }, connectedRow);
-        
-
-/*         targetColumns.filter(columnsIndex => {
-          console.log('connectedRow[i-1] ', connectedRow[columnsIndex - 1], 'connectedRow[i] ', connectedRow[columnsIndex]);
-          const elemToConnect = String(connectedRow[columnsIndex - 1]);
-          
-          connectedRow[columnsIndex - 1] = elemToConnect + connectedRow[columnsIndex];
-          //connectedRow.splice(columnsIndex, 1);
-        }); */
-        //console.log('connectedRow ', connectedRow);
-      };
-
-      const connectedData = countedData.map(row => dataConnecter(row, helpersIndexObj.connect));      
-
-      console.log('connectedData ', connectedData);
-      
+      const data = headerHelpers(fullData);
 
       this.setState({
-          numericData: countedData,
-          tablerows: connectedData,
-          tableHeaderShort: headerShort,
-          tableHeader: header
+        numericData: data.numericData,
+        tablerows: data.tablerows,
+        tableHeader: data.tableHeader
       });
     });
   }
+
+  */
 
   //создаем колонки с их заголовками и уровнями для react-table
   tableColumnsHandler = (inputHeader, outputHeader) => {
@@ -229,32 +87,18 @@ class Table extends Component {
     return outputHeader;
   }
 
-  //соединяем единицы измерения. в state у нас будут исходные распарсенные данные, чтобы фильтровать по числам, но отображать будем с единицами измерения и т.п.
 
-  columnSpliceHandler = () => {
-    const data = this.state.tablerows;
-
-    if (data.length === 0) {
-      return (
-        <div>there is no data.</div>
-      )
-    };
-  }
 
   render() {
     
-    const data = this.state.tablerows;
+    const data = this.props.data;
     // проверяем - если данные еще не загрузились -выводим пустую строку
-    if (data.length === 0) {
-      return (
-        <div>there is no data.</div>
-      )
-    }
+
 
     //создаем колонки с их заголовками и уровнями для react-table
-    const headerFromData = this.state.tableHeader;
-    const tableHeader = this.tableColumnsHandler(headerFromData, []);
-    
+    const tableHeader = this.tableColumnsHandler(this.props.header, []);
+
+    //console.log(tableHeader);
     
     return (
       <Aux>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import axios from "axios";
 import Papa from "papaparse";
 
@@ -53,7 +53,7 @@ const form =(props) => {
   }
 
     return (
-      <form onSubmit={this.handleSubmit} style={{display: 'none'}}>
+      <form onSubmit={this.handleSubmit} style={{}}>
         <label>
           Name:
           <input type="file" id="input" onChange={(e) => handleChange(e)}/>
