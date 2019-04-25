@@ -7,47 +7,6 @@ import headerHelpers from "../../containers/headerHelpers/headerHelpers";
 
 class Table extends Component {
 
-  /*state = {
-    companies: [],
-    numericData: [],
-    noDataCompanies: [],
-    tablerows: [],
-    tableHeader: {
-      header: [],
-      headerShort: [],
-      headerToTranscript: []
-    },
-
-    fullPrice: [],
-    helpersIndex: {
-      connect: [],
-      transcript: [],
-      connectArrow: [],
-      dMin: [],
-      dMaxconnectDots: [],
-      price: [],
-      image: []
-    }
-  };
-
-  componentDidMount() {
-    axios.get('https://react-app-bc4e6.firebaseio.com/importedSheet/-LcyxfNqNGjdklXJcR-D.json').then(response => {
-      const fullData = response.data.data;
-      //console.log('response.data ', response.data.data);
-      //console.log('fullData ', fullData);     
-    
-      const data = headerHelpers(fullData);
-
-      this.setState({
-        numericData: data.numericData,
-        tablerows: data.tablerows,
-        tableHeader: data.tableHeader
-      });
-    });
-  }
-
-  */
-
   //создаем колонки с их заголовками и уровнями для react-table
   tableColumnsHandler = (inputHeader, outputHeader) => {
     let headerMap = inputHeader.reduce((acc, el, index) => {
@@ -98,8 +57,6 @@ class Table extends Component {
     //создаем колонки с их заголовками и уровнями для react-table
     const tableHeader = this.tableColumnsHandler(this.props.header, []);
 
-    //console.log(tableHeader);
-    
     return (
       <Aux>
         <ReactTable 

@@ -26,9 +26,7 @@ const headerHelpers = (fullData) => {
 
   //здесь надо подумать, как потом в другой валюте данные закидывать.
   const helpHeader = [...fullData[2], 'dMin', 'dMax(connect(…))', 'add($)'];
-  console.log(headerToTranscript);
   const transcriptedHeader = transcriptHeaderHandler(header, headerShort, headerToTranscript);
-  console.log(transcriptedHeader);
 
   // распределяем данные по helpHeader
   const helpers = {
@@ -124,7 +122,6 @@ const headerHelpers = (fullData) => {
   //функция добавления transcript
 
   const transcriptedData = transcriptHandler(withUnitsData, helpers.transcript);
-  console.log('transcriptedData ', transcriptedData);
 
   //функция по замене текста на картинки
   const withImagesData = imageHandler(transcriptedData, helpers.images);

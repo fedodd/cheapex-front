@@ -1,12 +1,13 @@
 import React from 'react';
 import axios from "axios";
 import Papa from "papaparse";
+import withClass from '../../hoc/withClass';
+import classes from './Form.pcss';
 
 const form =(props) => {
 
   const handleChange = (event) => {
     const selectedFile = document.getElementById('input').files[0];
-    console.log('change file ', selectedFile);
     // добавить проверку на формат csv
   }
 
@@ -20,7 +21,6 @@ const form =(props) => {
         dynamicTyping: true,
         skipEmptyLines: true,
         complete: function (results) {
-          console.log(results);
           resolve(results);
         }
       })
@@ -32,7 +32,6 @@ const form =(props) => {
         result => {
           // первая функция-обработчик - запустится при вызове resolve
           sendData = result;
-          console.log(sendData); // result - аргумент resolve
           axios.post('https://react-app-bc4e6.firebaseio.com/importedSheet.json', sendData)
             .then(response => {
               console.log('table sent to database!');
@@ -53,14 +52,17 @@ const form =(props) => {
   }
 
     return (
-      <form onSubmit={this.handleSubmit} style={{}}>
-        <label>
-          Name:
-          <input type="file" id="input" onChange={(e) => handleChange(e)}/>
-        </label>
-        <input type="submit" value="Submit" onClick={(e) => handleSubmit(e)}/>
-      </form>
+      <withClass>
+        <h2>Загрузите исходные данные</h2>
+        <form onSubmit={this.handleSubmit} style={{}}>
+          <label>
+            Данные:
+          <input type="file" id="input" onChange={(e) => handleChange(e)} />
+          </label>
+          <input type="submit" value="Submit" onClick={(e) => handleSubmit(e)} />
+        </form>
+      </withClass>
     );
 }
 
-export default form;
+export default withClass(form, classes.FormBlock);

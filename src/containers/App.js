@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-
+import { BrowserRouter, Route, NavLink } from 'react-router-dom';
 import classes from './App.pcss';
 import declOfNum from "../functions/declOfNum";
-import Filters from "../components/filters/Filters";
-import Table from '../components/table/Table';
+import ResultPage from './ResultPage/ResultPage';
 import Form from '../components/form/Form';
 import axios from "axios";
 import headerHelpers from "./headerHelpers/headerHelpers";
@@ -37,9 +36,6 @@ class App extends Component {
   componentDidMount() {
     axios.get('https://react-app-bc4e6.firebaseio.com/importedSheet/-LcyxfNqNGjdklXJcR-D.json').then(response => {
       const fullData = response.data.data;
-      //console.log('response.data ', response.data.data);
-      //console.log('fullData ', fullData);     
-
       const data = headerHelpers(fullData);
 
       this.setState({
@@ -61,14 +57,19 @@ class App extends Component {
     }
 
     return (
-      <div className={classes.holder}>
-        <h1>Лучшие предложения по вашему запросу от {this.state.totalItems} {this.titleEnding}</h1>
-        <Filters />
-        <Table 
-          data={this.state.tablerows}
-          header={this.state.tableHeader.headerShort}/>
-        <Form />
-      </div>
+      <BrowserRouter>
+        <div className={classes.holder}>
+          <NavLink to={{ pathname: '/-LcyxfNqNGjdklXJcR-D' }}>Страница c результатами</NavLink>
+          
+          <Route path="/-LcyxfNqNGjdklXJcR-D" 
+            render={(routeProps) => (<ResultPage {...routeProps} 
+            data={this.state.tablerows}
+            header={this.state.tableHeader.headerShort}/>)}/>
+
+          <NavLink to={{pathname: '/import'}}>Страница для загрузки данных</NavLink>
+          <Route path="/import" component={Form} />
+        </div>
+      </BrowserRouter>
     );
   }
 }
