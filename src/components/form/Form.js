@@ -1,17 +1,19 @@
-import React from 'react';
+import React, { Component } from 'react';
 import axios from "axios";
 import Papa from "papaparse";
-import withClass from '../../hoc/withClass';
+import withClass from '../../hoc/WithClass';
 import classes from './Form.pcss';
 
-const form =(props) => {
+class Form extends Component {
 
-  const handleChange = (event) => {
+
+  handleChange = (event) => {
     const selectedFile = document.getElementById('input').files[0];
+    console.log(selectedFile);
     // добавить проверку на формат csv
   }
 
-  const handleSubmit = (event) => {
+  handleSubmit = (event) => {
     event.preventDefault();
     const fileInput = document.getElementById('input').files[0];
     let sendData = {};
@@ -51,18 +53,21 @@ const form =(props) => {
     event.preventDefault();
   }
 
+  render () {
     return (
-      <withClass>
+      <React.Fragment>
         <h2>Загрузите исходные данные</h2>
         <form onSubmit={this.handleSubmit} style={{}}>
           <label>
             Данные:
-          <input type="file" id="input" onChange={(e) => handleChange(e)} />
+                <input type="file" id="input" onChange={(e) => this.handleChange(e)} accept=".csv"/>
           </label>
-          <input type="submit" value="Submit" onClick={(e) => handleSubmit(e)} />
+          <input type="submit" value="Submit" onClick={(e) => this.handleSubmit(e)} />
         </form>
-      </withClass>
+      </React.Fragment>
     );
+  }
+ 
 }
 
-export default withClass(form, classes.FormBlock);
+export default withClass(Form, classes.FormBlock);

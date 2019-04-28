@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, NavLink } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import Filters from "../../components/filters/Filters";
 import Table from '../../components/table/Table';
 import classes from './ResultPage.pcss';

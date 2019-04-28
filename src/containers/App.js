@@ -10,6 +10,7 @@ import headerHelpers from "./headerHelpers/headerHelpers";
 class App extends Component {
 
   state = {
+    
     companies: [],
     numericData: [],
     noDataCompanies: [],
@@ -19,7 +20,6 @@ class App extends Component {
       headerShort: [],
       headerToTranscript: []
     },
-
     fullPrice: [],
     helpersIndex: {
       connect: [],
