@@ -1,19 +1,31 @@
 import React, { Component } from 'react';
 import ReactTable from "react-table";
-import axios from "axios";
+//  import axios from "axios";
 import './Table.pcss';
 import Aux from "../../hoc/Aux";
-import headerHelpers from "../../containers/headerHelpers/headerHelpers";
+//import headerHelpers from "../../containers/headerHelpers/headerHelpers";
 
 class Table extends Component {
 
   //создаем колонки с их заголовками и уровнями для react-table
   tableColumnsHandler = (inputHeader, outputHeader) => {
+    console.log('inputHeader', inputHeader, 'outputHeader', outputHeader);
     let headerMap = inputHeader.reduce((acc, el, index) => {
       // Пробуем взять элемент с нужным ключом
-      let currentRow = acc.get(el);
+      
+      let currentRow = null;
+      currentRow = acc.get(el);
+      if (typeof(el) === 'string') {
+        currentRow = acc.get(el);
+      } else if (typeof (el) === 'object') {
+        //console.log('get test', acc.get(el));
+        currentRow = acc.get(el);
+      }
+
+
+      
       // Если такого ещё нет, берём пустой объект  и задаем ему свойства колонок таблицы
-      if (!currentRow) {
+      if ((!currentRow)) {
         currentRow = {};
         currentRow['Header'] = el;
         //currentRow['accessor'] = String(index);
@@ -42,6 +54,8 @@ class Table extends Component {
     headerMap.forEach((value, key) => {
       outputHeader = outputHeader.concat(value);
     });
+
+    console.log('outputHeader', outputHeader);
 
     return outputHeader;
   }

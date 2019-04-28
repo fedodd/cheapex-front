@@ -67,6 +67,9 @@ class Form extends Component {
   }
 
   componentDidMount () {
+
+    //console.log('input page mount!');
+
     axios.get('https://react-app-bc4e6.firebaseio.com/importedSheet.json').then(response => {
       const resultsId = Object.keys(response.data);
       this.setState({

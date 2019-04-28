@@ -9,6 +9,10 @@ class ResultPage extends Component {
   state= {
     totalItems: 15 
   }
+
+  componentDidMount () {
+    //console.log('result page mount!');
+  }
   
   render() {
 
