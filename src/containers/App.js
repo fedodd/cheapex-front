@@ -10,7 +10,7 @@ import headerHelpers from "./headerHelpers/headerHelpers";
 class App extends Component {
 
   state = {
-    
+
     companies: [],
     numericData: [],
     noDataCompanies: [],
@@ -34,8 +34,10 @@ class App extends Component {
   };
 
   componentDidMount() {
-    axios.get('https://react-app-bc4e6.firebaseio.com/importedSheet/-LcyxfNqNGjdklXJcR-D.json').then(response => {
+    // здесь загружаем importedSheet и генерим адреса страниц - нужно замутить массив с рутами как мы делали в form, только для рут
+    axios.get('https://react-app-bc4e6.firebaseio.com/importedSheet/-LdXkMiv3D6o3KiwppPL.json').then(response => {
       const fullData = response.data.data;
+      console.log(fullData);
       const data = headerHelpers(fullData);
 
       this.setState({
@@ -59,8 +61,8 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className={classes.holder}>
-          <NavLink to={{ pathname: '/-LcyxfNqNGjdklXJcR-D' }} className={classes.link}>Страница c результатами</NavLink>
-          <Route path="/-LcyxfNqNGjdklXJcR-D" 
+          <NavLink to={{ pathname: '/-LdXkMiv3D6o3KiwppPL' }} className={classes.link}>Страница c результатами</NavLink>
+          <Route path="/-LdXkMiv3D6o3KiwppPL" 
             render={(routeProps) => (<ResultPage {...routeProps} 
             data={this.state.tablerows}
             header={this.state.tableHeader.headerShort}/>)}/>
