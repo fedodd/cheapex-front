@@ -10,27 +10,7 @@ import headerHelpers from "./headerHelpers/headerHelpers";
 class App extends Component {
 
   state = {
-    resultLinks: [],
-    companies: [],
-    numericData: [],
-    noDataCompanies: [],
-    tablerows: [],
-    tableHeader: {
-      header: [],
-      headerShort: [],
-      headerToTranscript: []
-    },
-    fullPrice: [],
-    helpersIndex: {
-      connect: [],
-      transcript: [],
-      connectArrow: [],
-      dMin: [],
-      dMaxconnectDots: [],
-      price: [],
-      image: []
-    },
-    totalItems: 15 
+    resultLinks: []
   };
 
   componentDidMount() {
@@ -42,30 +22,13 @@ class App extends Component {
         resultLinks: resultLinks
       });
     });
-    
-
-    axios.get('https://react-app-bc4e6.firebaseio.com/importedSheet/-LdXkMiv3D6o3KiwppPL.json').then(response => {
-      const fullData = response.data.data;
-      //console.log(fullData);
-      const data = headerHelpers(fullData);
-
-      this.setState({
-        numericData: data.numericData,
-        tablerows: data.tablerows,
-        tableHeader: data.tableHeader
-      });
-    }).catch(error => {
-      console.log('error!');
-      alert('error!');
-      // здесь надо прописать сценарии по ошибкам. а где-тоо выше - ловить ошибки - например файл не в том формате или типа того
-    });
   }
 
   titleEnding = declOfNum(this.state.totalItems, ['компании', 'компаний', 'компаний']);
 
   render () {
     // попытка генерации адресов
-    /*
+    
     const linksArray = this.state.resultLinks;
 
     if (this.state.resultLinks.length === 0) {
@@ -80,35 +43,41 @@ class App extends Component {
         <NavLink to={{ pathname: link }} className={classes.link}>Страница c результатами {link}</NavLink>
         <Route path={link}
           render={(routeProps) => (<ResultPage {...routeProps}
-            data={this.state.tablerows}
-            header={this.state.tableHeader.headerShort}
             link={link} />)} />
       </li>
     });
 
     console.log('resultLinks', resultLinks);
 
-      */
-
-
-    if (this.state.tablerows.length === 0) {
-      return (
-        <div>there is no data.</div>
-      )
-    }
-
     return (
       <BrowserRouter>
         <div className={classes.holder}>
-
-          <NavLink to={{ pathname: '/' }} className={classes.link}>Страница c результатами</NavLink>
-          <Route path="/"
-            render={(routeProps) => (<ResultPage {...routeProps}
-              data={this.state.tablerows}
-              header={this.state.tableHeader.headerShort}
-              link={this.state.resultLinks[2]} />)} />
           <ul>
-            здесь будет список адресов  resultLinks
+            {resultLinks}
+            
+            <NavLink to={{ pathname: '-LdXiDvIqWaLZ_56uFfU' }} className={classes.link}>Страница c результатами -LdXiDvIqWaLZ_56uFfU</NavLink>
+            <Route path='/-LdXiDvIqWaLZ_56uFfU'
+              render={(routeProps) => (<ResultPage {...routeProps}
+
+                link='-LdXiDvIqWaLZ_56uFfU' />)} />
+            
+            <NavLink to={{ pathname: "/-LdXiFGMYbhR3Hdihg5A" }} className={classes.link}>Страница c результатами "-LdXiFGMYbhR3Hdihg5A"</NavLink>
+            <Route path="/-LdXiFGMYbhR3Hdihg5A"
+              render={(routeProps) => (<ResultPage {...routeProps}
+
+                link="-LdXiFGMYbhR3Hdihg5A" />)} />
+            
+            <NavLink to={{ pathname: "/-LdXkMiv3D6o3KiwppPL" }} className={classes.link}>Страница c результатами "-LdXkMiv3D6o3KiwppPL"</NavLink>
+            <Route path="/-LdXkMiv3D6o3KiwppPL"
+              render={(routeProps) => (<ResultPage {...routeProps}
+
+                link="-LdXkMiv3D6o3KiwppPL" />)} />
+            
+            <NavLink to={{ pathname: "/-Le2_XOLNcXBWvtZ7EjD" }} className={classes.link}>Страница c результатами "-Le2_XOLNcXBWvtZ7EjD"</NavLink>
+            <Route path="/-Le2_XOLNcXBWvtZ7EjD"
+              render={(routeProps) => (<ResultPage {...routeProps}
+
+                link="-Le2_XOLNcXBWvtZ7EjD" />)} />
           </ul>
           
           <NavLink to={{ pathname: '/import' }} className={classes.link}>Страница для загрузки данных</NavLink>

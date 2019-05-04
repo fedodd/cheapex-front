@@ -150,7 +150,6 @@ const headerHelpers = (fullData) => {
   const exportData = {
     numericData: calculatedData,
     tablerows: CleanedData,
-
     tableHeader: CleanedHeader
   };
   

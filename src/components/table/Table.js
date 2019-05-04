@@ -9,8 +9,8 @@ class Table extends Component {
 
   //создаем колонки с их заголовками и уровнями для react-table
   tableColumnsHandler = (inputHeader, outputHeader) => {
-   // console.log('inputHeader', inputHeader, 'outputHeader', outputHeader);
-    let headerMap = inputHeader.reduce((acc, el, index) => {
+    console.log('inputHeader', inputHeader, 'outputHeader', outputHeader);
+    let headerMap = inputHeader.header.reduce((acc, el, index) => {
       
       // Пробуем взять элемент с нужным ключом. Элементы - объекты с value - react element и checkedName - названий колонок из исходной таблицы. под ключом checkedName будем записывать  value в acc и проверять - есть ли уже такой элемент
       let currentRow = null;
