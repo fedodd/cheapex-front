@@ -5,7 +5,8 @@ const transcriptHeaderHandler = (header, headerShort, targetColumns) => {
   const objectedFullHeader = header.map((elem, index) => {
     let transcriptedClass = "";
     
-    targetColumns.includes(index) ? transcriptedClass = "transcripted" : null;
+    // eslint-disable-next-line no-unused-expressions
+    ( targetColumns.includes(index) ) ? transcriptedClass = "transcripted" : null;
 
     let newElem = {
       value: <span className="transcriptWrapper">{headerShort[index]}<span className={transcriptedClass}>{elem}</span></span>,

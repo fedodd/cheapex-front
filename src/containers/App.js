@@ -5,7 +5,7 @@ import declOfNum from "../functions/declOfNum";
 import ResultPage from './ResultPage/ResultPage';
 import Form from '../components/form/Form';
 import axios from "axios";
-import headerHelpers from "./headerHelpers/headerHelpers";
+
 
 class App extends Component {
 
@@ -40,8 +40,8 @@ class App extends Component {
     console.log('linksArray', linksArray);
     const resultLinks = linksArray.map(link => {
       return <li key={'links' + link}>
-        <NavLink to={{ pathname: link }} className={classes.link}>Страница c результатами {link}</NavLink>
-        <Route path={link}
+        <NavLink to={'/' + link} className={classes.link}>Страница c результатами {link}</NavLink>
+        <Route path={'/' + link}
           render={(routeProps) => (<ResultPage {...routeProps}
             link={link} />)} />
       </li>
@@ -55,29 +55,7 @@ class App extends Component {
           <ul>
             {resultLinks}
             
-            <NavLink to={{ pathname: '-LdXiDvIqWaLZ_56uFfU' }} className={classes.link}>Страница c результатами -LdXiDvIqWaLZ_56uFfU</NavLink>
-            <Route path='/-LdXiDvIqWaLZ_56uFfU'
-              render={(routeProps) => (<ResultPage {...routeProps}
-
-                link='-LdXiDvIqWaLZ_56uFfU' />)} />
-            
-            <NavLink to={{ pathname: "/-LdXiFGMYbhR3Hdihg5A" }} className={classes.link}>Страница c результатами "-LdXiFGMYbhR3Hdihg5A"</NavLink>
-            <Route path="/-LdXiFGMYbhR3Hdihg5A"
-              render={(routeProps) => (<ResultPage {...routeProps}
-
-                link="-LdXiFGMYbhR3Hdihg5A" />)} />
-            
-            <NavLink to={{ pathname: "/-LdXkMiv3D6o3KiwppPL" }} className={classes.link}>Страница c результатами "-LdXkMiv3D6o3KiwppPL"</NavLink>
-            <Route path="/-LdXkMiv3D6o3KiwppPL"
-              render={(routeProps) => (<ResultPage {...routeProps}
-
-                link="-LdXkMiv3D6o3KiwppPL" />)} />
-            
-            <NavLink to={{ pathname: "/-Le2_XOLNcXBWvtZ7EjD" }} className={classes.link}>Страница c результатами "-Le2_XOLNcXBWvtZ7EjD"</NavLink>
-            <Route path="/-Le2_XOLNcXBWvtZ7EjD"
-              render={(routeProps) => (<ResultPage {...routeProps}
-
-                link="-Le2_XOLNcXBWvtZ7EjD" />)} />
+           
           </ul>
           
           <NavLink to={{ pathname: '/import' }} className={classes.link}>Страница для загрузки данных</NavLink>
