@@ -1,3 +1,4 @@
+import React from "react";
 import calculateHandler from "./calculateHandler";
 import addUnitHandler from "./addUnitHandler";
 import imageHandler from "./imageHandler";
@@ -17,12 +18,16 @@ const headerHelpers = (fullData) => {
   let headerToTranscript = [];
   headerShort.map((elem, index) => {
     if (elem === null) {
-      headerShort[index] = header[index];
+  
     } else {
       headerToTranscript = headerToTranscript.concat(index);
     };
     return null;
   });
+
+  //const objectedHeader = header.map(elem => <span className="header__full" repeatCheckName={elem}>{elem}</span>);
+  //const objectedHeaderShort = headerShort.map(elem => <span className="header__short">{elem}</span>);
+
 
   //здесь надо подумать, как потом в другой валюте данные закидывать.
   const helpHeader = [...fullData[2], 'dMin', 'dMax(connect(…))', 'add($)'];
@@ -103,7 +108,7 @@ const headerHelpers = (fullData) => {
 
   //отфильтровываем компании без данных и сохраняем их в отдельный массив noDataCompanies
   const noDataCompanies = fullData.filter(row => row.length <= 3);
-  console.log(noDataCompanies);
+  //console.log(noDataCompanies);
   const data = fullData.filter(row => row.length > 3);
 
   // убираем из данных заголовки

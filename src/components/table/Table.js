@@ -9,21 +9,13 @@ class Table extends Component {
 
   //создаем колонки с их заголовками и уровнями для react-table
   tableColumnsHandler = (inputHeader, outputHeader) => {
-    console.log('inputHeader', inputHeader, 'outputHeader', outputHeader);
+   // console.log('inputHeader', inputHeader, 'outputHeader', outputHeader);
     let headerMap = inputHeader.reduce((acc, el, index) => {
       // Пробуем взять элемент с нужным ключом
       
       let currentRow = null;
       currentRow = acc.get(el);
-      if (typeof(el) === 'string') {
-        currentRow = acc.get(el);
-      } else if (typeof (el) === 'object') {
-        //console.log('get test', acc.get(el));
-        currentRow = acc.get(el);
-      }
 
-
-      
       // Если такого ещё нет, берём пустой объект  и задаем ему свойства колонок таблицы
       if ((!currentRow)) {
         currentRow = {};
@@ -55,7 +47,7 @@ class Table extends Component {
       outputHeader = outputHeader.concat(value);
     });
 
-    console.log('outputHeader', outputHeader);
+    //console.log('outputHeader', outputHeader);
 
     return outputHeader;
   }
