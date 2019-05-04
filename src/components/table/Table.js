@@ -11,17 +11,17 @@ class Table extends Component {
   tableColumnsHandler = (inputHeader, outputHeader) => {
    // console.log('inputHeader', inputHeader, 'outputHeader', outputHeader);
     let headerMap = inputHeader.reduce((acc, el, index) => {
-      // Пробуем взять элемент с нужным ключом
       
+      // Пробуем взять элемент с нужным ключом. Элементы - объекты с value - react element и checkedName - названий колонок из исходной таблицы. под ключом checkedName будем записывать  value в acc и проверять - есть ли уже такой элемент
       let currentRow = null;
-      currentRow = acc.get(el);
-
+      currentRow = acc.get(el.checkedName);
+     
       // Если такого ещё нет, берём пустой объект  и задаем ему свойства колонок таблицы
       if ((!currentRow)) {
         currentRow = {};
-        currentRow['Header'] = el;
+        currentRow['Header'] = el.value;
         //currentRow['accessor'] = String(index);
-        currentRow['columns'] = [{ 'Header': el, 'accessor': String(index) }];
+        currentRow['columns'] = [{ 'Header': el.value, 'accessor': String(index) }];
       } else {
         // если такая колонка уже есть, то спрашиваем - есть ли уже дочерние колонки. если нет - создаем подколонки, переместив в нижний уровень колонку с тем же названием
 
@@ -31,15 +31,15 @@ class Table extends Component {
 
           currentRow.columns = currentRow.columns.concat([
             { 'Header': currentRow['Header'], 'accessor': currentRow['accessor'] },
-            { 'Header': el, 'accessor': String(index) }]);
+            { 'Header': el.value, 'accessor': String(index) }]);
           currentRow['accessor'] = null;
           // если уже есть подколонки - просто добавляем ещу одну
         } else {
-          currentRow.columns = currentRow.columns.concat({ 'Header': el, 'accessor': String(index) });
+          currentRow.columns = currentRow.columns.concat({ 'Header': el.value, 'accessor': String(index) });
         }
       }
       // Обновляем запись с нужным ключом
-      return acc.set(el, currentRow);
+      return acc.set(el.checkedName, currentRow);
     }, new Map());
 
     // Теперь у тебя есть map

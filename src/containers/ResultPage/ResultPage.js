@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import axios from "axios";
-import { Route } from 'react-router-dom';
+//import axios from "axios";
+//import { Route } from 'react-router-dom';
 import Filters from "../../components/filters/Filters";
 import Table from '../../components/table/Table';
 import classes from './ResultPage.pcss';
@@ -33,8 +33,7 @@ class ResultPage extends Component {
   
   
   render() {
-    console.log('header', this.props.header);
-    //console.log('render resultpage: ', this.props.link)
+
     return (
       <div className={classes.resultPage}>
         <h1>Лучшие предложения по вашему запросу от {this.state.totalItems} {this.titleEnding}</h1>

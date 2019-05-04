@@ -1,19 +1,21 @@
 import React from "react";
 
 const transcriptHeaderHandler = (header, headerShort, targetColumns) => {
-
-  
   
   const objectedFullHeader = header.map((elem, index) => {
     let transcriptedClass = "";
-    targetColumns.map((transcriptIndex) => index === transcriptIndex ? transcriptedClass = "transcripted" : null);
-    return <span className={transcriptedClass} repeatCheckName={elem}>
-              {headerShort[index]}
-              <span className="header__full">{elem}</span>
-            </span>;
+    
+    targetColumns.includes(index) ? transcriptedClass = "transcripted" : null;
+
+    let newElem = {
+      value: <span className="transcriptWrapper">{headerShort[index]}<span className={transcriptedClass}>{elem}</span></span>,
+      checkedName: elem
+    }
+
+    return newElem;
   });
 
-  return objectedFullHeader ;
+  return objectedFullHeader;
 }
 
 export default transcriptHeaderHandler;

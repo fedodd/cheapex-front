@@ -4,8 +4,10 @@ const transcriptHandler = (data, targetColumns) => {
   data.map(row => {
 
     targetColumns.map((transcriptIndex) => {
-      row[transcriptIndex - 1] = <span className="transcripted">{row[transcriptIndex - 1]}<span>{row[transcriptIndex]}</span></span>
-      return null;
+      if (row[transcriptIndex] !== null) {
+        row[transcriptIndex - 1] = <span className="transcriptWrapper">{row[transcriptIndex - 1]}<span className="transcripted">{row[transcriptIndex]}</span></span>
+        return null;
+      }
     })
     return null;
   });
