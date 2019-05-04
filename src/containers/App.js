@@ -1,51 +1,25 @@
 import React, { Component } from 'react';
-
+import { BrowserRouter, Route, NavLink } from 'react-router-dom';
 import classes from './App.pcss';
 import declOfNum from "../functions/declOfNum";
-import Filters from "../components/filters/Filters";
-import Table from '../components/table/Table';
+import ResultPage from './ResultPage/ResultPage';
 import Form from '../components/form/Form';
 import axios from "axios";
-import headerHelpers from "./headerHelpers/headerHelpers";
+
 
 class App extends Component {
 
   state = {
-    companies: [],
-    numericData: [],
-    noDataCompanies: [],
-    tablerows: [],
-    tableHeader: {
-      header: [],
-      headerShort: [],
-      headerToTranscript: []
-    },
-
-    fullPrice: [],
-    helpersIndex: {
-      connect: [],
-      transcript: [],
-      connectArrow: [],
-      dMin: [],
-      dMaxconnectDots: [],
-      price: [],
-      image: []
-    },
-    totalItems: 15 
+    resultLinks: []
   };
 
   componentDidMount() {
-    axios.get('https://react-app-bc4e6.firebaseio.com/importedSheet/-LcyxfNqNGjdklXJcR-D.json').then(response => {
-      const fullData = response.data.data;
-      //console.log('response.data ', response.data.data);
-      //console.log('fullData ', fullData);     
+    // здесь загружаем importedSheet и генерим адреса страниц - нужно замутить массив с рутами как мы делали в form, только для рут
 
-      const data = headerHelpers(fullData);
-
-      this.setState({
-        numericData: data.numericData,
-        tablerows: data.tablerows,
-        tableHeader: data.tableHeader
+    axios.get('https://react-app-bc4e6.firebaseio.com/importedSheet.json').then(response => {
+      const resultLinks = Object.keys(response.data);
+      this.setState({ 
+        resultLinks: resultLinks
       });
     });
   }
@@ -53,22 +27,41 @@ class App extends Component {
   titleEnding = declOfNum(this.state.totalItems, ['компании', 'компаний', 'компаний']);
 
   render () {
+    // попытка генерации адресов
+    
+    const linksArray = this.state.resultLinks;
 
-    if (this.state.tablerows.length === 0) {
+    if (this.state.resultLinks.length === 0) {
       return (
-        <div>there is no data.</div>
+        <div>there is no results.</div>
       )
     }
 
+    console.log('linksArray', linksArray);
+    const resultLinks = linksArray.map(link => {
+      return <li key={'links' + link}>
+        <NavLink to={'/' + link} className={classes.link}>Страница c результатами {link}</NavLink>
+        <Route path={'/' + link}
+          render={(routeProps) => (<ResultPage {...routeProps}
+            link={link} />)} />
+      </li>
+    });
+
+    console.log('resultLinks', resultLinks);
+
     return (
-      <div className={classes.holder}>
-        <h1>Лучшие предложения по вашему запросу от {this.state.totalItems} {this.titleEnding}</h1>
-        <Filters />
-        <Table 
-          data={this.state.tablerows}
-          header={this.state.tableHeader.headerShort}/>
-        <Form />
-      </div>
+      <BrowserRouter>
+        <div className={classes.holder}>
+          <ul>
+            {resultLinks}
+            
+           
+          </ul>
+          
+          <NavLink to={{ pathname: '/import' }} className={classes.link}>Страница для загрузки данных</NavLink>
+          <Route path="/import" component={Form} />
+        </div>
+      </BrowserRouter>
     );
   }
 }

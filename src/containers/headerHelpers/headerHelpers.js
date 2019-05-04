@@ -1,3 +1,4 @@
+//import React from "react";
 import calculateHandler from "./calculateHandler";
 import addUnitHandler from "./addUnitHandler";
 import imageHandler from "./imageHandler";
@@ -17,18 +18,17 @@ const headerHelpers = (fullData) => {
   let headerToTranscript = [];
   headerShort.map((elem, index) => {
     if (elem === null) {
-      headerShort[index] = header[index];
+  
     } else {
       headerToTranscript = headerToTranscript.concat(index);
     };
     return null;
   });
 
+
   //здесь надо подумать, как потом в другой валюте данные закидывать.
   const helpHeader = [...fullData[2], 'dMin', 'dMax(connect(…))', 'add($)'];
-  console.log(headerToTranscript);
   const transcriptedHeader = transcriptHeaderHandler(header, headerShort, headerToTranscript);
-  console.log(transcriptedHeader);
 
   // распределяем данные по helpHeader
   const helpers = {
@@ -104,8 +104,9 @@ const headerHelpers = (fullData) => {
   });
 
   //отфильтровываем компании без данных и сохраняем их в отдельный массив noDataCompanies
-  const noDataCompanies = fullData.filter(row => row.length <= 3);
-  console.log(noDataCompanies);
+  
+  //const noDataCompanies = fullData.filter(row => row.length <= 3);
+  //console.log(noDataCompanies);
   const data = fullData.filter(row => row.length > 3);
 
   // убираем из данных заголовки
@@ -124,7 +125,6 @@ const headerHelpers = (fullData) => {
   //функция добавления transcript
 
   const transcriptedData = transcriptHandler(withUnitsData, helpers.transcript);
-  console.log('transcriptedData ', transcriptedData);
 
   //функция по замене текста на картинки
   const withImagesData = imageHandler(transcriptedData, helpers.images);
@@ -150,7 +150,6 @@ const headerHelpers = (fullData) => {
   const exportData = {
     numericData: calculatedData,
     tablerows: CleanedData,
-
     tableHeader: CleanedHeader
   };
   

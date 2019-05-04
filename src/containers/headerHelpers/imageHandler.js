@@ -5,9 +5,6 @@ import plane from "./images/plane.png";
 import train from "./images/train.png";
 import ship from "./images/ship.png";
 
-
-//console.log(bus, plane, train, ship);
-
 const imageHandler = (data, images) => {
   
   data.map(row => {
@@ -15,7 +12,6 @@ const imageHandler = (data, images) => {
     images.map((imageIndex) => {
       
       const imageType = row[imageIndex].toLowerCase();
-      //console.log('imageType ', imageType);
       switch (imageType) {
         case "авто":
           row[imageIndex] = <img className="transport" src={bus} alt="aвто"></img>;
@@ -40,7 +36,6 @@ const imageHandler = (data, images) => {
 
       return null;
     })
-    //console.log(row);
     return null;
   });
   return data;

@@ -29,6 +29,8 @@
 }
 
 :global .rt-th {
+  box-sizing: border-box;
+  border: 1px solid lightgrey;
   font-weight: bold;
 }
 
@@ -46,9 +48,9 @@
   width: 20px;
 }
 
-:global .transcripted {
+:global .transcriptWrapper {
   box-sizing: border-box;
-  & span {
+  & .transcripted {
     position: absolute;
     top: 0;
     left: 0;
@@ -60,8 +62,8 @@
   }
 }
 
-:global .rt-td:hover .transcripted span,
-:global .rt-th:hover .transcripted span {
+:global .rt-td:hover .transcriptWrapper .transcripted,
+:global .rt-th:hover .transcriptWrapper .transcripted {
   display: inline-block;
 }
 

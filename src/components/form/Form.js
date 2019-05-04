@@ -1,16 +1,23 @@
-import React from 'react';
+import React, { Component } from 'react';
 import axios from "axios";
 import Papa from "papaparse";
+import withClass from '../../hoc/WithClass';
+import classes from './Form.pcss';
 
-const form =(props) => {
+class Form extends Component {
 
-  const handleChange = (event) => {
+  state={
+    resultsId: [],
+    importedDataLink: ''
+  }
+
+  handleChange = (event) => {
     const selectedFile = document.getElementById('input').files[0];
-    console.log('change file ', selectedFile);
+    console.log(selectedFile);
     // добавить проверку на формат csv
   }
 
-  const handleSubmit = (event) => {
+  handleSubmit = (event) => {
     event.preventDefault();
     const fileInput = document.getElementById('input').files[0];
     let sendData = {};
@@ -20,7 +27,6 @@ const form =(props) => {
         dynamicTyping: true,
         skipEmptyLines: true,
         complete: function (results) {
-          console.log(results);
           resolve(results);
         }
       })
@@ -32,16 +38,24 @@ const form =(props) => {
         result => {
           // первая функция-обработчик - запустится при вызове resolve
           sendData = result;
-          console.log(sendData); // result - аргумент resolve
           axios.post('https://react-app-bc4e6.firebaseio.com/importedSheet.json', sendData)
             .then(response => {
               console.log('table sent to database!');
               alert('table sent to database!');
+            }).then(response => {
+              axios.get('https://react-app-bc4e6.firebaseio.com/importedSheet.json').then(response => {
+                const lastItemName = Object.keys(response.data);
+                const resultsIdOld = this.state.resultsId;
+                this.setState({
+                  resultsId: resultsIdOld.concat(lastItemName[lastItemName.length - 1]),
+                  importedDataLink: lastItemName[lastItemName.length - 1]
+                })
+              });
             })
             .catch(error => {
               console.log('error!');
               alert('error!');
-              // здесь надо прописать сценарии по ошибкам. а где-тоо выше - ловить ошибки - например файл не в том формате или типа того
+              // здесь надо прописать сценарии по ошибкам. а где-тоо выше - ловить ошибки
             });
         },
         error => {
@@ -52,15 +66,46 @@ const form =(props) => {
     event.preventDefault();
   }
 
+  componentDidMount () {
+
+    //console.log('input page mount!');
+
+    axios.get('https://react-app-bc4e6.firebaseio.com/importedSheet.json').then(response => {
+      const resultsId = Object.keys(response.data);
+      this.setState({
+        resultsId: resultsId
+      });
+    });
+  }
+
+  render () {
+
+    const resultsId = this.state.resultsId;
+    const resultsItems = resultsId.map(id=> <li key={id}>{id}</li>)
+    let newDataLink = '';
+
+    if (this.state.importedDataLink !== '') {
+      newDataLink = <p>. data imported succesfull! link to imported data: {this.state.importedDataLink}</p>
+    }
+
     return (
-      <form onSubmit={this.handleSubmit} style={{}}>
-        <label>
-          Name:
-          <input type="file" id="input" onChange={(e) => handleChange(e)}/>
-        </label>
-        <input type="submit" value="Submit" onClick={(e) => handleSubmit(e)}/>
-      </form>
+      <React.Fragment>
+        <h2>Загрузите исходные данные</h2>
+        <form onSubmit={this.handleSubmit} style={{}}>
+          <label>
+            Данные:
+                <input type="file" id="input" onChange={(e) => this.handleChange(e)} accept=".csv"/>
+          </label>
+          <input type="submit" value="Submit" onClick={(e) => this.handleSubmit(e)} />
+        </form>
+        {newDataLink}
+        <ul>
+          {resultsItems}
+        </ul>
+      </React.Fragment>
     );
+  }
+ 
 }
 
-export default form;
+export default withClass(Form, classes.FormBlock);

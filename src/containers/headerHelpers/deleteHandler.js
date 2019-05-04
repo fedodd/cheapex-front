@@ -2,7 +2,6 @@ import { isArray } from "util";
 
 const deleteHandler = (data, deleteColumns) => {
 
-  console.log('deleteHandler data ', data, 'deleteHandler data keys: ', Object.keys(data) );
   if (isArray(data)) {
     const cleanedData = data.map(row => {
       return row.filter((elem, index) => {
