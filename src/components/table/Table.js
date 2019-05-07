@@ -3,6 +3,7 @@ import ReactTable from "react-table";
 //  import axios from "axios";
 import './Table.pcss';
 import Aux from "../../hoc/Aux";
+import fixRow from "./fixRow";
 //import headerHelpers from "../../containers/headerHelpers/headerHelpers";
 
 class Table extends Component {
@@ -52,14 +53,14 @@ class Table extends Component {
     return outputHeader;
   }
 
-
+  componentDidMount () {
+    fixRow('.rt-tr-group');
+  }
 
   render() {
     
     const data = this.props.data;
     // проверяем - если данные еще не загрузились -выводим пустую строку
-
-
     //создаем колонки с их заголовками и уровнями для react-table
     const tableHeader = this.tableColumnsHandler(this.props.header, []);
 

@@ -26,7 +26,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 0 2px;
   box-sizing: border-box;
+
 }
 
 :global .rt-th {
@@ -83,15 +85,35 @@
   right: 0;
   background-color: white;
 
+  :global .rt-tr-group.fixed & {
+    background-color: #fff9b8;
+  }
 }
 
 :global .rt-tr .rt-th:last-child,
 :global .rt-tr .rt-td:last-child {
   right: 0;
+
+    :global .rt-tr-group.fixed & {
+    background-color: #fff9b8;
+  }
 }
 
 :global .rt-tr .rt-th:nth-last-child(2),
 :global .rt-tr .rt-td:nth-last-child(2) {
   right: 100px;
   box-shadow: 0px 5px 5px grey;
+
+  :global .rt-tr-group.fixed & {
+    background-color: #fff9b8;
+  }
+}
+
+
+/* fixed rows*/
+
+:global .rt-tr-group.fixed {
+  position: sticky;
+  top: 0;
+  background-color: #fff9b8;
 }
