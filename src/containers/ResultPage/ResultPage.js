@@ -49,7 +49,7 @@ class ResultPage extends Component {
 
     if (this.state.tablerows.length === 0) {
       return (
-        <div>there is no data.</div>
+        <div>loading...</div>
       )
     }
     return (

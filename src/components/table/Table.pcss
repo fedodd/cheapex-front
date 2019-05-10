@@ -2,26 +2,32 @@
   overflow: auto;
   width: 100%;
   height: 60vh;
+
+}
+
+:global .rt-tbody {
+  position: relative;
+
 }
 
 :global .rt-tr {
   position: relative;
   display: flex;
   width: 100%;
+  height: 26px;
 }
 
 :global .rt-td,
  :global .rt-th {
   position: relative;
   display: flex;
-  min-width: 50px;
   text-align: center;
 }
 
 :global .rt-thead {
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 100;
   align-items: center;
   
   background-color: white;
@@ -53,7 +59,7 @@
 
 :global .transport {
   margin: 0 5px;
-  width: 20px;
+  width: 14px;
 }
 
 :global .transcriptWrapper {
@@ -87,9 +93,11 @@
 :global .rt-tr .rt-td:nth-last-child(-n+2) {
   position: sticky;
   right: 0;
+  z-index: 10;
   background-color: white;
 
   :global .rt-tr-group.fixed & {
+    z-index: 20;
     background-color: #fff9b8;
   }
 }
@@ -97,16 +105,11 @@
 :global .rt-tr .rt-th:last-child,
 :global .rt-tr .rt-td:last-child {
   right: 0;
-
-    :global .rt-tr-group.fixed & {
-    background-color: #fff9b8;
-  }
 }
 
 :global .rt-tr .rt-th:nth-last-child(2),
 :global .rt-tr .rt-td:nth-last-child(2) {
   right: 100px;
-  /* box-shadow: -5px 0px 8px -3px rgba(50, 50, 50, 0.75); */
   &::before {
     position: absolute;
     top: 0;
@@ -115,21 +118,14 @@
     height: 100%;
     background: linear-gradient(to right, transparent, lightgrey);
     content: '';
-
-  }
-
-  :global .rt-tr-group.fixed & {
-    background-color: #fff9b8;
   }
 }
-
 
 /* fixed rows*/
 
 :global .rt-tr-group.fixed {
   position: sticky;
-  top: 0;
-  z-index: 10;
-  overflow: auto;
+  top: 0px;
+  z-index: 20;
   background-color: #fff9b8;
 }
