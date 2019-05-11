@@ -12,14 +12,15 @@ const connectorHandler = (data, connector) => {
          
           //если коннектор - три точки нам надо выравнить цифры по колонке...
           if (connector.unit === '...') {
+            
+            acc[acc.length - 1] = <div className="dotsConnected"><span className="alignedValue">{prevElement}</span><span>{connector.unit}</span><span className="alignedValue">{row[index]}</span></div>;
              // если min value === max value то покажем только max.
-            acc[acc.length - 1] = <span><span className="alignedValue">{prevElement}</span><span>{connector.unit}</span><span className="alignedValue">{row[index]}</span></span>;
             if (prevElement === row[index]) {
-              acc[acc.length - 1] = <span><span className="alignedValue"></span>{connector.unit}<span className="alignedValue">{row[index]}</span></span>;
+              acc[acc.length - 1] = <div className="dotsConnected"><span className="alignedValue"></span>{connector.unit}<span className="alignedValue">{row[index]}</span></div>;
             }
             
           } else {
-            acc[acc.length - 1] = <span><span>{prevElement}</span><span>{connector.unit}</span><span>{row[index]}</span></span>;
+            acc[acc.length - 1] = <div className="arrowConnected"><span className="alignedValue__big">{prevElement}</span><span>{connector.unit}</span><span>{row[index]}</span></div>;
           }
           
         }

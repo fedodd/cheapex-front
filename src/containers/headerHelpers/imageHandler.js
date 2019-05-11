@@ -26,7 +26,7 @@ const imageHandler = (data, images) => {
           row[imageIndex] = <img className="transport" src={ship} alt="море"></img>;
           break;
         case "море+жд":
-          row[imageIndex] = <div>
+          row[imageIndex] = <div className="doubleImage">
             <img className="transport" src={ship} alt="море"></img>
             <img className="transport" src={train} alt="жд"></img>
           </div>

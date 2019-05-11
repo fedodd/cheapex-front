@@ -17,9 +17,42 @@ class Table extends Component {
     }
   }
 
+  getColumnWidth = (rows, accessor, headerText) => {
+    const maxWidth = 200;
+    const magicSpacing = 8;
+    
+    let maxLength = 0;
+
+    [...rows].map(row => {
+
+      if (typeof(row[accessor]) === 'object') {
+        if (row[accessor].props.children) {
+          if (row[accessor].props.className === 'dotsConnected') {
+            maxLength = 8;
+            
+          } else if (row[accessor].props.className === 'arrowConnected')
+            maxLength = 10;
+            
+          else {
+            maxLength = 5;
+            
+          }
+        } else if (row[accessor].type === 'img') {
+          maxLength = 8;
+          
+        }
+      } else {
+        maxLength = (`${row[accessor]}`.length > maxLength) ? maxLength = `${row[accessor]}`.length : maxLength;
+      }
+
+      return null;
+    });
+    //console.log(maxWidth, maxLength, maxLength * magicSpacing);
+    return Math.min(maxWidth, maxLength * magicSpacing)
+  }
+
   //создаем колонки с их заголовками и уровнями для react-table
-  tableColumnsHandler = (inputHeader, outputHeader) => {
-    console.log('inputHeader', inputHeader, 'outputHeader', outputHeader);
+  tableColumnsHandler = (inputHeader, outputHeader, data) => {
     let headerMap = inputHeader.header.reduce((acc, el, index) => {
       
       // Пробуем взять элемент с нужным ключом. Элементы - объекты с value - react element и checkedName - названий колонок из исходной таблицы. под ключом checkedName будем записывать  value в acc и проверять - есть ли уже такой элемент
@@ -30,8 +63,10 @@ class Table extends Component {
       if ((!currentRow)) {
         currentRow = {};
         currentRow['Header'] = el.value;
-        //currentRow['accessor'] = String(index);
-        currentRow['columns'] = [{ 'Header': el.value, 'accessor': String(index) }];
+        currentRow['columns'] = [{ 
+          'Header': el.value, 
+          'accessor': String(index), 
+          'width': this.getColumnWidth(data, String(index), currentRow['Header'])}];
       } else {
         // если такая колонка уже есть, то спрашиваем - есть ли уже дочерние колонки. если нет - создаем подколонки, переместив в нижний уровень колонку с тем же названием
 
@@ -40,12 +75,18 @@ class Table extends Component {
         if (currentRow['columns'].length === 0) {
 
           currentRow.columns = currentRow.columns.concat([
-            { 'Header': currentRow['Header'], 'accessor': currentRow['accessor'] },
-            { 'Header': el.value, 'accessor': String(index) }]);
+            { 'Header': currentRow['Header'], 
+              'accessor': currentRow['accessor'] },
+            { 'Header': el.value, 
+              'accessor': String(index), 
+              'width': this.getColumnWidth(data, String(index), currentRow['Header'])}]);
           currentRow['accessor'] = null;
           // если уже есть подколонки - просто добавляем ещу одну
         } else {
-          currentRow.columns = currentRow.columns.concat({ 'Header': el.value, 'accessor': String(index) });
+          currentRow.columns = currentRow.columns.concat({ 
+            'Header': el.value, 
+            'accessor': String(index), 
+            'width': this.getColumnWidth(data, String(index), currentRow['Header'])});
         }
       }
       // Обновляем запись с нужным ключом
@@ -57,7 +98,7 @@ class Table extends Component {
       outputHeader = outputHeader.concat(value);
     });
 
-    //console.log('outputHeader', outputHeader);
+    console.log('outputHeader', outputHeader);
 
     return outputHeader;
   }
@@ -103,7 +144,8 @@ class Table extends Component {
     const data = this.props.data;
     // проверяем - если данные еще не загрузились -выводим пустую строку
     //создаем колонки с их заголовками и уровнями для react-table
-    const tableHeader = this.tableColumnsHandler(this.props.header, []);
+    const tableHeader = this.tableColumnsHandler(this.props.header, [], data);
+    console.log('tableHeader', tableHeader);
     
 
     return (

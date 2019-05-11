@@ -2,12 +2,10 @@
   overflow: auto;
   width: 100%;
   height: 60vh;
-
 }
 
 :global .rt-tbody {
   position: relative;
-
 }
 
 :global .rt-tr {
@@ -17,34 +15,26 @@
   height: 26px;
 }
 
-:global .rt-td,
- :global .rt-th {
-  position: relative;
-  display: flex;
-  text-align: center;
-}
-
 :global .rt-thead {
   position: sticky;
   top: 0;
   z-index: 100;
   align-items: center;
-  
   background-color: white;
   box-shadow: 0px 0px 5px -5px lightgrey;
 }
 
 :global .rt-td,
 :global .rt-th  {
+  position: relative;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   box-sizing: border-box;
 }
 
 :global .rt-th {
   padding-bottom: 10px;
-  
   box-sizing: border-box;
   font-weight: bold;
 }
@@ -68,9 +58,11 @@
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 30;
     display: none;
     padding: 3px;
     box-sizing: border-box;
+    width: max-content;
     border: 1px solid grey;
     background-color: white;
   }
@@ -84,6 +76,12 @@
 :global .alignedValue {
   display: inline-block;
   width: 15px;
+  text-align: right;
+}
+
+:global .alignedValue__big {
+  display: inline-block;
+  width: 28px;
   text-align: right;
 }
 

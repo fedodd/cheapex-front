@@ -37,27 +37,30 @@ class App extends Component {
       )
     }
 
-    console.log('linksArray', linksArray);
     const resultLinks = linksArray.map(link => {
       return <li key={'links' + link}>
         <NavLink to={'/' + link} className={classes.link}>Страница c результатами {link}</NavLink>
-        <Route path={'/' + link}
-          render={(routeProps) => (<ResultPage {...routeProps}
-            link={link} />)} />
+        
       </li>
     });
+    const resultTables = linksArray.map(link => {
+      return <Route path={'/' + link}
+                    render={(routeProps) => (<ResultPage {...routeProps}
+                    link={link} />)}
+                    key={'table' + link} />
+    });
 
-    console.log('resultLinks', resultLinks);
+
+    
 
     return (
       <BrowserRouter>
         <div className={classes.holder}>
-          <ul>
+          <ul className={classes.navlinks}>
             {resultLinks}
-            
-           
           </ul>
-          
+
+          {resultTables}
           <NavLink to={{ pathname: '/import' }} className={classes.link}>Страница для загрузки данных</NavLink>
           <Route path="/import" component={Form} />
         </div>

@@ -26,12 +26,9 @@ class ResultPage extends Component {
     console.log('result page mount!');
     
     const fullpath = 'https://react-app-bc4e6.firebaseio.com/importedSheet/' + this.props.link + '.json';
-    console.log('fullpath', fullpath);
     axios.get(fullpath).then(response => {
       const fullData = response.data.data;
-      console.log('fullData ', fullData);
       const data = headerHelpers(fullData);
-      console.log('data', data);
       this.setState({
         numericData: data.numericData,
         tablerows: data.tablerows,
