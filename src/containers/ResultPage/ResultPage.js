@@ -5,11 +5,12 @@ import Filters from "../../components/filters/Filters";
 import headerHelpers from "../headerHelpers/headerHelpers";
 import Table from '../../components/table/Table';
 import classes from './ResultPage.pcss';
+import declOfNum from "../../functions/declOfNum";
 
 class ResultPage extends Component {
 
   state= {
-    companies: [],
+    companies: ['one', 'two', 'three'],
     numericData: [],
     noDataCompanies: [],
     tablerows: [],
@@ -19,7 +20,7 @@ class ResultPage extends Component {
       headerToTranscript: []
     },
     fullPrice: [],
-    totalItems: 15 
+    totalItems: 0 
   }
 
   componentDidMount () {
@@ -29,10 +30,13 @@ class ResultPage extends Component {
     axios.get(fullpath).then(response => {
       const fullData = response.data.data;
       const data = headerHelpers(fullData);
+      const companies = data.tablerows.map(row => row[0]);
       this.setState({
         numericData: data.numericData,
         tablerows: data.tablerows,
-        tableHeader: data.tableHeader
+        tableHeader: data.tableHeader,
+        totalItems: data.tablerows.length,
+        companies: companies
       });
     }).catch(error => {
       console.log('error!', error);
@@ -41,6 +45,7 @@ class ResultPage extends Component {
     });
   }
   
+  titleEnding = declOfNum(this.state.totalItems, ['компании', 'компаний', 'компаний']);
   
   render() {
 
@@ -52,7 +57,7 @@ class ResultPage extends Component {
     return (
       <div className={classes.resultPage}>
         <h1>Лучшие предложения по вашему запросу от {this.state.totalItems} {this.titleEnding}</h1>
-        <Filters />
+        <Filters searchData = {this.state.companies}/>
         <Table
           data={this.state.tablerows}
           header={this.state.tableHeader} />

@@ -4,6 +4,7 @@ import ReactTable from "react-table";
 import './Table.pcss';
 import Aux from "../../hoc/Aux";
 import fixRow from "./fixRow";
+import matchSorter from 'match-sorter';
 //import headerHelpers from "../../containers/headerHelpers/headerHelpers";
 
 class Table extends Component {
@@ -104,9 +105,6 @@ class Table extends Component {
     headerMap.forEach((value, key) => {
       outputHeader = outputHeader.concat(value);
     });
-
-    console.log('outputHeader', outputHeader);
-
     return outputHeader;
   }
 
@@ -149,14 +147,12 @@ class Table extends Component {
     const data = this.props.data;
     // проверяем - если данные еще не загрузились -выводим пустую строку
     //создаем колонки с их заголовками и уровнями для react-table
-    const tableHeader = this.tableColumnsHandler(this.props.header, [], data);
-    console.log('tableHeader', tableHeader);
-    
+    const tableHeader = this.tableColumnsHandler(this.props.header, [], data);    
 
     return (
       <Aux>
         <ReactTable 
-          data={data}   
+          data={data}
           columns={tableHeader}
           showPaginationBottom={false}      
           defaultPageSize={data.length} 

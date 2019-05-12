@@ -13,7 +13,8 @@ class name extends Component {
   render() {
     return (
       <div className={classes.filters}>
-        <Search />
+        <Search 
+          searchData={this.props.searchData}/>
         <Duration />
       </div>
      );

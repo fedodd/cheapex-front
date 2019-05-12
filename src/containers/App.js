@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, NavLink } from 'react-router-dom';
 import classes from './App.pcss';
-import declOfNum from "../functions/declOfNum";
+
 import ResultPage from './ResultPage/ResultPage';
 import Form from '../components/form/Form';
 import axios from "axios";
@@ -23,8 +23,6 @@ class App extends Component {
       });
     });
   }
-
-  titleEnding = declOfNum(this.state.totalItems, ['компании', 'компаний', 'компаний']);
 
   render () {
     // попытка генерации адресов
@@ -49,9 +47,6 @@ class App extends Component {
                     link={link} />)}
                     key={'table' + link} />
     });
-
-
-    
 
     return (
       <BrowserRouter>
