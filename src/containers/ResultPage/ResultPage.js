@@ -6,14 +6,14 @@ import headerHelpers from "../headerHelpers/headerHelpers";
 import Table from '../../components/table/Table';
 import classes from './ResultPage.pcss';
 import declOfNum from "../../functions/declOfNum";
-import matchSorter from 'match-sorter';
 
 class ResultPage extends Component {
 
   state= {
-    companies: ['one', 'two', 'three'],
+    companies: [],
     numericData: [],
     noDataCompanies: [],
+    noDataHeader: [],
     tablerows: [],
     tableHeader: {
       header: [],
@@ -36,13 +36,12 @@ class ResultPage extends Component {
         companies[index] = row[0];
       });
       
-      
-
       this.setState({
         numericData: data.numericData,
         tablerows: data.tablerows,
         tableHeader: data.tableHeader,
         totalItems: data.tablerows.length,
+        noDataCompanies: data.noDataCompanies,
         companies: companies
       });
     }).catch(error => {
@@ -85,6 +84,27 @@ class ResultPage extends Component {
         <div>loading...</div>
       )
     }
+
+    let noDataCompaniesTable = null;
+
+
+    const noDataCompanies = this.state.noDataCompanies;
+    const shortHeader = this.state.tableHeader;
+    
+    const noDataHeader = {
+      header: [shortHeader.header[0], shortHeader.header[1]],
+      headerShort: [shortHeader.headerShort[0], shortHeader.headerShort[1]],
+      headerToTranscript: [shortHeader.headerToTranscript[0], shortHeader.headerToTranscript[1]],
+    };
+    console.log('short ', shortHeader, 'spluice', noDataHeader);
+
+    if (noDataCompanies.length !== 0) {
+      noDataCompaniesTable = <Table 
+        data={noDataCompanies}
+        header={noDataHeader}/>
+    }
+
+    console.log(this.state.tableHeader);
     return (
       <div className={classes.resultPage}>
         <h1>Лучшие предложения по вашему запросу от {this.state.totalItems} {this.titleEnding}</h1>
@@ -93,6 +113,7 @@ class ResultPage extends Component {
         <Table
           data={this.state.tablerows}
           header={this.state.tableHeader} />
+        {noDataCompaniesTable}
       </div>
     )
   }

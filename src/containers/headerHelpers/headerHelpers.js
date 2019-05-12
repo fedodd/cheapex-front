@@ -105,7 +105,7 @@ const headerHelpers = (fullData) => {
 
   //отфильтровываем компании без данных и сохраняем их в отдельный массив noDataCompanies
   
-  //const noDataCompanies = fullData.filter(row => row.length <= 3);
+  const noDataCompanies = fullData.filter(row => row.length <= 3);
   //console.log(noDataCompanies);
   const data = fullData.filter(row => row.length > 3);
 
@@ -150,7 +150,8 @@ const headerHelpers = (fullData) => {
   const exportData = {
     numericData: calculatedData,
     tablerows: CleanedData,
-    tableHeader: CleanedHeader
+    tableHeader: CleanedHeader,
+    noDataCompanies: noDataCompanies
   };
   
   return exportData;
