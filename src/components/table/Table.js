@@ -20,33 +20,40 @@ class Table extends Component {
   getColumnWidth = (rows, accessor, headerText) => {
     const maxWidth = 200;
     const magicSpacing = 8;
-    
     let maxLength = 0;
+    const checkingRow = rows[0];
+    const checkingCell = rows[0][accessor];
 
-    [...rows].map(row => {
-
-      if (typeof(row[accessor]) === 'object') {
-        if (row[accessor].props.children) {
-          if (row[accessor].props.className === 'dotsConnected') {
-            maxLength = 8;
-            
-          } else if (row[accessor].props.className === 'arrowConnected')
-            maxLength = 10;
-            
-          else {
-            maxLength = 5;
-            
-          }
-        } else if (row[accessor].type === 'img') {
-          maxLength = 8;
-          
+    if (checkingCell === checkingRow[checkingRow.length - 1] || checkingCell === checkingRow[checkingRow.length - 2]) {
+      maxLength = 10;
+    } else if (typeof (checkingCell) === 'object') {
+      if (checkingCell.props.children) {
+        const className = checkingCell.props.className;
+        switch (className) {
+          case "dotsConnected":
+            maxLength = 9;
+            break;
+          case "arrowConnected":
+            maxLength = 11;
+            break;
+          case "transcriptWrapper":
+            maxLength = 6;
+            break;
+          default: 
+            maxLength = 8; 
+            //console.log('default classname', checkingCell.props);
         }
       } else {
-        maxLength = (`${row[accessor]}`.length > maxLength) ? maxLength = `${row[accessor]}`.length : maxLength;
+        //console.log('wihtout children', checkingCell.props);
+        maxLength = 7;
       }
-
-      return null;
-    });
+    } else {
+      [...rows].map(row => {
+        maxLength = (`${row[accessor]}`.length > maxLength) ? maxLength = `${row[accessor]}`.length : maxLength;
+        return null;
+      });
+    }
+    
     //console.log(maxWidth, maxLength, maxLength * magicSpacing);
     return Math.min(maxWidth, maxLength * magicSpacing)
   }
@@ -109,20 +116,18 @@ class Table extends Component {
       row.addEventListener('click', e => {
         let totalFixHeight = this.state.totalFixHeight;
         const rowHeight = this.state.rowHeight;
-        console.log('totalFixHeight before', totalFixHeight, 'rowHeight', rowHeight);
         if (row.classList.contains('fixed')) {
-          row.classList.remove('fixed'); 
-          let acc = this.state.headerHeight;
-          totalFixHeight = [...document.querySelectorAll(targetClass+'.fixed')].reduce((acc, row) => {
-            row.style.top = acc + 'px';
-            return acc + rowHeight;
-          }, acc);
-          
+          row.classList.remove('fixed');   
         } else {
           row.classList.add('fixed'); 
-          row.style.top = totalFixHeight + 'px';
-          totalFixHeight = totalFixHeight + rowHeight;
         }
+
+        let acc = this.state.headerHeight;
+        totalFixHeight = [...document.querySelectorAll(targetClass + '.fixed')].reduce((acc, row) => {
+          row.style.top = acc + 'px';
+          return acc + rowHeight;
+        }, acc);
+
         this.setState({ totalFixHeight: totalFixHeight });
       });
     })

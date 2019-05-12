@@ -6,6 +6,10 @@ const transcriptHandler = (data, targetColumns) => {
       if (row[transcriptIndex] !== null) {
         row[transcriptIndex - 1] = <span className="transcriptWrapper">{row[transcriptIndex - 1]}<span className="transcripted">{row[transcriptIndex]}</span></span>
         return null;
+        //если расшифровки нет, все равно вешаем класс, т.к. мы чекаем размер колонки по названию класса колонки
+      } else {
+        row[transcriptIndex - 1] = <span className="transcriptWrapper">{row[transcriptIndex - 1]}</span>
+        return null;
       }
     })
     return null;
