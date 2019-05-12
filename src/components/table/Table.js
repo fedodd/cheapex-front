@@ -4,7 +4,6 @@ import ReactTable from "react-table";
 import './Table.pcss';
 import Aux from "../../hoc/Aux";
 import fixRow from "./fixRow";
-import matchSorter from 'match-sorter';
 //import headerHelpers from "../../containers/headerHelpers/headerHelpers";
 
 class Table extends Component {
@@ -14,7 +13,6 @@ class Table extends Component {
     rowHeight: 0,
     totalFixHeight: 0,
     fixrows: {
-      
     }
   }
 

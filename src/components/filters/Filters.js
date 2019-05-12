@@ -14,7 +14,7 @@ class name extends Component {
     return (
       <div className={classes.filters}>
         <Search 
-          searchData={this.props.searchData}/>
+          searchInputHandler={this.props.searchInputHandler}/>
         <Duration />
       </div>
      );
