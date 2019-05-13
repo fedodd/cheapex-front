@@ -36,8 +36,6 @@
   }
 }
 
-
-
 :global .rt-th {
   padding-bottom: 10px;
   box-sizing: border-box;
@@ -113,7 +111,7 @@
 :global .rt-tr .rt-th:nth-last-child(2),
 :global .rt-tr .rt-td:nth-last-child(2) {
   right: 80px;
-  &::before {
+  :global .__main &::before {
     position: absolute;
     top: 0;
     left: 5px;

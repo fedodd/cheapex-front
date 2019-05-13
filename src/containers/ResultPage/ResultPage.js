@@ -6,6 +6,7 @@ import headerHelpers from "../headerHelpers/headerHelpers";
 import Table from '../../components/table/Table';
 import classes from './ResultPage.pcss';
 import declOfNum from "../../functions/declOfNum";
+import ReactTable from "react-table";
 
 class ResultPage extends Component {
 
@@ -59,14 +60,23 @@ class ResultPage extends Component {
   searchFilterHandler = (event) => {
 
     const rows = this.state.tablerows;
+    const noDataRows = this.state.noDataCompanies;
     const targetString = event.target.value.toLowerCase();
 // соберем индексы отфильтрованных значений
+// здесь нужно сделать одну функцию и заводить в нее main и noData таблицы
     const filteredCompanies = rows.reduce((acc, row, index) => {
       const toLowerCaseCompany = row[0].toLowerCase();
       return toLowerCaseCompany.includes(targetString) ? [...acc, index] : acc;
     }, []);
+
+    const filteredNoDataCompanies = noDataRows.reduce((acc, row, index) => {
+      const toLowerCaseCompany = row[0].toLowerCase();
+      return toLowerCaseCompany.includes(targetString) ? [...acc, index] : acc;
+    }, []);
 // возьмем наши ряды из дома и если индекс не совпадает - вешаем класс
-    const nodeRows = document.querySelectorAll('.rt-tr-group');
+    
+    const nodeRows = document.querySelectorAll('.__main .rt-tr-group');
+    const noDataNodeRows = document.querySelectorAll('.__noData .rt-tr-group');
     [...nodeRows].map((row, index) => {
       if (filteredCompanies.includes(index)) {
         row.classList.remove('filtered__out');
@@ -74,7 +84,16 @@ class ResultPage extends Component {
         row.classList.add('filtered__out');
       }
        
-    })
+    });
+
+    [...noDataNodeRows].map((row, index) => {
+      if (filteredNoDataCompanies.includes(index)) {
+        row.classList.remove('filtered__out');
+      } else {
+        row.classList.add('filtered__out');
+      }
+
+    });
   }
   
   render() {
@@ -96,12 +115,28 @@ class ResultPage extends Component {
       headerShort: [shortHeader.headerShort[0], shortHeader.headerShort[1]],
       headerToTranscript: [shortHeader.headerToTranscript[0], shortHeader.headerToTranscript[1]],
     };
-    console.log('short ', shortHeader, 'spluice', noDataHeader);
 
     if (noDataCompanies.length !== 0) {
-      noDataCompaniesTable = <Table 
-        data={noDataCompanies}
-        header={noDataHeader}/>
+      noDataCompaniesTable = 
+        <div>
+          <h2>Не ответили:</h2>
+          <ReactTable 
+            data={noDataCompanies}
+            columns={[{
+              'Header': 'вебсайт', 
+              'accessor': '0',
+              'width': '150'  
+            },
+              {
+                'Header': 'ответили',
+                'accessor': '1',
+                'width': 'underfined'
+              }
+            ]}
+            showPaginationBottom={false}
+            defaultPageSize={noDataCompanies.length} 
+            className="table __noData"/>
+        </div>
     }
 
     console.log(this.state.tableHeader);
@@ -112,7 +147,8 @@ class ResultPage extends Component {
           searchInputHandler={this.searchFilterHandler}/>
         <Table
           data={this.state.tablerows}
-          header={this.state.tableHeader} />
+          header={this.state.tableHeader}
+          className="table __main" />
         {noDataCompaniesTable}
       </div>
     )

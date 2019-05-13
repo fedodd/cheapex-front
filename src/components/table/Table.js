@@ -107,11 +107,14 @@ class Table extends Component {
   }
 
   fixRowHandler = (targetClass) => {
+    console.log(document.querySelectorAll(targetClass));
 
     [...document.querySelectorAll(targetClass)].map((row, index) => {
       row.addEventListener('click', e => {
+        console.log(row);
         let totalFixHeight = this.state.totalFixHeight;
         const rowHeight = this.state.rowHeight;
+        
         if (row.classList.contains('fixed')) {
           row.classList.remove('fixed');   
         } else {
@@ -124,17 +127,18 @@ class Table extends Component {
           return acc + rowHeight;
         }, acc);
 
+        console.log('totalFixHeight', totalFixHeight);
         this.setState({ totalFixHeight: totalFixHeight });
+        console.log(this.state);
       });
     })
-    
   };
 
   componentDidMount () {
-    this.fixRowHandler('.rt-tr-group');
-    const rowHeight = document.querySelector('.rt-tr-group').offsetHeight;
-    const headerHeight = document.querySelector('.rt-thead.-headerGroups').offsetHeight;
-    this.setState({ 
+    this.fixRowHandler('.__main .rt-tr-group');
+    const rowHeight = document.querySelector('.__main .rt-tr-group').offsetHeight;
+    const headerHeight = document.querySelector('.__main .rt-thead.-headerGroups').offsetHeight;
+    this.setState({
       headerHeight: headerHeight,
       rowHeight: rowHeight,
       totalFixHeight: headerHeight
@@ -150,6 +154,7 @@ class Table extends Component {
     return (
       <Aux>
         <ReactTable 
+          className ={this.props.className}
           data={data}
           columns={tableHeader}
           showPaginationBottom={false}      
