@@ -92,8 +92,11 @@ class ResultPage extends Component {
       } else {
         row.classList.add('filtered__out');
       }
-
     });
+  }
+
+  totalFilterHandler = (event) => {
+
   }
   
   render() {
@@ -103,18 +106,12 @@ class ResultPage extends Component {
         <div>loading...</div>
       )
     }
+    console.log('numericData', this.state.numericData);
 
     let noDataCompaniesTable = null;
 
 
     const noDataCompanies = this.state.noDataCompanies;
-    const shortHeader = this.state.tableHeader;
-    
-    const noDataHeader = {
-      header: [shortHeader.header[0], shortHeader.header[1]],
-      headerShort: [shortHeader.headerShort[0], shortHeader.headerShort[1]],
-      headerToTranscript: [shortHeader.headerToTranscript[0], shortHeader.headerToTranscript[1]],
-    };
 
     if (noDataCompanies.length !== 0) {
       noDataCompaniesTable = 
@@ -139,12 +136,12 @@ class ResultPage extends Component {
         </div>
     }
 
-    console.log(this.state.tableHeader);
     return (
       <div className={classes.resultPage}>
         <h1>Лучшие предложения по вашему запросу от {this.state.totalItems} {this.titleEnding}</h1>
         <Filters 
-          searchInputHandler={this.searchFilterHandler}/>
+          searchInputHandler={this.searchFilterHandler}
+          totalFilterHandler={this.totalFilterHandler}/>
         <Table
           data={this.state.tablerows}
           header={this.state.tableHeader}

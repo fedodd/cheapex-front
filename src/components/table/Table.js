@@ -106,12 +106,11 @@ class Table extends Component {
     return outputHeader;
   }
 
+  //навешиваем listener on click записываем позицию ряда и перерсчитываем каждый раз при клике. 
   fixRowHandler = (targetClass) => {
-    console.log(document.querySelectorAll(targetClass));
 
     [...document.querySelectorAll(targetClass)].map((row, index) => {
       row.addEventListener('click', e => {
-        console.log(row);
         let totalFixHeight = this.state.totalFixHeight;
         const rowHeight = this.state.rowHeight;
         
@@ -127,9 +126,7 @@ class Table extends Component {
           return acc + rowHeight;
         }, acc);
 
-        console.log('totalFixHeight', totalFixHeight);
         this.setState({ totalFixHeight: totalFixHeight });
-        console.log(this.state);
       });
     })
   };

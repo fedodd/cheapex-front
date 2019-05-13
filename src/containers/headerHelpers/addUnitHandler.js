@@ -1,4 +1,5 @@
-const addUnitHandler = (data, addons) => {
+const addUnitHandler = (data, addons) => { 
+  let withUnitData = data.slice();
   //функция connector добавляет единицы измерения и т.п. из headerHelper
   const addUnit = (dataRow, targetColumns, unit) => {
     return targetColumns.map(targetIndex => {
@@ -10,7 +11,7 @@ const addUnitHandler = (data, addons) => {
     });
   };
 
-  return data.map(row => {
+  return withUnitData.map(row => {
     Object.keys(addons).map(addon => {
       const targetAddon = addons[addon];
       addUnit(row, targetAddon.columns, targetAddon.unit);

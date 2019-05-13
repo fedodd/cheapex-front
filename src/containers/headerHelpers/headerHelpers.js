@@ -112,16 +112,16 @@ const headerHelpers = (fullData) => {
   // убираем из данных заголовки
   data.splice(0, 3);
 
-
   // функции для обработки helperHeader
-
+  console.log(data);
   //подсчитаем нужные колонки с помощью функции калькулятора, отправив в нее данные и helpers
-
   const calculatedData = calculateHandler(data, helpers.calculators);
 
-  //функция addUnit добавляет единицы измерения и т.п. из headerHelper
-  const withUnitsData = addUnitHandler(calculatedData, helpers.addons);
 
+  //функция addUnit добавляет единицы измерения и т.п. из headerHelper
+  
+  const withUnitsData = addUnitHandler(calculatedData, helpers.addons);
+  console.log('calculatedData', calculatedData, 'withUnitsData', withUnitsData);
   //функция добавления transcript
 
   const transcriptedData = transcriptHandler(withUnitsData, helpers.transcript);
@@ -137,7 +137,7 @@ const headerHelpers = (fullData) => {
 
   //функция по удалению вспомогательных колонок
   const deleteColumns = [...helpers.connectArrow.columns].concat(helpers.calculators.dMaxConnectDots.columns).concat(helpers.transcript);
-  const CleanedData = deleteHandler(connectedDaysData, deleteColumns);
+  const cleanedData = deleteHandler(connectedDaysData, deleteColumns);
 
   //удалим колонки из header
   const headerForClean = {
@@ -145,12 +145,12 @@ const headerHelpers = (fullData) => {
     headerShort: transcriptedHeader,
     headerToTranscript: headerToTranscript 
   };
-  const CleanedHeader = deleteHandler(headerForClean, deleteColumns);
+  const cleanedHeader = deleteHandler(headerForClean, deleteColumns);
 
   const exportData = {
     numericData: calculatedData,
-    tablerows: CleanedData,
-    tableHeader: CleanedHeader,
+    tablerows: cleanedData,
+    tableHeader: cleanedHeader,
     noDataCompanies: noDataCompanies
   };
   

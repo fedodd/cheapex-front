@@ -1,5 +1,5 @@
 const calculateHandler = (data, calculators) => {
-
+  
   //собираем колонки которые будем считать. Здесь надо будет добавить возможность выбирать валюту. Пока загружаем тупо доллар
   const priceColumns = calculators.priceDollar.columns;
   const dMinColumns = calculators.dMin;
@@ -17,15 +17,14 @@ const calculateHandler = (data, calculators) => {
   };
 
   //вызываем калькулятор и добавляем итоговые значения к нашим данным
-  const countedData = data.reduce((acc, row) => {
-
+  const calculatedData = data.reduce((acc, row) => {
     const rowDMin = calculator(row, dMinColumns);
     const rowDMax = calculator(row, dMaxColumns);
     const rowFullPrice = calculator(row, priceColumns);
     return [...acc, [...row, rowDMin, rowDMax, rowFullPrice]];
   }, []);
-
-  return countedData;
+  console.log('calculatedData', calculatedData[0][31]);
+  return calculatedData;
 };
 
 export default calculateHandler;
