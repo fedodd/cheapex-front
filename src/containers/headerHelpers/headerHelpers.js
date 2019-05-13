@@ -6,6 +6,7 @@ import connectorHandler from "./connectorHandler";
 import deleteHandler from "./deleteHandler";
 import transcriptHandler from "./transcriptHanlder";
 import transcriptHeaderHandler from "./transcriptHeaderHandler";
+import deepCopy from "../../functions/deepCopyArray";
 
 const headerHelpers = (fullData) => {
 
@@ -113,15 +114,14 @@ const headerHelpers = (fullData) => {
   data.splice(0, 3);
 
   // функции для обработки helperHeader
-  console.log(data);
-  //подсчитаем нужные колонки с помощью функции калькулятора, отправив в нее данные и helpers
-  const calculatedData = calculateHandler(data, helpers.calculators);
 
+  //подсчитаем нужные колонки с помощью функции калькулятора, отправив в нее данные и helpers. Сделаем deepcopy данных для дальнейшей обработки, оставив цифровые для фильтров, отправив calculatedData в state
+  const calculatedData = calculateHandler(data, helpers.calculators);
+  const calculatedDataCopy = deepCopy(calculatedData);
 
   //функция addUnit добавляет единицы измерения и т.п. из headerHelper
   
-  const withUnitsData = addUnitHandler(calculatedData, helpers.addons);
-  console.log('calculatedData', calculatedData, 'withUnitsData', withUnitsData);
+  const withUnitsData = addUnitHandler(calculatedDataCopy, helpers.addons);
   //функция добавления transcript
 
   const transcriptedData = transcriptHandler(withUnitsData, helpers.transcript);
@@ -132,8 +132,6 @@ const headerHelpers = (fullData) => {
   //функция по объединению колонок
   const connectedArrowData = connectorHandler(withImagesData, helpers.connectArrow);
   const connectedDaysData = connectorHandler(connectedArrowData, helpers.calculators.dMaxConnectDots);
-
-
 
   //функция по удалению вспомогательных колонок
   const deleteColumns = [...helpers.connectArrow.columns].concat(helpers.calculators.dMaxConnectDots.columns).concat(helpers.transcript);

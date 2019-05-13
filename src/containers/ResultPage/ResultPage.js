@@ -36,6 +36,11 @@ class ResultPage extends Component {
       data.tablerows.map((row, index) => {
         companies[index] = row[0];
       });
+
+      const numericData = data.numericData;
+      const totalPriceArray = numericData.map(row => row[row.length -1]);
+      const dMaxArray = numericData.map(row => row[row.length - 2]);
+      const dMinArray = numericData.map(row => row[row.length - 3]);
       
       this.setState({
         numericData: data.numericData,
@@ -43,7 +48,12 @@ class ResultPage extends Component {
         tableHeader: data.tableHeader,
         totalItems: data.tablerows.length,
         noDataCompanies: data.noDataCompanies,
-        companies: companies
+        companies: companies,
+        totalValues: {
+          totalPriceArray: totalPriceArray,
+          dMaxArray: dMaxArray,
+          dMinArray: dMinArray
+        }
       });
     }).catch(error => {
       console.log('error!', error);
@@ -95,8 +105,11 @@ class ResultPage extends Component {
     });
   }
 
-  totalFilterHandler = (event) => {
-
+  totalFilterHandler = () => {
+    const totalPriceArray = this.state.totalPriceArray;
+    const dMaxArray = this.state.dMaxArray;
+    const dMinArray = this.state.dMinArray;
+    console.log();
   }
   
   render() {
@@ -106,7 +119,6 @@ class ResultPage extends Component {
         <div>loading...</div>
       )
     }
-    console.log('numericData', this.state.numericData);
 
     let noDataCompaniesTable = null;
 
@@ -141,7 +153,8 @@ class ResultPage extends Component {
         <h1>Лучшие предложения по вашему запросу от {this.state.totalItems} {this.titleEnding}</h1>
         <Filters 
           searchInputHandler={this.searchFilterHandler}
-          totalFilterHandler={this.totalFilterHandler}/>
+          totalFilterHandler={this.totalFilterHandler}
+          totalValues={this.state.totalValues}/>
         <Table
           data={this.state.tablerows}
           header={this.state.tableHeader}

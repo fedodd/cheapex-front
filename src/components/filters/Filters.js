@@ -15,7 +15,8 @@ class name extends Component {
       <div className={classes.filters}>
         <Search 
           searchInputHandler={this.props.searchInputHandler}/>
-        <Duration />
+        <Duration 
+          totalValues ={this.props.totalValues}/>
       </div>
      );
   }
