@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classes from './Filters.pcss';
-import Duration from './../filters/duration/Duration';
+import RangeFilter from './rangeFilter/rangeFilter';
 import Search from './search/Search';
 
 
@@ -15,7 +15,8 @@ class name extends Component {
       <div className={classes.filters}>
         <Search 
           searchInputHandler={this.props.searchInputHandler}/>
-        <Duration 
+        <RangeFilter 
+          totalFilterHandler={this.props.totalFilterHandler}
           totalValues ={this.props.totalValues}/>
       </div>
      );

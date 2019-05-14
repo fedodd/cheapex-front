@@ -22,7 +22,12 @@ class ResultPage extends Component {
       headerToTranscript: []
     },
     fullPrice: [],
-    totalItems: 0 
+    totalItems: 0,
+    totalValues: {
+      totalPriceArray:[],
+      dMaxArray: [],
+      dMinArray: []
+    }
   }
 
   componentDidMount () {
@@ -93,7 +98,6 @@ class ResultPage extends Component {
       } else {
         row.classList.add('filtered__out');
       }
-       
     });
 
     [...noDataNodeRows].map((row, index) => {
@@ -105,11 +109,15 @@ class ResultPage extends Component {
     });
   }
 
-  totalFilterHandler = () => {
-    const totalPriceArray = this.state.totalPriceArray;
-    const dMaxArray = this.state.dMaxArray;
-    const dMinArray = this.state.dMinArray;
-    console.log();
+  totalFilterHandler = (event) => {
+    
+    console.log(event.target.value);
+    const dataMin = this.state.totalValues.dMinArray;
+    const dataMax = this.state.totalValues.dMaxArray;
+    console.log(dataMin, dataMax);
+    const data = this.state.numericData;
+    const rows = this.state.tablerows;
+    const filteredCompanies = rows.filter(row => row[0]);
   }
   
   render() {
@@ -121,8 +129,6 @@ class ResultPage extends Component {
     }
 
     let noDataCompaniesTable = null;
-
-
     const noDataCompanies = this.state.noDataCompanies;
 
     if (noDataCompanies.length !== 0) {
