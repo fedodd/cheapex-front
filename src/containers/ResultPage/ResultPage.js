@@ -27,7 +27,8 @@ class ResultPage extends Component {
       totalPriceArray:[],
       dMaxArray: [],
       dMinArray: []
-    }
+    },
+    rangeFilterValue: null
   }
 
   componentDidMount () {
@@ -58,13 +59,15 @@ class ResultPage extends Component {
           totalPriceArray: totalPriceArray,
           dMaxArray: dMaxArray,
           dMinArray: dMinArray
-        }
+        } 
       });
     }).catch(error => {
       console.log('error!', error);
       alert('error!');
       // здесь надо прописать сценарии по ошибкам. а где-тоо выше - ловить ошибки - например файл не в том формате или типа того
     });
+
+    
   }
   
   //склонения к слову 
@@ -114,10 +117,15 @@ class ResultPage extends Component {
     console.log(event.target.value);
     const dataMin = this.state.totalValues.dMinArray;
     const dataMax = this.state.totalValues.dMaxArray;
+    const rangeFilterValue = event.target.value;
+
+    this.setState({
+      rangeFilterValue: rangeFilterValue
+    });
     console.log(dataMin, dataMax);
     const data = this.state.numericData;
     const rows = this.state.tablerows;
-    const filteredCompanies = rows.filter(row => row[0]);
+
   }
   
   render() {
@@ -160,7 +168,8 @@ class ResultPage extends Component {
         <Filters 
           searchInputHandler={this.searchFilterHandler}
           totalFilterHandler={this.totalFilterHandler}
-          totalValues={this.state.totalValues}/>
+          totalValues={this.state.totalValues}
+          rangeFilterValue={this.state.rangeFilterValue}/>
         <Table
           data={this.state.tablerows}
           header={this.state.tableHeader}

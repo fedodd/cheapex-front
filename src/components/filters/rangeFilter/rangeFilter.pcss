@@ -9,13 +9,13 @@
   position: relative;
   display: inline;
   width: 100%;
-  height: 8px;
+  height: 6px;
   border-radius: 5px;
   outline: none;
-  background: linear-gradient(90deg, red, #fdd64d 47%, #56a100);
   -webkit-transition: .2s;
   transition: opacity .2s;
   -webkit-appearance: none;
+  //background: linear-gradient(90deg, #ff0000, #fdd64d 47%, #56a100);
 }
 
 .slider::-webkit-slider-thumb {
@@ -25,9 +25,10 @@
   width: 25px;
   height: 25px;
   border-radius: 50%;
-  background: #56a100;
+  background: var(--gradient);
   -webkit-appearance: none;
   appearance: none;
+  
 }
 
 .slider::-moz-range-thumb {
