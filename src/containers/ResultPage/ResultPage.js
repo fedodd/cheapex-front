@@ -7,6 +7,7 @@ import Table from '../../components/table/Table';
 import classes from './ResultPage.pcss';
 import declOfNum from "../../functions/declOfNum";
 import ReactTable from "react-table";
+import filterByValue from "../../functions/filterByValue";
 
 class ResultPage extends Component {
 
@@ -80,20 +81,28 @@ class ResultPage extends Component {
     const rows = this.state.tablerows;
     const noDataRows = this.state.noDataCompanies;
     const targetString = event.target.value.toLowerCase();
-// соберем индексы отфильтрованных значений
-// здесь нужно сделать одну функцию и заводить в нее main и noData таблицы
-    const filteredCompanies = rows.reduce((acc, row, index) => {
-      const toLowerCaseCompany = row[0].toLowerCase();
-      return toLowerCaseCompany.includes(targetString) ? [...acc, index] : acc;
-    }, []);
 
-    const filteredNoDataCompanies = noDataRows.reduce((acc, row, index) => {
-      const toLowerCaseCompany = row[0].toLowerCase();
-      return toLowerCaseCompany.includes(targetString) ? [...acc, index] : acc;
-    }, []);
-// возьмем наши ряды из дома и если индекс не совпадает - вешаем класс
+    // соберем индексы отфильтрованных значений
+    const filteredCompanies = filterByValue(rows, targetString);
+    const filteredNoDataCompanies = filterByValue(noDataRows, targetString);
+    console.log(rows, targetString);
+
+    const filteredRows = rows.filter(row => {
+      return row[0].toLowerCase().includes(targetString);
+    });
+
+    const filteredNoDataRows = noDataRows.filter(row => {
+      return row[0].toLowerCase().includes(targetString);
+    });
+
+    this.setState({
+      tablerows: filteredRows,
+      noDataCompanies: filteredNoDataRows
+    });
     
-    const nodeRows = document.querySelectorAll('.__main .rt-tr-group');
+// возьмем наши ряды из DOM и если индекс не совпадает - вешаем класс
+    
+/*    const nodeRows = document.querySelectorAll('.__main .rt-tr-group');
     const noDataNodeRows = document.querySelectorAll('.__noData .rt-tr-group');
     [...nodeRows].map((row, index) => {
       if (filteredCompanies.includes(index)) {
@@ -109,7 +118,7 @@ class ResultPage extends Component {
       } else {
         row.classList.add('filtered__out');
       }
-    });
+    }); */
   }
 
   totalFilterHandler = (event) => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import classes from './rangeFilter.pcss';
 import tinygradient from "tinygradient";
-import { compile } from 'path-to-regexp';
+//import { compile } from 'path-to-regexp';
 import arrayMinMax from '../../../functions/arrayMinMax';
 
 class RangeFilter extends React.Component {
