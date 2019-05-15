@@ -17,8 +17,7 @@ class name extends Component {
           searchInputHandler={this.props.searchInputHandler}/>
         <RangeFilter 
           totalFilterHandler={this.props.totalFilterHandler}
-          totalValues ={this.props.totalValues}
-          rangeFilterValue={this.props.rangeFilterValue}/>
+          totalValues ={this.props.totalValues}/>
       </div>
      );
   }

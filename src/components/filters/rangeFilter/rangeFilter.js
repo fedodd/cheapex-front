@@ -1,72 +1,83 @@
 import React from 'react';
 import classes from './rangeFilter.pcss';
 import tinygradient from "tinygradient";
+import { compile } from 'path-to-regexp';
+import arrayMinMax from '../../../functions/arrayMinMax';
 
-const rangeFilter = (props) => {
+class RangeFilter extends React.Component {
 
-  const values = props.totalValues;
-  function getMaxOfArray(numArray) {
-    return Math.max.apply(null, numArray);
+  state = {
+    totalPrice: this.props.totalValues.totalPriceArray,
+    dMaxArray: this.props.totalValues.dMaxArray,
+    dMinArray: this.props.totalValues.dMinArray,
+    maxPrice: null,
+    minPrice: null,
+    dMax: null,
+    dMin: null,
+    rangeValue: null,
+    rangeStep: null,
+    gradient: tinygradient([
+      '#ff0000',
+      '#fdd64d',
+      '#56a100'
+    ]),
+    generatedStyle: 'red'
   }
 
-  function getMinOfArray(numArray) {
-    return Math.min.apply(null, numArray);
+  componentDidMount () {
+    const maxPrice = arrayMinMax(this.state.totalPrice, 'max');
+    const minPrice = arrayMinMax(this.state.totalPrice, 'min');
+    const dMax = arrayMinMax(this.state.dMaxArray, 'max');
+    const dMin = arrayMinMax(this.state.dMinArray, 'min');
+    const rangeStep = (maxPrice - minPrice) / 100;
+    
+
+    this.setState({
+      maxPrice: maxPrice,
+      minPrice: minPrice,
+      dMax: dMax,
+      dMin: dMin,
+      rangeStep: rangeStep
+    });
   }
 
-  const maxPrice = getMaxOfArray(values.totalPriceArray);
-  const minPrice = getMinOfArray(values.totalPriceArray);
-  const dMax = getMaxOfArray(values.dMaxArray);
-  const dMin = getMinOfArray(values.dMinArray);
-  const rangeStep = (dMax - dMin) / 100;
-  let value = 60;
-  
-  console.log(value, dMin);
-
-
-  let gradient = tinygradient([
-    '#ff0000', 
-    '#fdd64d',
-    '#56a100'
-  ]);
-  
-  let gradientCSS = {'background': gradient.css()};
-  gradient.css();
-  let newGradinet = gradient.css();
-  
-
-  
-  
-  const generateColor = (position) => {
-    let testGrad = gradient.rgbAt(position);
-    const generatedStyle = 'rgb(' + testGrad._r + ',' + testGrad._g + ',' + testGrad._b + ')'
-    return generatedStyle;
+  thumbColorHandler = (event) => {
+    let testGrad = this.state.gradient.rgbAt(event.target.value / 100);
+    const generatedStyle = 'rgb(' + testGrad._r + ',' + testGrad._g + ',' + testGrad._b + ')';
+    this.setState({
+      rangeValue: (this.state.minPrice + (100 - event.target.value) * this.state.rangeStep ),
+      generatedStyle: generatedStyle});
   }
 
-  console.log(document.getElementById('myRange'));
-  const resCSS = generateColor(0.2);
-  
-  return (
-    <div className="rangeFilter">
-      <style>{`
+  render () {
+
+    let gradientCSS = { 'background': this.state.gradient.css() };
+    
+    return (
+      <div className="rangeFilter">
+        <style>{`
             :root {
-              --gradient: ${resCSS};
+              --gradient: ${this.state.generatedStyle};
               }
             `}
-      </style>
-      <div className={classes.titleLine}><span>{maxPrice}$ - {minPrice}$</span><span>{dMin}...{dMax} дней</span></div>
-      <div className="slideContainer">
-        <input 
-          type="range" 
-          min={dMin} 
-          max={dMax} 
-          defaultValue={dMin}
-          onChange={props.totalFilterHandler}
-          className={classes.slider} 
-          id="myRange"
-          style={gradientCSS} />
+        </style>
+        <div className={classes.titleLine}><span>{this.state.maxPrice}$ - {this.state.minPrice}$</span><span>{this.state.dMin}...{this.state.dMax} дней</span></div>
+        <div className="slideContainer">
+          <input
+            type="range"
+            min={0}
+            max={100}
+            defaultValue={0}
+            onChange={this.thumbColorHandler}
+            className={classes.slider}
+            id="myRange"
+            style={gradientCSS} />
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
+
+  
 };
 
-export default rangeFilter;
+export default RangeFilter;

@@ -114,7 +114,6 @@ class ResultPage extends Component {
 
   totalFilterHandler = (event) => {
     
-    console.log(event.target.value);
     const dataMin = this.state.totalValues.dMinArray;
     const dataMax = this.state.totalValues.dMaxArray;
     const rangeFilterValue = event.target.value;
@@ -122,7 +121,6 @@ class ResultPage extends Component {
     this.setState({
       rangeFilterValue: rangeFilterValue
     });
-    console.log(dataMin, dataMax);
     const data = this.state.numericData;
     const rows = this.state.tablerows;
 
@@ -168,8 +166,7 @@ class ResultPage extends Component {
         <Filters 
           searchInputHandler={this.searchFilterHandler}
           totalFilterHandler={this.totalFilterHandler}
-          totalValues={this.state.totalValues}
-          rangeFilterValue={this.state.rangeFilterValue}/>
+          totalValues={this.state.totalValues}/>
         <Table
           data={this.state.tablerows}
           header={this.state.tableHeader}
