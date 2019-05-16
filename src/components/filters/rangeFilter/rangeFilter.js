@@ -45,7 +45,7 @@ class RangeFilter extends React.Component {
             step="2"
             onChange={this.thumbColorHandler}
             className={classes.slider}
-            id="myRange"
+            id="rangeFilter"
              />
         </div>
       </div>

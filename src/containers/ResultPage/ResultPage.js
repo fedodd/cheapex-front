@@ -9,6 +9,7 @@ import declOfNum from "../../functions/declOfNum";
 import ReactTable from "react-table";
 import filterByValue from "../../functions/filterByValue";
 import arrayMinMax from '../../functions/arrayMinMax';
+import deepCopyArray from "../../functions/deepCopyArray";
 
 class ResultPage extends Component {
 
@@ -16,6 +17,7 @@ class ResultPage extends Component {
     companies: [],
     numericData: [],
     noDataCompanies: [],
+    filteredNoDataCompanies: [],
     noDataHeader: [],
     tablerows: [],
     tableHeader: {
@@ -23,6 +25,7 @@ class ResultPage extends Component {
       headerShort: [],
       headerToTranscript: []
     },
+    filteredRows: [],
     fullPrice: [],
     totalItems: 0,
     totalValues: {
@@ -54,6 +57,7 @@ class ResultPage extends Component {
       /* важно: мы сами генерируем последние три колонки и обращаемся к ним по индексам: -1 цена, -2 максдней, -3 миндней.  важно не сломать эту штуку:)*/
 
       const numericData = data.numericData;
+      const filteredRows = deepCopyArray(data.tablerows);
       const totalPriceArray = numericData.map(row => row[row.length -1]);
       const dMaxArray = numericData.map(row => row[row.length - 2]);
       const dMinArray = numericData.map(row => row[row.length - 3]);
@@ -64,12 +68,15 @@ class ResultPage extends Component {
       const dMin = arrayMinMax(dMinArray, 'min');
       const rangeStep = (maxPrice - minPrice) / 100;
       
+      
       this.setState({
         numericData: data.numericData,
         tablerows: data.tablerows,
         tableHeader: data.tableHeader,
+        filteredRows: filteredRows,
         totalItems: data.tablerows.length,
         noDataCompanies: data.noDataCompanies,
+        filteredNoDataCompanies: data.noDataCompanies,
         companies: companies,
         totalValues: {
           totalPriceArray: totalPriceArray,
@@ -103,11 +110,6 @@ class ResultPage extends Component {
     const noDataRows = this.state.noDataCompanies;
     const targetString = event.target.value.toLowerCase();
 
-    // соберем индексы отфильтрованных значений
-    const filteredCompanies = filterByValue(rows, targetString);
-    const filteredNoDataCompanies = filterByValue(noDataRows, targetString);
-    console.log(rows, targetString);
-
     const filteredRows = rows.filter(row => {
       return row[0].toLowerCase().includes(targetString);
     });
@@ -117,29 +119,10 @@ class ResultPage extends Component {
     });
 
     this.setState({
-      tablerows: filteredRows,
-      noDataCompanies: filteredNoDataRows
+      filteredRows: filteredRows,
+      filteredNoDataCompanies: filteredNoDataRows
     });
-    
-// возьмем наши ряды из DOM и если индекс не совпадает - вешаем класс
-    
-/*    const nodeRows = document.querySelectorAll('.__main .rt-tr-group');
-    const noDataNodeRows = document.querySelectorAll('.__noData .rt-tr-group');
-    [...nodeRows].map((row, index) => {
-      if (filteredCompanies.includes(index)) {
-        row.classList.remove('filtered__out');
-      } else {
-        row.classList.add('filtered__out');
-      }
-    });
-
-    [...noDataNodeRows].map((row, index) => {
-      if (filteredNoDataCompanies.includes(index)) {
-        row.classList.remove('filtered__out');
-      } else {
-        row.classList.add('filtered__out');
-      }
-    }); */
+    console.log(this.state.tablerows);
   }
 
   //фильтрация поrange scrollbar. получаем значение, конвертируем в Price, записываем контрольное значение
@@ -151,6 +134,18 @@ class ResultPage extends Component {
       totalValues: totalValues
     });
   }
+
+  complexFilterHandler = (event) => {
+    switch (event.target.id) {
+      case "searchFilter":
+        this.searchFilterHandler(event);
+        break;
+      case "rangeFilter":
+        this.totalFilterHandler(event);
+        break;
+      default:;
+    }
+  }
   
   render() {
 
@@ -161,7 +156,7 @@ class ResultPage extends Component {
     }
 
     let noDataCompaniesTable = null;
-    const noDataCompanies = this.state.noDataCompanies;
+    const noDataCompanies = this.state.filteredNoDataCompanies;
 
     if (noDataCompanies.length !== 0) {
       noDataCompaniesTable = 
@@ -191,10 +186,10 @@ class ResultPage extends Component {
         <h1>Лучшие предложения по вашему запросу от {this.state.totalItems} {this.titleEnding}</h1>
         <Filters 
           searchInputHandler={this.searchFilterHandler}
-          totalFilterHandler={this.totalFilterHandler}
+          totalFilterHandler={this.complexFilterHandler}
           totalValues={this.state.totalValues}/>
         <Table
-          data={this.state.tablerows}
+          data={this.state.filteredRows}
           header={this.state.tableHeader}
           className="table __main" />
         {noDataCompaniesTable}

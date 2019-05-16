@@ -9,7 +9,8 @@ const search = (props) => {
         className={classes.search} 
         type="text"
         placeholder="www, ИНН, название компании, город"
-        onChange={props.searchInputHandler}></input>
+        onChange={props.searchInputHandler}
+        id="searchFilter"></input>
     </div>
   );
 };
