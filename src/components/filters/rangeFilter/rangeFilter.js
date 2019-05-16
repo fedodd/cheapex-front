@@ -18,12 +18,12 @@ class RangeFilter extends React.Component {
 
   thumbColorHandler = (event) => {
     this.props.totalFilterHandler(event);
-    const testGrad = this.state.gradient.rgbAt(event.target.value / 100);
-    const generatedStyle = 'rgb(' + testGrad._r + ',' + testGrad._g + ',' + testGrad._b + ')';
+    
     this.setState({
-      generatedStyle: generatedStyle
+      generatedStyle: this.state.gradient.rgbAt(event.target.value / 100)
     });
   }
+
 
   render () {
 
