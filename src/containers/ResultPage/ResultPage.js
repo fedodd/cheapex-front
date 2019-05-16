@@ -8,6 +8,7 @@ import classes from './ResultPage.pcss';
 import declOfNum from "../../functions/declOfNum";
 import ReactTable from "react-table";
 import filterByValue from "../../functions/filterByValue";
+import arrayMinMax from '../../functions/arrayMinMax';
 
 class ResultPage extends Component {
 
@@ -25,9 +26,15 @@ class ResultPage extends Component {
     fullPrice: [],
     totalItems: 0,
     totalValues: {
-      totalPriceArray:[],
+      totalPriceArray: [],
       dMaxArray: [],
-      dMinArray: []
+      dMinArray: [],
+      maxPrice: 0,
+      minPrice: 0,
+      dMax: 0,
+      dMin: 0,
+      rangeStep: 0,
+      rangeValue: 0
     },
     rangeFilterValue: null
   }
@@ -44,10 +51,18 @@ class ResultPage extends Component {
         companies[index] = row[0];
       });
 
+      /* важно: мы сами генерируем последние три колонки и обращаемся к ним по индексам: -1 цена, -2 максдней, -3 миндней.  важно не сломать эту штуку:)*/
+
       const numericData = data.numericData;
       const totalPriceArray = numericData.map(row => row[row.length -1]);
       const dMaxArray = numericData.map(row => row[row.length - 2]);
       const dMinArray = numericData.map(row => row[row.length - 3]);
+
+      const maxPrice = arrayMinMax(totalPriceArray, 'max');
+      const minPrice = arrayMinMax(totalPriceArray, 'min');
+      const dMax = arrayMinMax(dMaxArray, 'max');
+      const dMin = arrayMinMax(dMinArray, 'min');
+      const rangeStep = (maxPrice - minPrice) / 100;
       
       this.setState({
         numericData: data.numericData,
@@ -59,7 +74,13 @@ class ResultPage extends Component {
         totalValues: {
           totalPriceArray: totalPriceArray,
           dMaxArray: dMaxArray,
-          dMinArray: dMinArray
+          dMinArray: dMinArray,
+          maxPrice: maxPrice,
+          minPrice: minPrice,
+          dMax: dMax,
+          dMin: dMin,
+          rangeStep: rangeStep,
+          rangeValue: maxPrice
         } 
       });
     }).catch(error => {
@@ -68,14 +89,14 @@ class ResultPage extends Component {
       // здесь надо прописать сценарии по ошибкам. а где-тоо выше - ловить ошибки - например файл не в том формате или типа того
     });
 
-    
+    console.log('componentDidMount minPrice', this.state.totalValues.minPrice);
   }
   
   //склонения к слову 
   titleEnding = declOfNum(this.state.totalItems, ['компании', 'компаний', 'компаний']);
 
 
-// функция по фильтрации по поиску. передаем ее в компонент search и возвращаем оттуда event из инпута. 
+// фильтрация по поиску. передаем ее в компонент search и возвращаем оттуда event из инпута. 
   searchFilterHandler = (event) => {
 
     const rows = this.state.tablerows;
@@ -121,18 +142,14 @@ class ResultPage extends Component {
     }); */
   }
 
+  //фильтрация поrange scrollbar. получаем значение, конвертируем в Price, записываем контрольное значение
+
   totalFilterHandler = (event) => {
-    
-    const dataMin = this.state.totalValues.dMinArray;
-    const dataMax = this.state.totalValues.dMaxArray;
-    const rangeFilterValue = event.target.value;
-
+    const totalValues = this.state.totalValues;
+    totalValues.rangeValue = Math.round(totalValues.minPrice + (100 - event.target.value) * totalValues.rangeStep);
     this.setState({
-      rangeFilterValue: rangeFilterValue
+      totalValues: totalValues
     });
-    const data = this.state.numericData;
-    const rows = this.state.tablerows;
-
   }
   
   render() {
