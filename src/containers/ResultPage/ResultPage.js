@@ -7,7 +7,7 @@ import Table from '../../components/table/Table';
 import classes from './ResultPage.pcss';
 import declOfNum from "../../functions/declOfNum";
 import ReactTable from "react-table";
-import filterByValue from "../../functions/filterByValue";
+//import filterByValue from "../../functions/filterByValue";
 import arrayMinMax from '../../functions/arrayMinMax';
 import deepCopyArray from "../../functions/deepCopyArray";
 
@@ -42,8 +42,8 @@ class ResultPage extends Component {
     rangeFilterValue: null
   }
 
-  componentDidMount () {
-    console.log('result page mount!');
+  componentWillMount () {
+    console.log('result page will mount!');
     
     const fullpath = 'https://react-app-bc4e6.firebaseio.com/importedSheet/' + this.props.link + '.json';
     axios.get(fullpath).then(response => {
@@ -52,6 +52,7 @@ class ResultPage extends Component {
       const companies = {};
       data.tablerows.map((row, index) => {
         companies[index] = row[0];
+        return null;
       });
 
       /* важно: мы сами генерируем последние три колонки и обращаемся к ним по индексам: -1 цена, -2 максдней, -3 миндней.  важно не сломать эту штуку:)*/
@@ -104,12 +105,15 @@ class ResultPage extends Component {
 
 
 // фильтрация по поиску. передаем ее в компонент search и возвращаем оттуда event из инпута. 
-  searchFilterHandler = (event) => {
+  searchFilterHandler = (rows, event) => {
+    let targetString = '';
+    if (event === undefined) {
+      targetString = document.getElementById('searchFilter').value;
+    }  else {
+      targetString = event.target.value.toLowerCase();
+    }
 
-    const rows = this.state.tablerows;
     const noDataRows = this.state.noDataCompanies;
-    const targetString = event.target.value.toLowerCase();
-
     const filteredRows = rows.filter(row => {
       return row[0].toLowerCase().includes(targetString);
     });
@@ -119,32 +123,49 @@ class ResultPage extends Component {
     });
 
     this.setState({
-      filteredRows: filteredRows,
       filteredNoDataCompanies: filteredNoDataRows
     });
-    console.log(this.state.tablerows);
+
+    return filteredRows;
   }
 
   //фильтрация поrange scrollbar. получаем значение, конвертируем в Price, записываем контрольное значение
 
-  totalFilterHandler = (event) => {
+  totalFilterHandler = (rows, event) => {
+    let targetValue = 0;
+
+    if (event === undefined) {
+      targetValue = document.getElementById('rangeFilter').value;
+    } else {
+      targetValue = event.target.value;
+    }
+
+    const numericData = this.state.numericData;
     const totalValues = this.state.totalValues;
-    totalValues.rangeValue = Math.round(totalValues.minPrice + (100 - event.target.value) * totalValues.rangeStep);
-    this.setState({
-      totalValues: totalValues
-    });
+    totalValues.rangeValue = Math.round(totalValues.minPrice + (100 - targetValue) * totalValues.rangeStep);
+
+    const filteredRows = rows.filter((row, index) => (numericData[index][numericData[index].length - 1] <= totalValues.rangeValue));
+
+    return filteredRows;
   }
 
   complexFilterHandler = (event) => {
+
+    let rows = this.state.tablerows;
     switch (event.target.id) {
       case "searchFilter":
-        this.searchFilterHandler(event);
+        rows = this.totalFilterHandler(rows);
+        rows = this.searchFilterHandler(rows, event);
         break;
       case "rangeFilter":
-        this.totalFilterHandler(event);
+        rows = this.totalFilterHandler(rows, event);
+        rows = this.searchFilterHandler(rows);
         break;
       default:;
     }
+    this.setState({
+      filteredRows: rows
+    });
   }
   
   render() {
@@ -185,8 +206,7 @@ class ResultPage extends Component {
       <div className={classes.resultPage}>
         <h1>Лучшие предложения по вашему запросу от {this.state.totalItems} {this.titleEnding}</h1>
         <Filters 
-          searchInputHandler={this.searchFilterHandler}
-          totalFilterHandler={this.complexFilterHandler}
+          filterHandler={this.complexFilterHandler}
           totalValues={this.state.totalValues}/>
         <Table
           data={this.state.filteredRows}

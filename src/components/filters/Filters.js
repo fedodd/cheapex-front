@@ -14,9 +14,9 @@ class name extends Component {
     return (
       <div className={classes.filters}>
         <Search 
-          searchInputHandler={this.props.searchInputHandler}/>
+          filterHandler={this.props.filterHandler}/>
         <RangeFilter 
-          totalFilterHandler={this.props.totalFilterHandler}
+          filterHandler={this.props.filterHandler}
           totalValues ={this.props.totalValues}/>
       </div>
      );

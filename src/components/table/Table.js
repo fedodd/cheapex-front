@@ -3,7 +3,7 @@ import ReactTable from "react-table";
 //  import axios from "axios";
 import './Table.pcss';
 import Aux from "../../hoc/Aux";
-import fixRow from "./fixRow";
+//import fixRow from "./fixRow";
 //import headerHelpers from "../../containers/headerHelpers/headerHelpers";
 
 class Table extends Component {
@@ -128,22 +128,27 @@ class Table extends Component {
 
         this.setState({ totalFixHeight: totalFixHeight });
       });
+      return null;
     })
   };
 
   componentDidMount () {
-    this.fixRowHandler('.__main .rt-tr-group');
-    const rowHeight = document.querySelector('.__main .rt-tr-group').offsetHeight;
-    const headerHeight = document.querySelector('.__main .rt-thead.-headerGroups').offsetHeight;
-    this.setState({
-      headerHeight: headerHeight,
-      rowHeight: rowHeight,
-      totalFixHeight: headerHeight
-    });
+
+    if (this.props.data) {
+      this.fixRowHandler('.__main .rt-tr-group');
+      const rowHeight = document.querySelector('.__main .rt-tr-group').offsetHeight;
+      const headerHeight = document.querySelector('.__main .rt-thead.-headerGroups').offsetHeight;
+      this.setState({
+        headerHeight: headerHeight,
+        rowHeight: rowHeight,
+        totalFixHeight: headerHeight
+      });
+    }
   }
 
   render() {
-    const data = this.props.data;
+
+    let data = (this.props.data.length === 0) ? [[]] : this.props.data;
     // проверяем - если данные еще не загрузились -выводим пустую строку
     //создаем колонки с их заголовками и уровнями для react-table
     const tableHeader = this.tableColumnsHandler(this.props.header, [], data);    
@@ -154,8 +159,9 @@ class Table extends Component {
           className ={this.props.className}
           data={data}
           columns={tableHeader}
-          showPaginationBottom={false}      
-          defaultPageSize={data.length} 
+          showPaginationBottom={false}
+          pageSize={data.length}
+          onChange={() => console.log(ReactTable.defaultPageSize)}   
           />
       </Aux>
      );

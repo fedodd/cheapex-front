@@ -2,7 +2,7 @@ import React from 'react';
 import classes from './rangeFilter.pcss';
 import tinygradient from "tinygradient";
 //import { compile } from 'path-to-regexp';
-import arrayMinMax from '../../../functions/arrayMinMax';
+//import arrayMinMax from '../../../functions/arrayMinMax';
 
 class RangeFilter extends React.Component {
 
@@ -13,14 +13,15 @@ class RangeFilter extends React.Component {
       '#fdd64d',
       '#56a100'
     ]),
-    generatedStyle: 'red'
+    generatedStyle: 'red',
+    value: 0
   }
 
   thumbColorHandler = (event) => {
-    this.props.totalFilterHandler(event);
-    
+    this.props.filterHandler(event);
     this.setState({
-      generatedStyle: this.state.gradient.rgbAt(event.target.value / 100)
+      generatedStyle: this.state.gradient.rgbAt(event.target.value / 100),
+      value: event.target.value
     });
   }
 
@@ -32,6 +33,7 @@ class RangeFilter extends React.Component {
         <style>{`
             :root {
               --gradient: ${this.state.generatedStyle};
+              --rangeFilterValue: ${this.state.value}
               }
             `}
         </style>
@@ -43,7 +45,7 @@ class RangeFilter extends React.Component {
             max="100"
             defaultValue="0"
             step="2"
-            onChange={this.thumbColorHandler}
+            onInput={this.thumbColorHandler}
             className={classes.slider}
             id="rangeFilter"
              />

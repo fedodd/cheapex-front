@@ -1,4 +1,4 @@
-import React, { useState }  from 'react';
+import React from 'react';
 import classes from './Search.pcss';
 
 const search = (props) => {
@@ -9,7 +9,7 @@ const search = (props) => {
         className={classes.search} 
         type="text"
         placeholder="www, ИНН, название компании, город"
-        onChange={props.searchInputHandler}
+        onChange={props.filterHandler}
         id="searchFilter"></input>
     </div>
   );
