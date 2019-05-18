@@ -37,7 +37,7 @@ class RangeFilter extends React.Component {
               }
             `}
         </style>
-        <div className={classes.titleLine}><span>{this.props.totalValues.maxPrice}$ - {this.props.totalValues.minPrice}$</span><span>{this.props.totalValues.dMin}...{this.props.totalValues.dMax} дней</span></div>
+        <h2 className={classes.titleLine}><span>{this.props.totalValues.maxPrice}$ - {this.props.totalValues.minPrice}$</span><span>{this.props.totalValues.dMin}...{this.props.totalValues.dMax} дней</span></h2>
         <div className="slideContainer">
           <input
             type="range"
