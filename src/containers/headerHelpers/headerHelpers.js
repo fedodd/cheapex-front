@@ -10,10 +10,10 @@ import deepCopy from "../../functions/deepCopyArray";
 
 const headerHelpers = (fullData) => {
 
-  // массивы заголовков и их коротких значений и очищенные данные + добавим сразу итоговые колонки
+  // массивы заголовков и их коротких значений и очищенные данные + добавим сразу итоговые колонки и номер строки
 
-  const header = [...fullData[0], '= дней', '= дней', '= цена'];
-  const headerShort = [...fullData[1], null, null, null];
+  const header = ['№', ...fullData[0], '= дней', '= дней', '= цена'];
+  const headerShort = [null, ...fullData[1], null, null, null];
 
   // если сокращенного названия нет, то покажем полное название, сохраним индексы сокращенных колонок, чтобы потом раскрывать их значение
   let headerToTranscript = [];
@@ -28,7 +28,7 @@ const headerHelpers = (fullData) => {
 
 
   //здесь надо подумать, как потом в другой валюте данные закидывать.
-  const helpHeader = [...fullData[2], 'dMin', 'dMax(connect(…))', 'add($)'];
+  const helpHeader = [null, ...fullData[2], 'dMin', 'dMax(connect(…))', 'add($)'];
   const transcriptedHeader = transcriptHeaderHandler(header, headerShort, headerToTranscript);
 
   // распределяем данные по helpHeader
@@ -105,13 +105,20 @@ const headerHelpers = (fullData) => {
   });
 
   //отфильтровываем компании без данных и сохраняем их в отдельный массив noDataCompanies
-  
-  const noDataCompanies = fullData.filter(row => row.length <= 3);
+  fullData.splice(0, 3);
+  const withIndexData = fullData.reduce((acc, row, index) => {
+    return [...acc, [index+1, ...row]];
+  }, []);
+
+  console.log(withIndexData);
+
+
+  const noDataCompanies = withIndexData.filter(row => row.length <= 4);
   //console.log(noDataCompanies);
-  const data = fullData.filter(row => row.length > 3);
+  const data = withIndexData.filter(row => row.length > 4);
 
   // убираем из данных заголовки
-  data.splice(0, 3);
+
 
   // функции для обработки helperHeader
 

@@ -49,9 +49,11 @@ class ResultPage extends Component {
     axios.get(fullpath).then(response => {
       const fullData = response.data.data;
       const data = headerHelpers(fullData);
+      console.log('data', data);
       const companies = {};
       data.tablerows.map((row, index) => {
         companies[index] = row[0];
+
         return null;
       });
 

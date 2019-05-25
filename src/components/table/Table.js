@@ -104,6 +104,7 @@ class Table extends Component {
       outputHeader = outputHeader.concat(value);
     });
     return outputHeader;
+    
   }
 
   //навешиваем listener on click записываем позицию ряда и перерсчитываем каждый раз при клике. 
