@@ -1,5 +1,4 @@
 :global .ReactTable {
-  overflow: auto;
   width: 100%;
 }
 
@@ -136,6 +135,17 @@
   top: 0px;
   z-index: 20;
   background-color: #fff9b8;
+  &:hover {
+    background-color: #fff9b8;
+  }
+}
+
+:global .rt-tr-group:hover {
+  background-color: #eef0f4;
+
+  & .rt-td:nth-last-child(-n+2) {
+    background-color: #eef0f4;
+  }
 }
 
 /* filtered rows*/
