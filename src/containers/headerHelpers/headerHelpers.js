@@ -6,6 +6,7 @@ import connectorHandler from "./connectorHandler";
 import deleteHandler from "./deleteHandler";
 import transcriptHandler from "./transcriptHanlder";
 import transcriptHeaderHandler from "./transcriptHeaderHandler";
+import companiesHandler from "./companiesHandler";
 import deepCopy from "../../functions/deepCopyArray";
 
 const headerHelpers = (fullData) => {
@@ -104,20 +105,23 @@ const headerHelpers = (fullData) => {
     return null;
   });
 
-  //отфильтровываем компании без данных и сохраняем их в отдельный массив noDataCompanies
+
+  // убираем из данных заголовки
   fullData.splice(0, 3);
+
+ 
   const withIndexData = fullData.reduce((acc, row, index) => {
     return [...acc, [index+1, ...row]];
   }, []);
 
-  console.log(withIndexData);
+  
 
-
-  const noDataCompanies = withIndexData.filter(row => row.length <= 4);
+  const linkedCompaniesData = companiesHandler(withIndexData);
+  console.log(linkedCompaniesData);
+  //отфильтровываем компании без данных и сохраняем их в отдельный массив noDataCompanies
+  const noDataCompanies = linkedCompaniesData.filter(row => row.length <= 4);
   //console.log(noDataCompanies);
-  const data = withIndexData.filter(row => row.length > 4);
-
-  // убираем из данных заголовки
+  const data = linkedCompaniesData.filter(row => row.length > 4);
 
 
   // функции для обработки helperHeader

@@ -38,6 +38,9 @@ class Table extends Component {
           case "transcriptWrapper":
             maxLength = 6;
             break;
+          case "company": 
+            maxLength = 20;
+            break;
           default: 
             maxLength = 8; 
             //console.log('default classname', checkingCell.props);
@@ -162,7 +165,7 @@ class Table extends Component {
           data={data}
           columns={tableHeader}
           showPaginationBottom={false}
-          pageSize={data.length}
+          
           onChange={() => console.log(ReactTable.defaultPageSize)}   
           />
       </Aux>
