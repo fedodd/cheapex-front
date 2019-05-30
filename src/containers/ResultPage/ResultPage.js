@@ -49,7 +49,6 @@ class ResultPage extends Component {
     axios.get(fullpath).then(response => {
       const fullData = response.data.data;
       const data = headerHelpers(fullData);
-      console.log('data', data);
       const companies = {};
       data.tablerows.map((row, index) => {
         companies[index] = row[0];
@@ -99,7 +98,6 @@ class ResultPage extends Component {
       // здесь надо прописать сценарии по ошибкам. а где-тоо выше - ловить ошибки - например файл не в том формате или типа того
     });
 
-    console.log('componentDidMount minPrice', this.state.totalValues.minPrice);
   }
   
   //склонения к слову 
@@ -117,11 +115,13 @@ class ResultPage extends Component {
 
     const noDataRows = this.state.noDataCompanies;
     const filteredRows = rows.filter(row => {
-      return row[0].toLowerCase().includes(targetString);
+      //row[1] - сайт компании
+
+      return row[1].props.children.toLowerCase().includes(targetString);
     });
 
     const filteredNoDataRows = noDataRows.filter(row => {
-      return row[0].toLowerCase().includes(targetString);
+      return row[1].props.children.toLowerCase().includes(targetString);
     });
 
     this.setState({

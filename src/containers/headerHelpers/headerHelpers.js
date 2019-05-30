@@ -113,16 +113,12 @@ const headerHelpers = (fullData) => {
   const withIndexData = fullData.reduce((acc, row, index) => {
     return [...acc, [index+1, ...row]];
   }, []);
-
-  
-
-  const linkedCompaniesData = companiesHandler(withIndexData);
-  console.log(linkedCompaniesData);
+ 
   //отфильтровываем компании без данных и сохраняем их в отдельный массив noDataCompanies
-  const noDataCompanies = linkedCompaniesData.filter(row => row.length <= 4);
+  let noDataCompanies = withIndexData.filter(row => row.length <= 4);
+  noDataCompanies = companiesHandler(noDataCompanies);
   //console.log(noDataCompanies);
-  const data = linkedCompaniesData.filter(row => row.length > 4);
-
+  const data = withIndexData.filter(row => row.length > 4);
 
   // функции для обработки helperHeader
 
@@ -130,9 +126,12 @@ const headerHelpers = (fullData) => {
   const calculatedData = calculateHandler(data, helpers.calculators);
   const calculatedDataCopy = deepCopy(calculatedData);
 
+  // делаем ссылками сайты компаний
+  const linkedCompaniesData = companiesHandler(calculatedDataCopy);
+  
   //функция addUnit добавляет единицы измерения и т.п. из headerHelper
   
-  const withUnitsData = addUnitHandler(calculatedDataCopy, helpers.addons);
+  const withUnitsData = addUnitHandler(linkedCompaniesData, helpers.addons);
   //функция добавления transcript
 
   const transcriptedData = transcriptHandler(withUnitsData, helpers.transcript);

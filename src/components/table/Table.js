@@ -3,6 +3,7 @@ import ReactTable from "react-table";
 //  import axios from "axios";
 import './Table.pcss';
 import Aux from "../../hoc/Aux";
+import clickDrugHandler from "../../functions/clickDrug";
 //import fixRow from "./fixRow";
 //import headerHelpers from "../../containers/headerHelpers/headerHelpers";
 
@@ -142,6 +143,7 @@ class Table extends Component {
       this.fixRowHandler('.__main .rt-tr-group');
       const rowHeight = document.querySelector('.__main .rt-tr-group').offsetHeight;
       const headerHeight = document.querySelector('.__main .rt-thead.-headerGroups').offsetHeight;
+      clickDrugHandler(document.querySelector('.__main .rt-tr-group'), document.querySelector('.__main'));
 
       this.setState({
         headerHeight: headerHeight,
@@ -157,17 +159,18 @@ class Table extends Component {
     // проверяем - если данные еще не загрузились -выводим пустую строку
     //создаем колонки с их заголовками и уровнями для react-table
     const tableHeader = this.tableColumnsHandler(this.props.header, [], data);    
-
+    console.log();
     return (
       <Aux>
-        <ReactTable 
-          className ={this.props.className}
-          data={data}
-          columns={tableHeader}
-          showPaginationBottom={false}
-          
-          onChange={() => console.log(ReactTable.defaultPageSize)}   
-          />
+        <div className='table-container'>
+          <ReactTable 
+            className ={this.props.className}
+            data={data}
+            columns={tableHeader}
+            showPaginationBottom={false}
+            onChange={() => console.log(ReactTable.defaultPageSize)}
+            />
+        </div>
       </Aux>
      );
   }
