@@ -128,6 +128,42 @@
   }
 }
 
+
+/* крепим итоговые колонки*/
+:global .rt-tr .rt-th:nth-child(-n+2),
+:global .rt-tr .rt-td:nth-child(-n+2) {
+  position: sticky;
+  left: 0;
+  z-index: 10;
+  background-color: white;
+
+  :global .rt-tr-group.fixed & {
+    z-index: 20;
+    background-color: #fff9b8;
+  }
+}
+
+:global .rt-tr .rt-th:last-child,
+:global .rt-tr .rt-td:last-child {
+  left: 0;
+}
+
+:global .rt-tr .rt-th:nth-child(2),
+:global .rt-tr .rt-td:nth-child(2) {
+  left: 16px;
+  :global .__main &::after {
+    position: absolute;
+    top: 0;
+    right: 5px;
+    width: 5px;
+    height: 100%;
+    background: linear-gradient(to left, transparent, lightgrey);
+    content: '';
+  }
+}
+
+
+
 /* fixed rows*/
 
 :global .rt-tr-group.fixed {
