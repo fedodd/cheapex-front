@@ -7,22 +7,36 @@ import tinygradient from "tinygradient";
 class RangeFilter extends React.Component {
 
   state = {
-
     gradient: tinygradient([
       '#ff0000',
       '#fdd64d',
       '#56a100'
     ]),
-    generatedStyle: 'red',
+    generatedStyle: '#ff0000',
+    trackGradient: 'linear-gradient(90deg, #ff0000, #fdd64d 47%, #56a100)',
     value: 0
   }
 
   thumbColorHandler = (event) => {
     this.props.filterHandler(event);
+    const generatedStyle = this.state.gradient.rgbAt(event.target.value / 100);
+    let trackGradient = this.state.trackGradient; 
+    if ((event.target.value) < 47) {
+      trackGradient = 'linear-gradient(90deg, #dbdbdb, #dbdbdb ' + event.target.value + '%, ' + generatedStyle + ' ' + event.target.value + '%, #fdd64d 47%, #56a100)';
+    } else {
+      trackGradient = 'linear-gradient(90deg, #dbdbdb, #dbdbdb ' + event.target.value + '%, ' + generatedStyle + ' ' + event.target.value + '%, #56a100)';
+    }
+
+    const generatedTrackStyle = 
     this.setState({
-      generatedStyle: this.state.gradient.rgbAt(event.target.value / 100),
-      value: event.target.value
+      generatedStyle: generatedStyle,
+      value: event.target.value,
+      trackGradient: trackGradient
     });
+  }
+
+  componentDidMount () {
+
   }
 
 
@@ -33,7 +47,8 @@ class RangeFilter extends React.Component {
         <style>{`
             :root {
               --gradient: ${this.state.generatedStyle};
-              --rangeFilterValue: ${this.state.value}
+              --rangeFilterValue: ${this.state.value};
+              --trackGradient: ${this.state.trackGradient}
               }
             `}
         </style>
@@ -48,6 +63,7 @@ class RangeFilter extends React.Component {
             onInput={this.thumbColorHandler}
             className={classes.slider}
             id="rangeFilter"
+            
              />
         </div>
       </div>

@@ -12,10 +12,11 @@
   height: 6px;
   border-radius: 5px;
   outline: none;
-  background: linear-gradient(90deg, #ff0000, #fdd64d 47%, #56a100);
+  background: var(--trackGradient);
   -webkit-transition: .2s;
   transition: opacity .2s;
   -webkit-appearance: none;
+
 }
 
 .slider::-webkit-slider-thumb {
@@ -39,4 +40,17 @@
   background-color: inherit;
   -webkit-appearance: none;
   appearance: none;
+}
+
+
+.slider::-webkit-slider-runnable-track {
+  cursor: pointer;
+}
+
+.slider::-moz-range-track {
+  cursor: pointer;
+}
+
+.slider::-ms-track {
+  cursor: pointer;
 }
