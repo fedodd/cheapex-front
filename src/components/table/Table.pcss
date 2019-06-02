@@ -53,6 +53,7 @@
   padding-bottom: 10px;
   box-sizing: border-box;
   font-weight: bold;
+  
 }
 
 :global .rt-thead.-header {
@@ -68,25 +69,43 @@
   width: 14px;
 }
 
+/* transcript styling*/
+
+:global .arrowConnected {
+  position: relative;
+}
+
+:global .rt-td > .transcriptWrapper {
+  position: relative;
+} 
+
 :global .transcriptWrapper {
   box-sizing: border-box;
+
+  :global .rt-th &{
+    position: relative;
+  }
+
   & .transcripted {
     position: absolute;
     top: 0;
     left: 0;
     z-index: 30;
     display: none;
-    padding: 3px;
+    margin: -1px -.33em;
+    padding: 0 .33em;
     box-sizing: border-box;
     width: max-content;
-    border: 1px solid grey;
-    background-color: white;
+    border-top: 1px #fff solid;
+    border-bottom: 1px #fff8b8 solid;
+    background-color: #fffcdc;
   }
 }
 
 :global .rt-td:hover .transcriptWrapper .transcripted,
 :global .rt-th:hover .transcriptWrapper .transcripted {
   display: inline-block;
+  
 }
 
 :global .alignedValue {
@@ -98,7 +117,7 @@
 :global .alignedValue__big {
   display: inline-block;
   width: 28px;
-  text-align: right;
+  text-align: center;
 }
 
 
