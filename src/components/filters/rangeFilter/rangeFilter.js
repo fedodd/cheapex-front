@@ -39,9 +39,7 @@ class RangeFilter extends React.Component {
 
   componentDidUpdate(prevProps) {
     // запускаем спиннер с задежкой если изменидись данные в таблице
-    console.log('componentDidUpdate');
     if (this.props!== prevProps) {
-      console.log('componentDidUpdate changed!');
       this.setState({
         maxPrice: this.props.totalValues.maxPrice,
         minPrice: this.props.totalValues.minPrice,

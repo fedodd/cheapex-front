@@ -44,6 +44,34 @@ class ResultPage extends Component {
     rangeFilterValue: null
   }
 
+  minMaxHandler = (numericDataBefore, filteredRows, totalValues) => {
+
+    const targetIndexes = filteredRows.map(row => row[0]);
+    const numericData = numericDataBefore.filter((row, index) => targetIndexes.includes(index + 1));
+    
+    const totalPriceArray = numericData.map(row => row[row.length - 1]);
+    const dMaxArray = numericData.map(row => row[row.length - 2]);
+    const dMinArray = numericData.map(row => row[row.length - 3]);
+    const maxPrice = arrayMinMax(totalPriceArray, 'max');
+    const minPrice = arrayMinMax(totalPriceArray, 'min');
+    const dMax = arrayMinMax(dMaxArray, 'max');
+    const dMin = arrayMinMax(dMinArray, 'min');
+    const rangeStep = (totalValues.rangeStep === 0) ? (maxPrice - minPrice) / 100 : totalValues.rangeStep;
+    const rangeValue = (totalValues.rangeValue === 0) ? maxPrice : totalValues.rangeValue;
+
+    return {
+      totalPriceArray: totalPriceArray,
+      dMaxArray: dMaxArray,
+      dMinArray: dMinArray,
+      maxPrice: maxPrice,
+      minPrice: minPrice,
+      dMax: dMax,
+      dMin: dMin,
+      rangeStep: rangeStep,
+      rangeValue: rangeValue
+    }
+  }
+
   componentWillMount () {
     
     const fullpath = 'https://react-app-bc4e6.firebaseio.com/importedSheet/' + this.props.link + '.json';
@@ -60,15 +88,8 @@ class ResultPage extends Component {
 
       const numericData = data.numericData;
       const filteredRows = deepCopyArray(data.tablerows);
-      const totalPriceArray = numericData.map(row => row[row.length -1]);
-      const dMaxArray = numericData.map(row => row[row.length - 2]);
-      const dMinArray = numericData.map(row => row[row.length - 3]);
-
-      const maxPrice = arrayMinMax(totalPriceArray, 'max');
-      const minPrice = arrayMinMax(totalPriceArray, 'min');
-      const dMax = arrayMinMax(dMaxArray, 'max');
-      const dMin = arrayMinMax(dMinArray, 'min');
-      const rangeStep = (maxPrice - minPrice) / 100;
+      
+      const totalValues = this.minMaxHandler(numericData, filteredRows, this.state.totalValues);
       
       
       this.setState({
@@ -80,17 +101,7 @@ class ResultPage extends Component {
         noDataCompanies: data.noDataCompanies,
         filteredNoDataCompanies: data.noDataCompanies,
         companies: companies,
-        totalValues: {
-          totalPriceArray: totalPriceArray,
-          dMaxArray: dMaxArray,
-          dMinArray: dMinArray,
-          maxPrice: maxPrice,
-          minPrice: minPrice,
-          dMax: dMax,
-          dMin: dMin,
-          rangeStep: rangeStep,
-          rangeValue: maxPrice
-        } 
+        totalValues: totalValues
       });
     }).catch(error => {
       console.log('error!', error);
@@ -134,19 +145,16 @@ class ResultPage extends Component {
 
   //фильтрация поrange scrollbar. получаем значение, конвертируем в Price, записываем контрольное значение
 
-  totalFilterHandler = (rows, event) => {
+  totalFilterHandler = (rows, event, numericData, totalValues) => {
     let targetValue = 0;
 
-    if (event === undefined) {
+    if (event === null) {
       targetValue = document.getElementById('rangeFilter').value;
     } else {
       targetValue = event.target.value;
     }
 
-    const numericData = this.state.numericData;
-    const totalValues = this.state.totalValues;
     totalValues.rangeValue = Math.round(totalValues.minPrice + (100 - targetValue) * totalValues.rangeStep);
-
     const filteredRows = rows.filter((row, index) => (numericData[index][numericData[index].length - 1] <= totalValues.rangeValue));
 
     return filteredRows;
@@ -155,19 +163,25 @@ class ResultPage extends Component {
   complexFilterHandler = (event) => {
 
     let rows = this.state.tablerows;
+    const numericData = this.state.numericData;
+    const totalValues = this.state.totalValues;
     switch (event.target.id) {
       case "searchFilter":
-        rows = this.totalFilterHandler(rows);
+        rows = this.totalFilterHandler(rows, null, numericData, totalValues);
         rows = this.searchFilterHandler(rows, event);
         break;
       case "rangeFilter":
-        rows = this.totalFilterHandler(rows, event);
+        rows = this.totalFilterHandler(rows, event, numericData, totalValues);
         rows = this.searchFilterHandler(rows);
         break;
       default:;
     }
+
+    const updatedValues = this.minMaxHandler(numericData, rows, totalValues);
+    
     this.setState({
-      filteredRows: rows
+      filteredRows: rows,
+      totalValues: updatedValues
     });
   }
   
