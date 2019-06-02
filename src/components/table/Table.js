@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import ReactTable from "react-table";
 //  import axios from "axios";
-import './Table.pcss';
+import classes from './Table.pcss';
 import Aux from "../../hoc/Aux";
 import clickDrugHandler from "../../functions/clickDrug";
-//import fixRow from "./fixRow";
-//import headerHelpers from "../../containers/headerHelpers/headerHelpers";
+import Spinner from "../spinner/Spinner";
 
 class Table extends Component {
   state = {
@@ -14,7 +13,8 @@ class Table extends Component {
     rowHeight: 0,
     totalFixHeight: 0,
     fixrows: {
-    }
+    },
+    loading: this.props.loading
   }
 
   getColumnWidth = (rows, accessor, headerText) => {
@@ -75,7 +75,8 @@ class Table extends Component {
         currentRow['Header'] = el.value;
         currentRow['columns'] = [{ 
           'Header': el.value, 
-          'accessor': String(index), 
+          'accessor': String(index),
+          'minWidth': 40,  
           'width': this.getColumnWidth(data, String(index), currentRow['Header'])}];
       } else {
         // если такая колонка уже есть, то спрашиваем - есть ли уже дочерние колонки. если нет - создаем подколонки, переместив в нижний уровень колонку с тем же названием
@@ -88,14 +89,16 @@ class Table extends Component {
             { 'Header': currentRow['Header'], 
               'accessor': currentRow['accessor'] },
             { 'Header': el.value, 
-              'accessor': String(index), 
+              'accessor': String(index),
+              'minWidth': 40, 
               'width': this.getColumnWidth(data, String(index), currentRow['Header'])}]);
           currentRow['accessor'] = null;
           // если уже есть подколонки - просто добавляем ещу одну
         } else {
           currentRow.columns = currentRow.columns.concat({ 
             'Header': el.value, 
-            'accessor': String(index), 
+            'accessor': String(index),
+            'minWidth': 40, 
             'width': this.getColumnWidth(data, String(index), currentRow['Header'])});
         }
       }
@@ -138,7 +141,6 @@ class Table extends Component {
   };
 
   componentDidMount () {
-
     if (this.props.data) {
       this.fixRowHandler('.__main .rt-tr-group');
       const rowHeight = document.querySelector('.__main .rt-tr-group').offsetHeight;
@@ -153,22 +155,37 @@ class Table extends Component {
     }
   }
 
-  render() {
+      // запускаем спиннер с задежкой 
+  delayHandler = () => {
+    window.setTimeout(() => { this.setState({loading: false})}, 300);
+    return <Spinner />;
+  }
 
+  componentDidUpdate(prevProps) {
+        // запускаем спиннер с задежкой если изменидись данные в таблице
+    if (this.props.data !== prevProps.data) {
+      this.setState({loading: true});
+    }
+  }
+
+  render() {
     let data = (this.props.data.length === 0) ? [[]] : this.props.data;
     // проверяем - если данные еще не загрузились -выводим пустую строку
     //создаем колонки с их заголовками и уровнями для react-table
-    const tableHeader = this.tableColumnsHandler(this.props.header, [], data);    
-    console.log();
+    const tableHeader = this.tableColumnsHandler(this.props.header, [], data);
+    
     return (
       <Aux>
-        <div className='table-container'>
+        <div className={classes.tableContainer}>
+          
+          {this.state.loading ? this.delayHandler() : null}
           <ReactTable 
             className ={this.props.className}
             data={data}
             columns={tableHeader}
             showPaginationBottom={false}
-            onChange={() => console.log(ReactTable.defaultPageSize)}
+            defaultPageSize={1}
+            pageSize={data.length}
             />
         </div>
       </Aux>

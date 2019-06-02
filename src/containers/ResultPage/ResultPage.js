@@ -10,10 +10,12 @@ import ReactTable from "react-table";
 //import filterByValue from "../../functions/filterByValue";
 import arrayMinMax from '../../functions/arrayMinMax';
 import deepCopyArray from "../../functions/deepCopyArray";
+import Spinner from "../../components/spinner/Spinner";
 
 class ResultPage extends Component {
 
   state= {
+    error: false,
     companies: [],
     numericData: [],
     noDataCompanies: [],
@@ -43,7 +45,6 @@ class ResultPage extends Component {
   }
 
   componentWillMount () {
-    console.log('result page will mount!');
     
     const fullpath = 'https://react-app-bc4e6.firebaseio.com/importedSheet/' + this.props.link + '.json';
     axios.get(fullpath).then(response => {
@@ -52,7 +53,6 @@ class ResultPage extends Component {
       const companies = {};
       data.tablerows.map((row, index) => {
         companies[index] = row[0];
-
         return null;
       });
 
@@ -95,6 +95,7 @@ class ResultPage extends Component {
     }).catch(error => {
       console.log('error!', error);
       alert('error!');
+      this.setState({ error: true });
       // здесь надо прописать сценарии по ошибкам. а где-тоо выше - ловить ошибки - например файл не в том формате или типа того
     });
 
@@ -171,38 +172,44 @@ class ResultPage extends Component {
   }
   
   render() {
+    
+    //let renderDiv = this.state.error ? <p>Data can't be loaded!</p> : <Spinner />;
 
     if (this.state.tablerows.length === 0) {
       return (
-        <div>loading...</div>
-      )
+        <Spinner />
+      ) 
     }
+    
 
-    let noDataCompaniesTable = null;
     const noDataCompanies = this.state.filteredNoDataCompanies;
 
-    if (noDataCompanies.length !== 0) {
-      noDataCompaniesTable = 
-        <div>
-          <h2>Не ответили:</h2>
-          <ReactTable 
+    let noDataCompaniesTable = 
+          (<ReactTable 
             data={noDataCompanies}
             columns={[{
-              'Header': 'вебсайт', 
+              'Header': '№',
               'accessor': '0',
-              'width': '150'  
+              'minWidth': 40, 
+              'width': 16
+            }, {
+              'Header': 'вебсайт', 
+              'accessor': '1',
+              'width': 150  
             },
               {
                 'Header': 'ответили',
-                'accessor': '1',
-                'width': 'underfined'
+                'accessor': '2',
+                'minWidth': 40, 
+                'width': 'auto'
               }
             ]}
             showPaginationBottom={false}
-            defaultPageSize={noDataCompanies.length} 
-            className="table __noData"/>
-        </div>
-    }
+            defaultPageSize={1}
+            pageSize={noDataCompanies.length} 
+            className="table __noData"
+            />);
+    
 
     return (
       <div className={classes.resultPage}>
@@ -213,7 +220,9 @@ class ResultPage extends Component {
         <Table
           data={this.state.filteredRows}
           header={this.state.tableHeader}
-          className="table __main" />
+          loading={true}
+          className="table __main"
+          />
         {noDataCompaniesTable}
       </div>
     )

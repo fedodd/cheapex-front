@@ -7,6 +7,10 @@ import tinygradient from "tinygradient";
 class RangeFilter extends React.Component {
 
   state = {
+    maxPrice: this.props.totalValues.maxPrice,
+    minPrice: this.props.totalValues.minPrice,
+    dMin: this.props.totalValues.dMin,
+    dMax: this.props.totalValues.dMax,
     gradient: tinygradient([
       '#ff0000',
       '#fdd64d',
@@ -26,8 +30,6 @@ class RangeFilter extends React.Component {
     } else {
       trackGradient = 'linear-gradient(90deg, #dbdbdb, #dbdbdb ' + event.target.value + '%, ' + generatedStyle + ' ' + event.target.value + '%, #56a100)';
     }
-
-    const generatedTrackStyle = 
     this.setState({
       generatedStyle: generatedStyle,
       value: event.target.value,
@@ -35,10 +37,19 @@ class RangeFilter extends React.Component {
     });
   }
 
-  componentDidMount () {
-
+  componentDidUpdate(prevProps) {
+    // запускаем спиннер с задежкой если изменидись данные в таблице
+    console.log('componentDidUpdate');
+    if (this.props!== prevProps) {
+      console.log('componentDidUpdate changed!');
+      this.setState({
+        maxPrice: this.props.totalValues.maxPrice,
+        minPrice: this.props.totalValues.minPrice,
+        dMin: this.props.totalValues.dMin,
+        dMax: this.props.totalValues.dMax,
+      })
+    }
   }
-
 
   render () {
 
@@ -52,7 +63,7 @@ class RangeFilter extends React.Component {
               }
             `}
         </style>
-        <h2 className={classes.titleLine}><span>{this.props.totalValues.maxPrice}$ - {this.props.totalValues.minPrice}$</span><span>{this.props.totalValues.dMin}...{this.props.totalValues.dMax} дней</span></h2>
+        <h2 className={classes.titleLine}><span>{this.state.maxPrice}$ - {this.state.minPrice}$</span><span>{this.state.dMin}...{this.state.dMax} дней</span></h2>
         <div className="slideContainer">
           <input
             type="range"
@@ -63,7 +74,6 @@ class RangeFilter extends React.Component {
             onInput={this.thumbColorHandler}
             className={classes.slider}
             id="rangeFilter"
-            
              />
         </div>
       </div>

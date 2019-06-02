@@ -110,16 +110,19 @@ const headerHelpers = (fullData) => {
   fullData.splice(0, 3);
 
  
-  const withIndexData = fullData.reduce((acc, row, index) => {
-    return [...acc, [index+1, ...row]];
-  }, []);
+
  
   //отфильтровываем компании без данных и сохраняем их в отдельный массив noDataCompanies
-  let noDataCompanies = withIndexData.filter(row => row.length <= 4);
-  noDataCompanies = companiesHandler(noDataCompanies);
-  //console.log(noDataCompanies);
-  const data = withIndexData.filter(row => row.length > 4);
 
+  const data = fullData.filter(row => row.length > 4).reduce((acc, row, index) => {
+    return [...acc, [index + 1, ...row]];
+  }, []);
+
+  let noDataCompanies = fullData.filter(row => row.length <= 4).reduce((acc, row, index) => {
+    return [...acc, [index + 1 + data.length, ...row]];
+  }, []);
+  noDataCompanies = companiesHandler(noDataCompanies);
+  
   // функции для обработки helperHeader
 
   //подсчитаем нужные колонки с помощью функции калькулятора, отправив в нее данные и helpers. Сделаем deepcopy данных для дальнейшей обработки, оставив цифровые для фильтров, отправив calculatedData в state

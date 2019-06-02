@@ -1,0 +1,54 @@
+.loadSpinnerModal {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.Loader,
+.Loader:after {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.Loader {
+  position: relative;
+  overflow: hidden;
+  margin: 60px auto;
+  border-top: 1.1em solid lightgray;
+  border-right: 1.1em solid lightgray;
+  border-bottom: 1.1em solid lightgray;
+  border-left: 1.1em solid gray;
+  
+  font-size: 6px;
+  text-indent: -9999em;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation: load8 1.1s infinite linear;
+  animation: load8 1.1s infinite linear;
+}
+@-webkit-keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
