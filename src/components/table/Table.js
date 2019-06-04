@@ -19,7 +19,7 @@ class Table extends Component {
 
   getColumnWidth = (rows, accessor, headerText) => {
     const maxWidth = 200;
-    const magicSpacing = 8;
+    const magicSpacing = 10;
     let maxLength = 0;
     const checkingRow = rows[0];
     const checkingCell = rows[0][accessor];
@@ -76,7 +76,7 @@ class Table extends Component {
         currentRow['columns'] = [{ 
           'Header': el.value, 
           'accessor': String(index),
-          'minWidth': 40,  
+          'minWidth': 50,  
           'width': this.getColumnWidth(data, String(index), currentRow['Header'])}];
       } else {
         // если такая колонка уже есть, то спрашиваем - есть ли уже дочерние колонки. если нет - создаем подколонки, переместив в нижний уровень колонку с тем же названием
@@ -90,7 +90,7 @@ class Table extends Component {
               'accessor': currentRow['accessor'] },
             { 'Header': el.value, 
               'accessor': String(index),
-              'minWidth': 40, 
+              'minWidth': 50, 
               'width': this.getColumnWidth(data, String(index), currentRow['Header'])}]);
           currentRow['accessor'] = null;
           // если уже есть подколонки - просто добавляем ещу одну
@@ -98,7 +98,7 @@ class Table extends Component {
           currentRow.columns = currentRow.columns.concat({ 
             'Header': el.value, 
             'accessor': String(index),
-            'minWidth': 40, 
+            'minWidth': 50, 
             'width': this.getColumnWidth(data, String(index), currentRow['Header'])});
         }
       }

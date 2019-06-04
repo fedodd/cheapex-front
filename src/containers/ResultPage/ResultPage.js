@@ -205,11 +205,11 @@ class ResultPage extends Component {
               'Header': '№',
               'accessor': '0',
               'minWidth': 40, 
-              'width': 16
+              'width': 24
             }, {
               'Header': 'вебсайт', 
               'accessor': '1',
-              'width': 150  
+              'width': 200  
             },
               {
                 'Header': 'ответили',
