@@ -23,7 +23,7 @@ class Table extends Component {
     let maxLength = 0;
     const checkingRow = rows[0];
     const checkingCell = rows[0][accessor];
-
+    // последние колонки ставим заданной ширины
     if (checkingCell === checkingRow[checkingRow.length - 1] || checkingCell === checkingRow[checkingRow.length - 2]) {
       maxLength = 10;
     } else if (typeof (checkingCell) === 'object') {
@@ -34,13 +34,22 @@ class Table extends Component {
             maxLength = 9;
             break;
           case "arrowConnected":
-            maxLength = 11;
+            maxLength = 10;
             break;
           case "transcriptWrapper":
             maxLength = 6;
             break;
           case "company": 
-            maxLength = 20;
+          
+            [...rows].map(row => {
+              maxLength = (row[accessor].props.children.length > maxLength) ? maxLength = row[accessor].props.children.length : maxLength;
+              console.log(row[accessor].props.children.length);
+
+              return null;
+              
+            });
+            maxLength < 11 ? maxLength = 11 : null;
+
             break;
           default: 
             maxLength = 8; 

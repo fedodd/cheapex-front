@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Helvetica Neue' , Arial;
+  font-family: 'TT Commons', Arial, sans-serif;
   font-size: 16px;
   color: black;
 }
@@ -15,4 +15,15 @@ body {
   font-family: 'Helvetica Neue';
   font-weight: bold;
   src: url('../src/fonts/HelveticaNeueCyr-Bold.woff') format("woff");
+}
+
+@font-face {
+  font-family: 'TT Commons';
+  src: url('../src/fonts/TTCommonsRegular.otf') format("otf"); 
+}
+
+@font-face {
+  font-family: 'TT Commons';
+  font-weight: bold;
+  src: url('../src/fonts/TTCommonsMedium.otf') format("otf");
 }
