@@ -52,6 +52,7 @@
 :global .rt-th {
   padding-bottom: 10px;
   box-sizing: border-box;
+  outline: none;
   font-weight: bold;
   
 }
@@ -73,16 +74,21 @@
 
 :global .arrowConnected {
   position: relative;
+  height: 100%;
 }
 
 :global .rt-td > .transcriptWrapper {
   position: relative;
+
 } 
 
 :global .transcriptWrapper {
+  display: inline-flex;
+  align-items: center;
   box-sizing: border-box;
+  height: 100%;
 
-  :global .rt-th &{
+  :global .rt-th & {
     position: relative;
   }
 
@@ -90,12 +96,14 @@
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 30;
+    z-index: 9;
     display: none;
-    margin: -1px -.33em;
+    align-items: center;
+    margin: 0 -.33em;
     padding: 0 .33em;
     box-sizing: border-box;
     width: max-content;
+    height: 100%;
     border-top: 1px #fff solid;
     border-bottom: 1px #fff8b8 solid;
     background-color: #fffcdc;
@@ -104,7 +112,7 @@
 
 :global .rt-td:hover .transcriptWrapper .transcripted,
 :global .rt-th:hover .transcriptWrapper .transcripted {
-  display: inline-block;
+  display: inline-flex;
   
 }
 
@@ -117,7 +125,7 @@
 :global .alignedValue__big {
   display: inline-block;
   width: 35px;
-  text-align: right;
+  text-align: center;
 }
 
 
@@ -133,6 +141,10 @@
     z-index: 20;
     background-color: #fff9b8;
   }
+
+  :global .rt-tr-group.fixed:hover & {
+    background-color: #eef0f4;
+  }
 }
 
 :global .rt-tr .rt-th:last-child,
@@ -142,7 +154,7 @@
 
 :global .rt-tr .rt-th:nth-last-child(2),
 :global .rt-tr .rt-td:nth-last-child(2) {
-  right: 80px;
+  right: 100px;
   :global .__main &::before {
     position: absolute;
     top: 0;
@@ -166,6 +178,10 @@
   :global .rt-tr-group.fixed & {
     z-index: 20;
     background-color: #fff9b8;
+  }
+
+  :global .rt-tr-group.fixed:hover & {
+    background-color: #eef0f4;
   }
 }
 
@@ -197,9 +213,6 @@
   top: 0px;
   z-index: 20;
   background-color: #fff9b8;
-  &:hover {
-    background-color: #fff9b8;
-  }
 }
 
 :global .rt-tr-group:hover {
@@ -221,4 +234,9 @@
 
 :global .rt-tr .rt-td:nth-child(2) {
   text-decoration: underline;
+}
+
+
+:global .__noData .rt-td:last-child {
+  color: #f33;
 }
