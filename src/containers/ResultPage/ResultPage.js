@@ -197,6 +197,8 @@ class ResultPage extends Component {
     
 
     const noDataCompanies = this.state.filteredNoDataCompanies;
+    
+    noDataCompanies.map((row, index) => row[0] = this.state.filteredRows.length + 1 + index);
 
     let noDataCompaniesTable = 
           (<ReactTable 
@@ -204,8 +206,8 @@ class ResultPage extends Component {
             columns={[{
               'Header': '№',
               'accessor': '0',
-              'minWidth': 40, 
-              'width': 24
+              'minWidth': 20, 
+              'width': 20
             }, {
               'Header': 'вебсайт', 
               'accessor': '1',

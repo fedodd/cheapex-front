@@ -40,13 +40,9 @@ class Table extends Component {
             maxLength = 6;
             break;
           case "company": 
-          
             [...rows].map(row => {
               maxLength = (row[accessor].props.children.length > maxLength) ? maxLength = row[accessor].props.children.length : maxLength;
-              console.log(row[accessor].props.children.length);
-
               return null;
-              
             });
             maxLength < 11 ? maxLength = 11 : null;
 
@@ -76,16 +72,16 @@ class Table extends Component {
       
       // Пробуем взять элемент с нужным ключом. Элементы - объекты с value - react element и checkedName - названий колонок из исходной таблицы. под ключом checkedName будем записывать  value в acc и проверять - есть ли уже такой элемент
       let currentRow = null;
+
       currentRow = acc.get(el.checkedName);
-     
       // Если такого ещё нет, берём пустой объект  и задаем ему свойства колонок таблицы
       if ((!currentRow)) {
         currentRow = {};
         currentRow['Header'] = el.value;
         currentRow['columns'] = [{ 
-          'Header': el.value, 
+          'Header': el.value,
           'accessor': String(index),
-          'minWidth': 50,  
+          'minWidth': 50,
           'width': this.getColumnWidth(data, String(index), currentRow['Header'])}];
       } else {
         // если такая колонка уже есть, то спрашиваем - есть ли уже дочерние колонки. если нет - создаем подколонки, переместив в нижний уровень колонку с тем же названием
@@ -179,6 +175,8 @@ class Table extends Component {
 
   render() {
     let data = (this.props.data.length === 0) ? [[]] : this.props.data;
+    console.log(data);
+    data.map((row, index) => row[0] = index+1);
     // проверяем - если данные еще не загрузились -выводим пустую строку
     //создаем колонки с их заголовками и уровнями для react-table
     const tableHeader = this.tableColumnsHandler(this.props.header, [], data);
