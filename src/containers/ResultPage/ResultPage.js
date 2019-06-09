@@ -186,8 +186,7 @@ class ResultPage extends Component {
   }
   
   render() {
-    
-    //let renderDiv = this.state.error ? <p>Data can't be loaded!</p> : <Spinner />;
+    console.log('result render');
 
     if (this.state.tablerows.length === 0) {
       return (
@@ -211,7 +210,7 @@ class ResultPage extends Component {
             }, {
               'Header': 'вебсайт', 
               'accessor': '1',
-              'width': 200  
+              'width': 160  
             },
               {
                 'Header': 'ответили',

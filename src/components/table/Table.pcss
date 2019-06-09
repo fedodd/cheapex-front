@@ -5,6 +5,8 @@
 
 :global .ReactTable {
   position: relative;
+  margin: 0 15px;
+  box-sizing: border-box;
   width: 100%;
   height: max-content;
 }
@@ -45,6 +47,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-top: 2px;
   box-sizing: border-box;
   &:first-child {
     justify-content: flex-start;
@@ -103,23 +106,25 @@
     top: 0;
     left: 0;
     z-index: 9;
-    display: none;
+    display: inline-flex;
     align-items: center;
     margin: 0 -.33em;
     padding: 0 .33em;
     box-sizing: border-box;
+    box-sizing: border-box;
     width: max-content;
     height: 100%;
-    border-top: 1px #fff solid;
+    border-top: 1px transparent solid;
     border-bottom: 1px #fff8b8 solid;
+    opacity: 0;
     background-color: #fffcdc;
   }
 }
 
 :global .rt-td:hover .transcriptWrapper .transcripted,
 :global .rt-th:hover .transcriptWrapper .transcripted {
-  display: inline-flex;
-  
+  opacity: 1;
+  transition: .3s;
 }
 
 :global .alignedValue {
@@ -149,13 +154,8 @@
   }
 
   :global .rt-tr-group.fixed:hover & {
-    background-color: #eef0f4;
+    background-color: #f2f2e5;
   }
-}
-
-:global .rt-tr .rt-th:last-child,
-:global .rt-tr .rt-td:last-child {
-  right: 0;
 }
 
 :global .rt-tr .rt-th:nth-last-child(2),
@@ -173,7 +173,6 @@
   }
 }
 
-
 /* крепим названия компаний*/
 :global .rt-tr .rt-th:nth-child(-n+2),
 :global .rt-tr .rt-td:nth-child(-n+2) {
@@ -189,13 +188,8 @@
   }
 
   :global .rt-tr-group.fixed:hover & {
-    background-color: #eef0f4;
+    background-color: #f2f2e5;
   }
-}
-
-:global .rt-tr .rt-th:last-child,
-:global .rt-tr .rt-td:last-child {
-  left: 0;
 }
 
 :global .rt-tr .rt-th:nth-child(2),
@@ -222,6 +216,11 @@
   top: 0px;
   z-index: 20;
   background-color: #fff9b8;
+  transition: .3s;
+
+  &:hover {
+    background-color: #f2f2e5;
+  }
 }
 
 :global .rt-tr-group:hover {

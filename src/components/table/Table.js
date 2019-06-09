@@ -14,7 +14,8 @@ class Table extends Component {
     totalFixHeight: 0,
     fixrows: {
     },
-    loading: this.props.loading
+    loading: this.props.loading,
+    companyWidth: 'auto'
   }
 
   getColumnWidth = (rows, accessor, headerText) => {
@@ -45,7 +46,6 @@ class Table extends Component {
               return null;
             });
             maxLength < 11 ? maxLength = 11 : null;
-
             break;
           default: 
             maxLength = 8; 
@@ -174,8 +174,13 @@ class Table extends Component {
   }
 
   render() {
+
+    let tableWidth = 0;
+    document.getElementById('tableContainer') ? tableWidth = document.getElementById('tableContainer').offsetWidth : null;
+    
+
     let data = (this.props.data.length === 0) ? [[]] : this.props.data;
-    console.log(data);
+
     data.map((row, index) => row[0] = index+1);
     // проверяем - если данные еще не загрузились -выводим пустую строку
     //создаем колонки с их заголовками и уровнями для react-table
@@ -183,8 +188,14 @@ class Table extends Component {
     
     return (
       <Aux>
-        <div className={classes.tableContainer}>
-          
+
+        <div className={classes.tableContainer} id="tableContainer">
+          <style>{`
+            :root {
+              --tableWidth: ${tableWidth}px;
+              }
+            `}
+          </style>
           {this.state.loading ? this.delayHandler() : null}
           <ReactTable 
             className ={this.props.className}
