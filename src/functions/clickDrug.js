@@ -1,4 +1,6 @@
-const clickDrugHandler = (slider) => {
+const clickDrugHandler = (e) => {
+  const slider = e.target;
+
   let isDown = false;
   let startX;
   let scrollLeft;

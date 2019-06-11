@@ -264,3 +264,18 @@
 :global .__noData .rt-td:last-child {
   color: #f33;
 }
+
+.drugable {
+  display: flex;
+  overflow-x: scroll;
+  width: 500px;
+
+
+  & div {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 150px;
+    height: 100px;
+    border: 2px solid black;
+  }
+}

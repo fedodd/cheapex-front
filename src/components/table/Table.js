@@ -147,7 +147,6 @@ class Table extends Component {
       this.fixRowHandler('.__main .rt-tr-group');
       const rowHeight = document.querySelector('.__main .rt-tr-group').offsetHeight;
       const headerHeight = document.querySelector('.__main .rt-thead.-headerGroups').offsetHeight;
-      clickDrugHandler(document.querySelector('.__main .rt-tbody'));
 
       this.setState({
         headerHeight: headerHeight,
@@ -199,8 +198,24 @@ class Table extends Component {
             showPaginationBottom={false}
             defaultPageSize={1}
             pageSize={data.length}
-            onMouseDown={clickDrugHandler}
+            
             />
+        </div>
+        <div 
+        className={classes.drugable}
+        onMouseDown={e => clickDrugHandler(e)}
+        >
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
         </div>
       </Aux>
      );
