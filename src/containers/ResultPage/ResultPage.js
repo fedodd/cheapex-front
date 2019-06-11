@@ -186,7 +186,6 @@ class ResultPage extends Component {
   }
   
   render() {
-    console.log('result render');
 
     if (this.state.tablerows.length === 0) {
       return (

@@ -51,6 +51,14 @@ class RangeFilter extends React.Component {
 
   render () {
 
+    let extremeValues = {
+      maxPrice: Number.isFinite(this.state.maxPrice) ? this.state.maxPrice : null,
+      minPrice: Number.isFinite(this.state.minPrice) ? this.state.minPrice : null,
+      dMin: Number.isFinite(this.state.dMin) ? this.state.dMin : null,
+      dMax: Number.isFinite(this.state.dMax) ? this.state.dMax : null
+    }
+    
+
     return (
       <div className="rangeFilter">
         <style>{`
@@ -61,7 +69,7 @@ class RangeFilter extends React.Component {
               }
             `}
         </style>
-        <h2 className={classes.titleLine}><span>{this.state.maxPrice}$ - {this.state.minPrice}$</span><span>{this.state.dMin}...{this.state.dMax} дней</span></h2>
+        <h2 className={classes.titleLine}><span>{extremeValues.maxPrice}$ - {extremeValues.minPrice}$</span><span>{extremeValues.dMin}...{extremeValues.dMax} дней</span></h2>
         <div className="slideContainer">
           <input
             type="range"

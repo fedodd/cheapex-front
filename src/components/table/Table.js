@@ -26,7 +26,7 @@ class Table extends Component {
     const checkingCell = rows[0][accessor];
     // последние колонки ставим заданной ширины
     if (checkingCell === checkingRow[checkingRow.length - 1] || checkingCell === checkingRow[checkingRow.length - 2]) {
-      maxLength = 10;
+      maxLength = 9;
     } else if (typeof (checkingCell) === 'object') {
       if (checkingCell.props.children) {
         const className = checkingCell.props.className;
@@ -49,10 +49,8 @@ class Table extends Component {
             break;
           default: 
             maxLength = 8; 
-            //console.log('default classname', checkingCell.props);
         }
       } else {
-        //console.log('wihtout children', checkingCell.props);
         maxLength = 7;
       }
     } else {
@@ -62,7 +60,6 @@ class Table extends Component {
       });
     }
     
-    //console.log(maxWidth, maxLength, maxLength * magicSpacing);
     return Math.min(maxWidth, maxLength * magicSpacing)
   }
 
@@ -111,7 +108,7 @@ class Table extends Component {
       return acc.set(el.checkedName, currentRow);
     }, new Map());
 
-    // Теперь у тебя есть map
+    //  map
     headerMap.forEach((value, key) => {
       outputHeader = outputHeader.concat(value);
     });
@@ -150,7 +147,7 @@ class Table extends Component {
       this.fixRowHandler('.__main .rt-tr-group');
       const rowHeight = document.querySelector('.__main .rt-tr-group').offsetHeight;
       const headerHeight = document.querySelector('.__main .rt-thead.-headerGroups').offsetHeight;
-      clickDrugHandler(document.querySelector('.__main .rt-tr-group'), document.querySelector('.__main'));
+      clickDrugHandler(document.querySelector('.__main .rt-tbody'));
 
       this.setState({
         headerHeight: headerHeight,
@@ -177,8 +174,6 @@ class Table extends Component {
 
     let tableWidth = 0;
     document.getElementById('tableContainer') ? tableWidth = document.getElementById('tableContainer').offsetWidth : null;
-    
-
     let data = (this.props.data.length === 0) ? [[]] : this.props.data;
 
     data.map((row, index) => row[0] = index+1);
@@ -204,6 +199,7 @@ class Table extends Component {
             showPaginationBottom={false}
             defaultPageSize={1}
             pageSize={data.length}
+            onMouseDown={clickDrugHandler}
             />
         </div>
       </Aux>

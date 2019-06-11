@@ -1,5 +1,8 @@
 .tableContainer {
   position: relative;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  width: 100%;
   height: 100%;
 }
 
@@ -15,7 +18,6 @@
   padding-left: 15px;
   width: 100%;
   color: #2040a0;
-
   &:hover {
     color: #f33;
   }
@@ -23,6 +25,13 @@
 
 :global .rt-tbody {
   position: relative;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  width: 100%;
+
+  &.active {
+    cursor: -webkit-grab;
+  }
 }
 
 :global .rt-tr {
@@ -37,6 +46,8 @@
   top: 0;
   z-index: 100;
   align-items: center;
+  padding-top: 15px;
+  padding-bottom: 10px;
   background-color: white;
   box-shadow: 0px 0px 5px -5px lightgrey;
 }
@@ -55,11 +66,15 @@
 }
 
 :global .rt-th {
-  padding-bottom: 10px;
   box-sizing: border-box;
   outline: none;
   font-weight: bold;
   
+}
+
+:global .rt-td {
+  box-sizing: border-box;
+  border: 1px solid black;
 }
 
 :global .rt-thead.-header {
@@ -103,7 +118,8 @@
 
   & .transcripted {
     position: absolute;
-    top: 0;
+    top: -2px;
+    bottom: 0;
     left: 0;
     z-index: 9;
     display: inline-flex;
@@ -111,13 +127,13 @@
     margin: 0 -.33em;
     padding: 0 .33em;
     box-sizing: border-box;
-    box-sizing: border-box;
     width: max-content;
-    height: 100%;
-    border-top: 1px transparent solid;
-    border-bottom: 1px #fff8b8 solid;
+    border-top: 2px #fffcdc solid;
+    
     opacity: 0;
     background-color: #fffcdc;
+    box-shadow: inset 0px -1px 0px 0px #fff8b8;
+
   }
 }
 
