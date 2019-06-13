@@ -5,6 +5,7 @@ import classes from './Table.pcss';
 import Aux from "../../hoc/Aux";
 import clickDrugHandler from "../../functions/clickDrug";
 import Spinner from "../spinner/Spinner";
+import deepCopy from "../../functions/deepCopyArray";
 
 class Table extends Component {
   state = {
@@ -12,8 +13,7 @@ class Table extends Component {
     headerHeight: 0,
     rowHeight: 0,
     totalFixHeight: 0,
-    fixrows: {
-    },
+    fixedrows: [],
     loading: this.props.loading,
     companyWidth: 'auto'
   }
@@ -173,9 +173,16 @@ class Table extends Component {
 
     let tableWidth = 0;
     document.getElementById('tableContainer') ? tableWidth = document.getElementById('tableContainer').offsetWidth : null;
-    let data = (this.props.data.length === 0) ? [[]] : this.props.data;
+    let data = (this.props.data.length === 0) ? [[]] : deepCopy(this.props.data);
+    //пересчет номеров строк
+    
+    data.map((row, index) => {
+      console.log(row[0]);
+      
+      //row[0].props.children = index + 1;
+    });
 
-    data.map((row, index) => row[0] = index+1);
+    console.log('data, this.props.data', data, this.props.data);
     // проверяем - если данные еще не загрузились -выводим пустую строку
     //создаем колонки с их заголовками и уровнями для react-table
     const tableHeader = this.tableColumnsHandler(this.props.header, [], data);
@@ -198,7 +205,6 @@ class Table extends Component {
             showPaginationBottom={false}
             defaultPageSize={1}
             pageSize={data.length}
-            
             />
         </div>
         <div 

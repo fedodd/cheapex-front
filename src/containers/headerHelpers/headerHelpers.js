@@ -1,4 +1,4 @@
-//import React from "react";
+import React from "react";
 import calculateHandler from "./calculateHandler";
 import addUnitHandler from "./addUnitHandler";
 import imageHandler from "./imageHandler";
@@ -19,9 +19,7 @@ const headerHelpers = (fullData) => {
   // если сокращенного названия нет, то покажем полное название, сохраним индексы сокращенных колонок, чтобы потом раскрывать их значение
   let headerToTranscript = [];
   headerShort.map((elem, index) => {
-    if (elem === null) {
-  
-    } else {
+    if (elem !== null) {
       headerToTranscript = headerToTranscript.concat(index);
     };
     return null;
@@ -112,14 +110,15 @@ const headerHelpers = (fullData) => {
  
 
  
-  //отфильтровываем компании без данных и сохраняем их в отдельный массив noDataCompanies
+  //отфильтровываем компании без данных и сохраняем их в отдельный массив noDataCompanies и добавляем нумерацию рядов
 
   const data = fullData.filter(row => row.length > 4).reduce((acc, row, index) => {
-    return [...acc, [index + 1, ...row]];
+    return [...acc, [<span key={index}>{index + 1}</span>, ...row]];
   }, []);
+  console.log('only in helpers');
 
   let noDataCompanies = fullData.filter(row => row.length <= 4).reduce((acc, row, index) => {
-    return [...acc, [index + 1 + data.length, ...row]];
+    return [...acc, [(< span key = { index + data.length} > { index + 1 + data.length}</span >), ...row]];
   }, []);
   noDataCompanies = companiesHandler(noDataCompanies);
   
@@ -157,14 +156,25 @@ const headerHelpers = (fullData) => {
     headerToTranscript: headerToTranscript 
   };
   const cleanedHeader = deleteHandler(headerForClean, deleteColumns);
+  
+  const indexData = cleanedData.reduce((acc, elem, index) => {
+    const currentRow = {
+      index: index,
+      data: elem
+    };
+    return [...acc, currentRow];
+  }, []);
+
+  
 
   const exportData = {
     numericData: calculatedData,
     tablerows: cleanedData,
     tableHeader: cleanedHeader,
-    noDataCompanies: noDataCompanies
+    noDataCompanies: noDataCompanies,
+    indexData: indexData
   };
-  
+  console.log('exportData', exportData);
   return exportData;
 }
 

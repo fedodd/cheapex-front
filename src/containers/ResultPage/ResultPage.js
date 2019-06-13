@@ -16,12 +16,15 @@ class ResultPage extends Component {
 
   state= {
     error: false,
+    indexData: [],
+    fixedIndexArray: [],
     companies: [],
     numericData: [],
     noDataCompanies: [],
     filteredNoDataCompanies: [],
     noDataHeader: [],
     tablerows: [],
+
     tableHeader: {
       header: [],
       headerShort: [],
@@ -45,10 +48,8 @@ class ResultPage extends Component {
   }
 
   minMaxHandler = (numericDataBefore, filteredRows, totalValues) => {
-
     const targetIndexes = filteredRows.map(row => row[0]);
     const numericData = numericDataBefore.filter((row, index) => targetIndexes.includes(index + 1));
-    
     const totalPriceArray = numericData.map(row => row[row.length - 1]);
     const dMaxArray = numericData.map(row => row[row.length - 2]);
     const dMinArray = numericData.map(row => row[row.length - 3]);
@@ -78,29 +79,21 @@ class ResultPage extends Component {
     axios.get(fullpath).then(response => {
       const fullData = response.data.data;
       const data = headerHelpers(fullData);
-      const companies = {};
-      data.tablerows.map((row, index) => {
-        companies[index] = row[0];
-        return null;
-      });
-
       /* важно: мы сами генерируем последние три колонки и обращаемся к ним по индексам: -1 цена, -2 максдней, -3 миндней.  важно не сломать эту штуку:)*/
 
       const numericData = data.numericData;
       const filteredRows = deepCopyArray(data.tablerows);
-      
       const totalValues = this.minMaxHandler(numericData, filteredRows, this.state.totalValues);
-      
       
       this.setState({
         numericData: data.numericData,
         tablerows: data.tablerows,
         tableHeader: data.tableHeader,
+        indexData: data.exportData,
         filteredRows: filteredRows,
         totalItems: data.tablerows.length,
         noDataCompanies: data.noDataCompanies,
         filteredNoDataCompanies: data.noDataCompanies,
-        companies: companies,
         totalValues: totalValues
       });
     }).catch(error => {
@@ -109,7 +102,6 @@ class ResultPage extends Component {
       this.setState({ error: true });
       // здесь надо прописать сценарии по ошибкам. а где-тоо выше - ловить ошибки - например файл не в том формате или типа того
     });
-
   }
   
   //склонения к слову 
@@ -127,8 +119,7 @@ class ResultPage extends Component {
 
     const noDataRows = this.state.noDataCompanies;
     const filteredRows = rows.filter(row => {
-      //row[1] - сайт компании
-
+    //row[1] - сайт компании
       return row[1].props.children.toLowerCase().includes(targetString);
     });
 
