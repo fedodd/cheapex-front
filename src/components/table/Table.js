@@ -174,22 +174,17 @@ class Table extends Component {
     let tableWidth = 0;
     document.getElementById('tableContainer') ? tableWidth = document.getElementById('tableContainer').offsetWidth : null;
     let data = (this.props.data.length === 0) ? [[]] : deepCopy(this.props.data);
-    //пересчет номеров строк
     
-    data.map((row, index) => {
-      console.log(row[0]);
-      
-      //row[0].props.children = index + 1;
-    });
+    //пересчет номеров строк
+    data.map((row, index) => row[0] = <span key={row[0]}>{index + 1}</span>);
+    
 
-    console.log('data, this.props.data', data, this.props.data);
     // проверяем - если данные еще не загрузились -выводим пустую строку
     //создаем колонки с их заголовками и уровнями для react-table
     const tableHeader = this.tableColumnsHandler(this.props.header, [], data);
     
     return (
       <Aux>
-
         <div className={classes.tableContainer} id="tableContainer">
           <style>{`
             :root {
@@ -211,13 +206,6 @@ class Table extends Component {
         className={classes.drugable}
         onMouseDown={e => clickDrugHandler(e)}
         >
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
           <div></div>
           <div></div>
           <div></div>

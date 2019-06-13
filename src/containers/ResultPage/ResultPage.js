@@ -107,7 +107,6 @@ class ResultPage extends Component {
   //склонения к слову 
   titleEnding = declOfNum(this.state.totalItems, ['компании', 'компаний', 'компаний']);
 
-
 // фильтрация по поиску. передаем ее в компонент search и возвращаем оттуда event из инпута. 
   searchFilterHandler = (rows, event) => {
     let targetString = '';

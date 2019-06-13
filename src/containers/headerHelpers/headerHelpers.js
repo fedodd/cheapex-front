@@ -107,18 +107,14 @@ const headerHelpers = (fullData) => {
   // убираем из данных заголовки
   fullData.splice(0, 3);
 
- 
-
- 
   //отфильтровываем компании без данных и сохраняем их в отдельный массив noDataCompanies и добавляем нумерацию рядов
 
   const data = fullData.filter(row => row.length > 4).reduce((acc, row, index) => {
-    return [...acc, [<span key={index}>{index + 1}</span>, ...row]];
+    return [...acc, [index + 1, ...row]];
   }, []);
-  console.log('only in helpers');
 
   let noDataCompanies = fullData.filter(row => row.length <= 4).reduce((acc, row, index) => {
-    return [...acc, [(< span key = { index + data.length} > { index + 1 + data.length}</span >), ...row]];
+    return [...acc, [index + 1 + data.length, ...row]];
   }, []);
   noDataCompanies = companiesHandler(noDataCompanies);
   
@@ -174,7 +170,6 @@ const headerHelpers = (fullData) => {
     noDataCompanies: noDataCompanies,
     indexData: indexData
   };
-  console.log('exportData', exportData);
   return exportData;
 }
 
