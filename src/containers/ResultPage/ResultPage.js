@@ -73,37 +73,6 @@ class ResultPage extends Component {
     }
   }
 
-  componentWillMount () {
-    
-    const fullpath = 'https://react-app-bc4e6.firebaseio.com/importedSheet/' + this.props.link + '.json';
-    axios.get(fullpath).then(response => {
-      const fullData = response.data.data;
-      const data = headerHelpers(fullData);
-      /* важно: мы сами генерируем последние три колонки и обращаемся к ним по индексам: -1 цена, -2 максдней, -3 миндней.  важно не сломать эту штуку:)*/
-
-      const numericData = data.numericData;
-      const filteredRows = deepCopyArray(data.tablerows);
-      const totalValues = this.minMaxHandler(numericData, filteredRows, this.state.totalValues);
-      
-      this.setState({
-        numericData: data.numericData,
-        tablerows: data.tablerows,
-        tableHeader: data.tableHeader,
-        indexData: data.exportData,
-        filteredRows: filteredRows,
-        totalItems: data.tablerows.length,
-        noDataCompanies: data.noDataCompanies,
-        filteredNoDataCompanies: data.noDataCompanies,
-        totalValues: totalValues
-      });
-    }).catch(error => {
-      console.log('error!', error);
-      alert('error!');
-      this.setState({ error: true });
-      // здесь надо прописать сценарии по ошибкам. а где-тоо выше - ловить ошибки - например файл не в том формате или типа того
-    });
-  }
-  
   //склонения к слову 
   titleEnding = declOfNum(this.state.totalItems, ['компании', 'компаний', 'компаний']);
 
@@ -174,6 +143,48 @@ class ResultPage extends Component {
       totalValues: updatedValues
     });
   }
+
+  addFixedRowHandler = (index) => {
+    let fixedIndexArray = this.state.fixedIndexArray;
+    const checkIndex = fixedIndexArray.indexOf(index);
+    (checkIndex === -1) ? fixedIndexArray.push(index) : fixedIndexArray.splice(checkIndex, 1);
+    
+    this.setState({
+      fixedIndexArray: fixedIndexArray
+    });
+  }
+
+  componentWillMount() {
+
+    const fullpath = 'https://react-app-bc4e6.firebaseio.com/importedSheet/' + this.props.link + '.json';
+    axios.get(fullpath).then(response => {
+      const fullData = response.data.data;
+      const data = headerHelpers(fullData);
+      /* важно: мы сами генерируем последние три колонки и обращаемся к ним по индексам: -1 цена, -2 максдней, -3 миндней.  важно не сломать эту штуку:)*/
+
+      const numericData = data.numericData;
+      const filteredRows = deepCopyArray(data.tablerows);
+      const totalValues = this.minMaxHandler(numericData, filteredRows, this.state.totalValues);
+
+      this.setState({
+        numericData: data.numericData,
+        tablerows: data.tablerows,
+        tableHeader: data.tableHeader,
+        indexData: data.exportData,
+        filteredRows: filteredRows,
+        totalItems: data.tablerows.length,
+        noDataCompanies: data.noDataCompanies,
+        filteredNoDataCompanies: data.noDataCompanies,
+        totalValues: totalValues
+      });
+    }).catch(error => {
+      console.log('error!', error);
+      alert('error!');
+      this.setState({ error: true });
+      // здесь надо прописать сценарии по ошибкам. а где-тоо выше - ловить ошибки - например файл не в том формате или типа того
+    });
+  }
+
   
   render() {
 
@@ -226,6 +237,8 @@ class ResultPage extends Component {
           header={this.state.tableHeader}
           loading={true}
           className="table __main"
+          addFixedRowHandler={this.addFixedRowHandler}
+          fixedRows={this.state.fixedIndexArray}
           />
         {noDataCompaniesTable}
       </div>

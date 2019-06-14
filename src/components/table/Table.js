@@ -118,9 +118,16 @@ class Table extends Component {
 
   //навешиваем listener on click записываем позицию ряда и перерсчитываем каждый раз при клике. 
   fixRowHandler = (targetClass) => {
-
+    console.log('i am start it');
     [...document.querySelectorAll(targetClass)].map((row, index) => {
+      const fixedRows = this.props.fixedRows;
+      
+      const rowIndex = row.querySelector('[uniqkey]').getAttribute('uniqkey');
+      fixedRows.includes(rowIndex) ? row.classList.add('fixed'): null;
+
       row.addEventListener('click', e => {
+        
+        this.props.addFixedRowHandler(rowIndex);
         let totalFixHeight = this.state.totalFixHeight;
         const rowHeight = this.state.rowHeight;
         
@@ -143,17 +150,8 @@ class Table extends Component {
   };
 
   componentDidMount () {
-    if (this.props.data) {
-      this.fixRowHandler('.__main .rt-tr-group');
-      const rowHeight = document.querySelector('.__main .rt-tr-group').offsetHeight;
-      const headerHeight = document.querySelector('.__main .rt-thead.-headerGroups').offsetHeight;
+    console.log('componentdid mount');
 
-      this.setState({
-        headerHeight: headerHeight,
-        rowHeight: rowHeight,
-        totalFixHeight: headerHeight
-      });
-    }
   }
 
       // запускаем спиннер с задежкой 
@@ -164,21 +162,44 @@ class Table extends Component {
 
   componentDidUpdate(prevProps) {
         // запускаем спиннер с задежкой если изменидись данные в таблице
+    console.log('componentDidUpdate');
+
+
+
+
     if (this.props.data !== prevProps.data) {
+      if (this.props.data) {
+
+        this.fixRowHandler('.__main .rt-tr-group');
+        const rowHeight = document.querySelector('.__main .rt-tr-group').offsetHeight;
+        const headerHeight = document.querySelector('.__main .rt-thead.-headerGroups').offsetHeight;
+
+        this.setState({
+          headerHeight: headerHeight,
+          rowHeight: rowHeight,
+          totalFixHeight: headerHeight
+        });
+      }
+      [...document.querySelectorAll('.__main .rt-tr-group')].map((row, index) => {
+        const fixedRows = this.props.fixedRows;
+
+        const rowIndex = row.querySelector('[uniqkey]').getAttribute('uniqkey');
+        fixedRows.includes(rowIndex) ? row.classList.add('fixed') : null;
+      });
+
       this.setState({loading: true});
     }
   }
 
   render() {
-
+    console.log('render');
     let tableWidth = 0;
     document.getElementById('tableContainer') ? tableWidth = document.getElementById('tableContainer').offsetWidth : null;
     let data = (this.props.data.length === 0) ? [[]] : deepCopy(this.props.data);
     
     //пересчет номеров строк
-    data.map((row, index) => row[0] = <span key={row[0]}>{index + 1}</span>);
+    data.map((row, index) => row[0] = <span uniqkey={row[0]} className="rowIndex">{index + 1}</span>);
     
-
     // проверяем - если данные еще не загрузились -выводим пустую строку
     //создаем колонки с их заголовками и уровнями для react-table
     const tableHeader = this.tableColumnsHandler(this.props.header, [], data);
