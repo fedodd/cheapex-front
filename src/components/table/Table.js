@@ -28,7 +28,10 @@ class Table extends Component {
     const checkingCell = rows[0][accessor];
     // последние колонки ставим заданной ширины
     if (checkingCell === checkingRow[checkingRow.length - 1] || checkingCell === checkingRow[checkingRow.length - 2]) {
+     
       maxLength = 10;
+    } else if (checkingCell === checkingRow[0]) {
+      maxLength = 4;
     } else if (typeof (checkingCell) === 'object') {
       if (checkingCell.props.children) {
         const className = checkingCell.props.className;

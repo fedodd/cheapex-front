@@ -5,10 +5,13 @@
 }
 
 :global .ReactTable {
-  position: relative !important;
-  margin: 0 15px;
+
   box-sizing: border-box;
   height: max-content;
+
+  &.__main {
+    position: relative !important;
+  }
 }
 
 :global .company {
@@ -28,13 +31,13 @@
   }
 }
 
-:global .rt-tr {
+:global .ReactTable .rt-tr {
   position: relative;
   display: flex;
   height: 28px;
 }
 
-:global .rt-thead {
+:global .ReactTable .rt-thead {
   position: sticky;
   top: 0;
   z-index: 100;
@@ -169,7 +172,8 @@
 :global .rt-tr .rt-th:nth-last-child(2),
 :global .rt-tr .rt-td:nth-last-child(2) {
   right: 100px;
-  :global .__main &::before {
+
+  :global .is__end .__main  &::before {
     position: absolute;
     top: 0;
     left: 0;
@@ -182,8 +186,8 @@
 }
 
 /* крепим названия компаний*/
-:global .rt-tr .rt-th:nth-child(-n+2),
-:global .rt-tr .rt-td:nth-child(-n+2) {
+:global .__main .rt-th:nth-child(-n+2),
+:global .__main .rt-td:nth-child(-n+2) {
   position: sticky;
   left: 0;
   z-index: 10;
@@ -203,7 +207,7 @@
 :global .rt-tr .rt-th:nth-child(2),
 :global .rt-tr .rt-td:nth-child(2) {
   left: 40px;
-  :global .__main &::after {
+  :global .is__scrolling .__main &::after {
     position: absolute;
     top: 0;
     right: 0;

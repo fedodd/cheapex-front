@@ -70,7 +70,7 @@ class RangeFilter extends React.Component {
             `}
         </style>
         <h2 className={classes.titleLine}><span>{extremeValues.maxPrice}$ - {extremeValues.minPrice}$</span><span>{extremeValues.dMin}...{extremeValues.dMax} дней</span></h2>
-        <div className="slideContainer">
+        <div className={classes.slideContainer}>
           <input
             type="range"
             min="0"
