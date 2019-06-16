@@ -3,7 +3,6 @@ import ReactTable from "react-table";
 
 import classes from './Table.pcss';
 import Aux from "../../hoc/Aux";
-import clickDrugHandler from "../../functions/clickDrug";
 import Spinner from "../spinner/Spinner";
 import deepCopy from "../../functions/deepCopyArray";
 
@@ -129,7 +128,6 @@ class Table extends Component {
 
   //навешиваем listener on click записываем позицию ряда и перерсчитываем каждый раз при клике. 
   fixRowHandler = (targetClass) => {
-    console.log('i am start it');
     [...document.querySelectorAll(targetClass)].map((row, index) => {
       const fixedRows = this.props.fixedRows;
 
@@ -161,31 +159,33 @@ class Table extends Component {
   };
 
   componentDidMount() {
-    console.log('componentdid mount');
-    //clickDrugHandler(this.sliderRef.current);
+    console.log('table componentdid mount', this.props.fixedRows);
+    this.fixRowHandler('.__main .rt-tr-group');
+    const rowHeight = document.querySelector('.__main .rt-tr-group').offsetHeight;
+    const headerHeight = document.querySelector('.__main .rt-thead.-headerGroups').offsetHeight;
 
+    this.setState({
+      headerHeight: headerHeight,
+      rowHeight: rowHeight,
+      totalFixHeight: headerHeight,
+      loading: true
+    });
   }
 
   // запускаем спиннер с задежкой 
   delayHandler = () => {
-    window.setTimeout(() => { this.setState({ loading: false }) }, 300);
+    window.setTimeout(() => { this.setState({ loading: false }) }, 200);
     return <Spinner />;
   }
 
   componentDidUpdate(prevProps) {
+    console.log('table componentDidUpdate', this.props.fixedRows);
     // запускаем спиннер с задежкой если изменидись данные в таблице
     
-
     if (this.props.data !== prevProps.data && this.props.data.length) {
-console.log('componentDidUpdate');
-      [...document.querySelectorAll('.__main .rt-tr-group')].map((row, index) => {
-        const fixedRows = this.props.fixedRows;
-
-        const rowIndex = row.querySelector('[uniqkey]').getAttribute('uniqkey');
-        fixedRows.includes(rowIndex) ? row.classList.add('fixed') : null;
-      });
-
+      console.log('table componentDidUpdate and changed data', this.props.fixedRows);
       this.fixRowHandler('.__main .rt-tr-group');
+            
       const rowHeight = document.querySelector('.__main .rt-tr-group').offsetHeight;
       const headerHeight = document.querySelector('.__main .rt-thead.-headerGroups').offsetHeight;
 
@@ -201,7 +201,9 @@ console.log('componentDidUpdate');
   render() {
     console.log('render');
     let tableWidth = 0;
-    document.getElementById('tableContainer') ? tableWidth = document.getElementById('tableContainer').offsetWidth : null;
+    if (document.getElementById('tableContainer')) {
+      tableWidth = document.getElementById('tableContainer').offsetWidth;
+    }
     let data = (this.props.data.length === 0) ? [[]] : deepCopy(this.props.data);
 
     //пересчет номеров строк

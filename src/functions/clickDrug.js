@@ -13,7 +13,6 @@ const clickDrugHandler = (slider) => {
     isDown = true;
     slider.classList.add('is__active');
     startX = e.pageX - slider.offsetLeft;
-    console.log('scrollLeft ', scrollLeft);
     scrollLeft = slider.scrollLeft;
   });
   slider.addEventListener('mouseleave', () => {
@@ -35,7 +34,6 @@ const clickDrugHandler = (slider) => {
   });
 
   slider.addEventListener('scroll', (e) => {
-    console.log('slider.scrollWidth - slider.clientWidth', slider.scrollWidth - slider.clientWidth);
    
     if ((slider.scrollWidth - slider.clientWidth) <= slider.scrollLeft + 2) {
       slider.classList.remove('is__end');

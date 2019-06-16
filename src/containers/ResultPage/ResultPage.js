@@ -49,7 +49,8 @@ class ResultPage extends Component {
       rangeStep: 0,
       rangeValue: 0
     },
-    rangeFilterValue: null
+    rangeFilterValue: null,
+    pageHeight: 'auto'
   }
 
   minMaxHandler = (numericDataBefore, filteredRows, totalValues) => {
@@ -191,16 +192,17 @@ class ResultPage extends Component {
   }
 
   componentDidMount () {
-    console.log('resultpage mount', this.sliderRef.current);
     this.sliderRef.current !== null ? clickDrugHandler(this.sliderRef.current): null;
-    //clickDrugHandler(this.sliderRef.current);
+    let pageHeight = this.state.pageHeight;
+    console.log(this.sliderRef.current);
+    pageHeight = (this.sliderRef.current !== null) ? this.sliderRef.current.offsetHeight : null;
     
+    this.setState({
+      pageHeight: pageHeight
+    })
   }
 
-  
-  render() {
-    console.log('resultPAge Render', this.sliderRef.current);
-    
+  render() {    
     if (this.state.tablerows.length === 0) {
       return (
         <div className={classes.resultPage} ref={this.sliderRef}>
@@ -208,6 +210,7 @@ class ResultPage extends Component {
         </div>
       ) 
     }
+
     
 
     const noDataCompanies = this.state.filteredNoDataCompanies;
@@ -242,7 +245,8 @@ class ResultPage extends Component {
     
 
     return (
-      <div className={classes.resultPage} ref={this.sliderRef}>
+      <div className={classes.resultPage} ref={this.sliderRef} style={{ height: this.state.pageHeight }}>
+
         <h1>Лучшие предложения по вашему запросу от {this.state.totalItems} {this.titleEnding}</h1>
         <Filters 
           filterHandler={this.complexFilterHandler}
