@@ -1,13 +1,12 @@
-const clickDrugHandler = (e) => {
-  const slider = e.target;
-
+const clickDrugHandler = (slider) => {
+  //const slider = e.target;
+  
   let isDown = false;
   let startX;
   let scrollLeft;
 
-
   slider.addEventListener('mousedown', (e) => {
-
+    console.log(e.target);
     isDown = true;
     slider.classList.add('active');
     startX = e.pageX - slider.offsetLeft;
@@ -27,7 +26,6 @@ const clickDrugHandler = (e) => {
     const x = e.pageX - slider.offsetLeft;
     const walk = (x - startX) * 1; //scroll-fast
     slider.scrollLeft = scrollLeft - walk;
-    console.log(scrollLeft - walk);
   });
 };
 

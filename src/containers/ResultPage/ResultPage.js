@@ -11,8 +11,13 @@ import ReactTable from "react-table";
 import arrayMinMax from '../../functions/arrayMinMax';
 import deepCopyArray from "../../functions/deepCopyArray";
 import Spinner from "../../components/spinner/Spinner";
+import clickDrugHandler from "../../functions/clickDrug";
 
 class ResultPage extends Component {
+  constructor(props) {
+    super(props);
+    this.sliderRef = React.createRef();
+  }
 
   state= {
     error: false,
@@ -185,9 +190,15 @@ class ResultPage extends Component {
     });
   }
 
+  componentDidMount () {
+    
+    this.sliderRef.current !== null ? clickDrugHandler(this.sliderRef): null;
+    console.log('resultpage mount', this.sliderRef.current);
+  }
+
   
   render() {
-
+    console.log('resultPAge Render');
     if (this.state.tablerows.length === 0) {
       return (
         <Spinner />
@@ -227,7 +238,7 @@ class ResultPage extends Component {
     
 
     return (
-      <div className={classes.resultPage}>
+      <div className={classes.resultPage} ref={this.sliderRef}>
         <h1>Лучшие предложения по вашему запросу от {this.state.totalItems} {this.titleEnding}</h1>
         <Filters 
           filterHandler={this.complexFilterHandler}
