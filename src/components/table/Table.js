@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactTable from "react-table";
-//  import axios from "axios";
+
 import classes from './Table.pcss';
 import Aux from "../../hoc/Aux";
 import clickDrugHandler from "../../functions/clickDrug";
@@ -8,6 +8,8 @@ import Spinner from "../spinner/Spinner";
 import deepCopy from "../../functions/deepCopyArray";
 
 class Table extends Component {
+
+
   state = {
     fixrowsCounter: 0,
     headerHeight: 0,
@@ -26,7 +28,7 @@ class Table extends Component {
     const checkingCell = rows[0][accessor];
     // последние колонки ставим заданной ширины
     if (checkingCell === checkingRow[checkingRow.length - 1] || checkingCell === checkingRow[checkingRow.length - 2]) {
-      maxLength = 9;
+      maxLength = 10;
     } else if (typeof (checkingCell) === 'object') {
       if (checkingCell.props.children) {
         const className = checkingCell.props.className;
@@ -157,6 +159,7 @@ class Table extends Component {
 
   componentDidMount() {
     console.log('componentdid mount');
+    //clickDrugHandler(this.sliderRef.current);
 
   }
 
@@ -171,7 +174,7 @@ class Table extends Component {
     
 
     if (this.props.data !== prevProps.data && this.props.data.length) {
-      console.log('componentDidUpdate');
+console.log('componentDidUpdate');
       [...document.querySelectorAll('.__main .rt-tr-group')].map((row, index) => {
         const fixedRows = this.props.fixedRows;
 

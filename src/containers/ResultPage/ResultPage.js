@@ -191,17 +191,21 @@ class ResultPage extends Component {
   }
 
   componentDidMount () {
-    
-    this.sliderRef.current !== null ? clickDrugHandler(this.sliderRef): null;
     console.log('resultpage mount', this.sliderRef.current);
+    this.sliderRef.current !== null ? clickDrugHandler(this.sliderRef.current): null;
+    //clickDrugHandler(this.sliderRef.current);
+    
   }
 
   
   render() {
-    console.log('resultPAge Render');
+    console.log('resultPAge Render', this.sliderRef.current);
+    
     if (this.state.tablerows.length === 0) {
       return (
-        <Spinner />
+        <div className={classes.resultPage} ref={this.sliderRef}>
+          <Spinner />
+        </div>
       ) 
     }
     
