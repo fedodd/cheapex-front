@@ -194,9 +194,11 @@ class ResultPage extends Component {
   componentDidMount () {
     this.sliderRef.current !== null ? clickDrugHandler(this.sliderRef.current): null;
     let pageHeight = this.state.pageHeight;
-    console.log(this.sliderRef.current);
-    pageHeight = (this.sliderRef.current !== null) ? this.sliderRef.current.offsetHeight : null;
+    console.log('componentDidMount resultpage', classes.resultPage, document.querySelector('.' + classes.resultPage).height);
     
+    
+    pageHeight = (this.sliderRef.current !== null) ? console.log(this.sliderRef.current.offsetHeight) : null;
+
     this.setState({
       pageHeight: pageHeight
     })
@@ -207,6 +209,7 @@ class ResultPage extends Component {
       return (
         <div className={classes.resultPage} ref={this.sliderRef}>
           <Spinner />
+          <div className='pageEnd' style={{position: 'relative'}}></div>
         </div>
       ) 
     }
@@ -245,7 +248,7 @@ class ResultPage extends Component {
     
 
     return (
-      <div className={classes.resultPage} ref={this.sliderRef} style={{ height: this.state.pageHeight }}>
+      <div className={classes.resultPage} ref={this.sliderRef} >
 
         <h1>Лучшие предложения по вашему запросу от {this.state.totalItems} {this.titleEnding}</h1>
         <Filters 
@@ -260,6 +263,7 @@ class ResultPage extends Component {
           fixedRows={this.state.fixedIndexArray}
           />
         {noDataCompaniesTable}
+        <div className='pageEnd' style={{ position: 'relative' }}></div>
       </div>
     )
   }

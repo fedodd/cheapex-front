@@ -159,7 +159,7 @@ class Table extends Component {
   };
 
   componentDidMount() {
-    console.log('table componentdid mount', this.props.fixedRows);
+    console.log('table componentdid mount', this.props.fixedRows, document.querySelector('.__main').offsetHeight);
     this.fixRowHandler('.__main .rt-tr-group');
     const rowHeight = document.querySelector('.__main .rt-tr-group').offsetHeight;
     const headerHeight = document.querySelector('.__main .rt-thead.-headerGroups').offsetHeight;
