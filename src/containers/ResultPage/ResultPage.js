@@ -209,7 +209,6 @@ class ResultPage extends Component {
       return (
         <div className={classes.resultPage} ref={this.sliderRef}>
           <Spinner />
-          <div className='pageEnd' style={{position: 'relative'}}></div>
         </div>
       ) 
     }
@@ -263,7 +262,6 @@ class ResultPage extends Component {
           fixedRows={this.state.fixedIndexArray}
           />
         {noDataCompaniesTable}
-        <div className='pageEnd' style={{ position: 'relative' }}></div>
       </div>
     )
   }
