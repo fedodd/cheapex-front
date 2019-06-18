@@ -193,16 +193,23 @@ class ResultPage extends Component {
 
   componentDidMount () {
     this.sliderRef.current !== null ? clickDrugHandler(this.sliderRef.current): null;
-    let pageHeight = this.state.pageHeight;
-    console.log('componentDidMount resultpage', classes.resultPage, document.querySelector('.' + classes.resultPage).height);
     
-    
-    pageHeight = (this.sliderRef.current !== null) ? console.log(this.sliderRef.current.offsetHeight) : null;
-
-    this.setState({
-      pageHeight: pageHeight
-    })
   }
+
+  componentDidUpdate(prevProps) {
+    
+    console.log('componentDidupdate resultpage', classes.resultPage, document.querySelector('.' + classes.resultPage).height);
+    let currentHeight = this.sliderRef.current.offsetHeight;
+    if (prevProps.pageHeight !== this.state.pageHeight && this.state.pageHeight !== currentHeight) {
+      
+      this.setState({
+        pageHeight: currentHeight
+      })
+    }
+    
+  
+  }
+
 
   render() {    
     if (this.state.tablerows.length === 0) {
@@ -212,8 +219,6 @@ class ResultPage extends Component {
         </div>
       ) 
     }
-
-    
 
     const noDataCompanies = this.state.filteredNoDataCompanies;
     
@@ -247,7 +252,7 @@ class ResultPage extends Component {
     
 
     return (
-      <div className={classes.resultPage} ref={this.sliderRef} >
+      <div className={classes.resultPage} ref={this.sliderRef} style={{ height: this.state.pageHeight}}>
 
         <h1>Лучшие предложения по вашему запросу от {this.state.totalItems} {this.titleEnding}</h1>
         <Filters 
