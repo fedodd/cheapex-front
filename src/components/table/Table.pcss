@@ -1,16 +1,17 @@
 .tableContainer {
+  position: relative;
   width: max-content;
-  height: max-conten;
+  height: max-content;
 }
 
 :global .ReactTable {
+  position: relative;
   box-sizing: border-box;
   width: max-content;
-  height: max-conten;
+  height: max-content;
 }
 
 :global .company {
-  padding-left: 15px;
   width: 100%;
   color: #2040a0;
   &:hover {
@@ -70,6 +71,10 @@
 :global .rt-thead.-header {
   display: none;
 }
+
+/* :global .rt-tr-group {
+  margin-left: 10px;
+} */
 
 :global .rt-tr-group .rt-td:first-child {
   justify-content: flex-end;
@@ -201,7 +206,7 @@
 
 :global .rt-tr .rt-th:nth-child(2),
 :global .rt-tr .rt-td:nth-child(2) {
-  left: 40px;
+  left: 44px;
   :global .is__scrolling .__main &::after {
     position: absolute;
     top: 0;
@@ -273,4 +278,48 @@
     height: 100px;
     border: 2px solid black;
   }
+}
+
+
+/* aligning */
+
+
+:global .rt-td  {
+  
+  & .is__rightAlign {
+    width: 100%;
+    text-align: right;
+  }
+
+    & .is__centerAlign {
+    width: 100%;
+    text-align: center;
+  }
+
+  & .dotsConnected {
+    width: 100%;
+    text-align: right;
+  }
+}
+
+:global .rt-table .rt-th {
+  justify-content: flex-end;
+}
+
+:global .rt-table .rt-td,
+:global .rt-table .rt-th {
+
+  &:first-child {
+    justify-content: flex-end;
+  }
+
+  &:nth-child(2) {
+    justify-content: flex-start;
+    padding-left: 15px;
+  }
+}
+
+
+:global .superClass {
+  background: green !important;
 }

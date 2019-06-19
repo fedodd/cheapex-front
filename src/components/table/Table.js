@@ -16,12 +16,13 @@ class Table extends Component {
     totalFixHeight: 0,
     fixedrows: [],
     loading: this.props.loading,
-    companyWidth: 'auto'
+    companyWidth: 'auto',
+    
   }
 
   getColumnWidth = (rows, accessor, headerText) => {
     const maxWidth = 200;
-    const magicSpacing = 10;
+    const magicSpacing = 11;
     let maxLength = 0;
     const checkingRow = rows[0];
     const checkingCell = rows[0][accessor];
@@ -36,7 +37,7 @@ class Table extends Component {
         const className = checkingCell.props.className;
         switch (className) {
           case "dotsConnected":
-            maxLength = 9;
+            maxLength = 8;
             break;
           case "arrowConnected":
             maxLength = 10;
@@ -47,19 +48,24 @@ class Table extends Component {
           case "company":
             [...rows].map(row => {
               maxLength = (row[accessor].props.children.length > maxLength) ? maxLength = row[accessor].props.children.length : maxLength;
+              console.log(maxLength);
               return null;
             });
             maxLength < 11 ? maxLength = 11 : null;
             break;
           default:
-            maxLength = 8;
+            //console.log('default class not in list ', checkingCell);
+            maxLength = 7;
         }
       } else {
+        //console.log('else object without children', checkingCell);
         maxLength = 7;
       }
     } else {
+      //console.log('else not object', checkingCell);
       [...rows].map(row => {
-        maxLength = (`${row[accessor]}`.length > maxLength) ? maxLength = `${row[accessor]}`.length : maxLength;
+        //console.log(maxLength);
+        maxLength = (`${row[accessor]}`.length > maxLength) ? maxLength = `${row[accessor]}`.length + 2 : maxLength;
         return null;
       });
     }
@@ -95,13 +101,15 @@ class Table extends Component {
           currentRow.columns = currentRow.columns.concat([
             {
               'Header': currentRow['Header'],
-              'accessor': currentRow['accessor']
+              'accessor': currentRow['accessor'],
+              'headerClassName': 'superClass'
             },
             {
               'Header': el.value,
               'accessor': String(index),
               'minWidth': 50,
-              'width': this.getColumnWidth(data, String(index), currentRow['Header'])
+              'width': this.getColumnWidth(data, String(index), currentRow['Header']),
+              'headerClassName': 'superClass'
             }]);
           currentRow['accessor'] = null;
           // если уже есть подколонки - просто добавляем ещу одну
@@ -110,7 +118,8 @@ class Table extends Component {
             'Header': el.value,
             'accessor': String(index),
             'minWidth': 50,
-            'width': this.getColumnWidth(data, String(index), currentRow['Header'])
+            'width': this.getColumnWidth(data, String(index), currentRow['Header']),
+              'headerClassName': 'superClass'
           });
         }
       }

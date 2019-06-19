@@ -230,8 +230,8 @@ class ResultPage extends Component {
             columns={[{
               'Header': '№',
               'accessor': '0',
-              'minWidth': 20, 
-              'width': 20
+              'minWidth': 44, 
+              'width': 44
             }, {
               'Header': 'вебсайт', 
               'accessor': '1',

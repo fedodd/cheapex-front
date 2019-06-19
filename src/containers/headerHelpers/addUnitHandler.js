@@ -1,3 +1,5 @@
+import React from 'react';
+
 const addUnitHandler = (data, addons) => { 
   let withUnitData = data.slice();
   //функция connector добавляет единицы измерения и т.п. из headerHelper
@@ -5,7 +7,9 @@ const addUnitHandler = (data, addons) => {
     return targetColumns.map(targetIndex => {
       const currentElem = dataRow[targetIndex];
       if ((!isNaN(currentElem)) || (!isNaN(String(currentElem).replace(",", ".")))) {
-        dataRow[targetIndex] = String(currentElem).replace(".", ",") + unit;
+        dataRow[targetIndex] = <span className="is__rightAlign">{String(currentElem).replace(".", ",") + unit}</span>
+      } else {
+        dataRow[targetIndex] = <span className="is__rightAlign">{currentElem}</span>
       }
       return null;
     });
