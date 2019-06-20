@@ -6,6 +6,9 @@ import Aux from "../../hoc/Aux";
 import Spinner from "../spinner/Spinner";
 import deepCopy from "../../functions/deepCopyArray";
 
+const headerHeight = 48;
+const rowHeight = 28;
+
 class Table extends Component {
 
 
@@ -135,39 +138,39 @@ class Table extends Component {
   }
 
   //навешиваем listener on click записываем позицию ряда и перерсчитываем каждый раз при клике. 
-  fixRowHandler = (targetClass) => {
-    [...document.querySelectorAll(targetClass)].map((row, index) => {
-      const fixedRows = this.props.fixedRows;
+  // fixRowHandler = (targetClass) => {
+  //   [...document.querySelectorAll(targetClass)].map((row, index) => {
+  //     const fixedRows = this.props.fixedRows;
 
-      const rowIndex = row.querySelector('[uniqkey]').getAttribute('uniqkey');
-      fixedRows.includes(rowIndex) ? row.classList.add('fixed') : null;
+  //     const rowIndex = row.querySelector('[uniqkey]').getAttribute('uniqkey');
+  //     fixedRows.includes(rowIndex) ? row.classList.add('fixed') : null;
 
-      row.addEventListener('click', e => {
+  //     row.addEventListener('click', e => {
 
-        this.props.addFixedRowHandler(rowIndex);
-        let totalFixHeight = this.state.totalFixHeight;
-        const rowHeight = this.state.rowHeight;
+  //       this.props.addFixedRowHandler(rowIndex);
+  //       let totalFixHeight = this.state.totalFixHeight;
+  //       const rowHeight = this.state.rowHeight;
 
-        if (row.classList.contains('fixed')) {
-          row.classList.remove('fixed');
-        } else {
-          row.classList.add('fixed');
-        }
+  //       if (row.classList.contains('fixed')) {
+  //         row.classList.remove('fixed');
+  //       } else {
+  //         row.classList.add('fixed');
+  //       }
 
-        let acc = this.state.headerHeight;
-        totalFixHeight = [...document.querySelectorAll(targetClass + '.fixed')].reduce((acc, row) => {
-          row.style.top = acc + 'px';
-          return acc + rowHeight;
-        }, acc);
+  //       let acc = this.state.headerHeight;
+  //       totalFixHeight = [...document.querySelectorAll(targetClass + '.fixed')].reduce((acc, row) => {
+  //         row.style.top = acc + 'px';
+  //         return acc + rowHeight;
+  //       }, acc);
 
-        this.setState({ totalFixHeight: totalFixHeight });
-      });
-      return null;
-    })
-  };
+  //       this.setState({ totalFixHeight: totalFixHeight });
+  //     });
+  //     return null;
+  //   })
+  // };
 
   componentDidMount() {
-    this.fixRowHandler('.__main .rt-tr-group');
+    // this.fixRowHandler('.__main .rt-tr-group');
     const rowHeight = document.querySelector('.__main .rt-tr-group').offsetHeight;
     const headerHeight = document.querySelector('.__main .rt-thead.-headerGroups').offsetHeight;
 
@@ -189,7 +192,7 @@ class Table extends Component {
     // запускаем спиннер с задежкой если изменидись данные в таблице
     
     if (this.props.data !== prevProps.data && this.props.data.length) {
-      this.fixRowHandler('.__main .rt-tr-group');
+      // this.fixRowHandler('.__main .rt-tr-group');
             
       const rowHeight = document.querySelector('.__main .rt-tr-group').offsetHeight;
       const headerHeight = document.querySelector('.__main .rt-thead.-headerGroups').offsetHeight;
@@ -235,6 +238,19 @@ class Table extends Component {
             showPaginationBottom={false}
             defaultPageSize={1}
             pageSize={data.length}
+            getTrGroupProps={(_state, rowInfo) => {
+              const id = rowInfo.row[0].props.uniqkey;
+              const isFixed = this.props.fixedRows && this.props.fixedRows.includes(id);
+              console.log(this.props.fixedrows);
+              
+              return {
+                onClick: (e) => this.props.addFixedRowHandler(id),
+                className: isFixed ? "fixed" : "",
+                style: {
+                  top: isFixed ? headerHeight + this.props.fixedRows.indexOf(id) * rowHeight + "px" : "auto"
+                }
+              }
+            }}
           />
         </div>
       </Aux>
@@ -242,4 +258,4 @@ class Table extends Component {
   }
 };
 
-export default Table;
+export default Table; 

@@ -4,6 +4,7 @@ const clickDrugHandler = (slider) => {
   let isDown = false;
   let startX;
   let scrollLeft;
+  let sl = 0;
   if (slider.scrollWidth === slider.clientWidth) {
     slider.classList.add('is__end');
   }
@@ -34,19 +35,22 @@ const clickDrugHandler = (slider) => {
   });
 
   slider.addEventListener('scroll', (e) => {
-   
-    if ((slider.scrollWidth - slider.clientWidth) <= slider.scrollLeft + 2) {
+    if (slider.scrollLeft === sl) return;
+
+    if ((slider.scrollWidth - slider.clientWidth) <= slider.scrollLeft + 5) {
       slider.classList.remove('is__end');
     } else {
       if (!slider.classList.contains('is__end'))
         slider.classList.add('is__end');
     }
 
-    if (slider.scrollLeft >= 2 || !slider.classList.contains('is__scrolling')) {
+    if (slider.scrollLeft >= 5 || !slider.classList.contains('is__scrolling')) {
       slider.classList.add('is__scrolling');
     } else {
       slider.classList.remove('is__scrolling');
     }
+
+    sl = slider.scrollLeft;
   })
 
 };

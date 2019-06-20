@@ -170,8 +170,8 @@ class ResultPage extends Component {
 
       const numericData = data.numericData;
       const filteredRows = deepCopyArray(data.tablerows);
+      
       const totalValues = this.minMaxHandler(numericData, filteredRows, this.state.totalValues);
-
       this.setState({
         numericData: data.numericData,
         tablerows: data.tablerows,
