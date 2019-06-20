@@ -48,7 +48,6 @@ class Table extends Component {
           case "company":
             [...rows].map(row => {
               maxLength = (row[accessor].props.children.length > maxLength) ? maxLength = row[accessor].props.children.length : maxLength;
-              console.log(maxLength);
               return null;
             });
             maxLength < 11 ? maxLength = 11 : null;
@@ -168,7 +167,6 @@ class Table extends Component {
   };
 
   componentDidMount() {
-    console.log('table componentdid mount', this.props.fixedRows, document.querySelector('.__main').offsetHeight);
     this.fixRowHandler('.__main .rt-tr-group');
     const rowHeight = document.querySelector('.__main .rt-tr-group').offsetHeight;
     const headerHeight = document.querySelector('.__main .rt-thead.-headerGroups').offsetHeight;
@@ -188,11 +186,9 @@ class Table extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log('table componentDidUpdate', this.props.fixedRows);
     // запускаем спиннер с задежкой если изменидись данные в таблице
     
     if (this.props.data !== prevProps.data && this.props.data.length) {
-      console.log('table componentDidUpdate and changed data', this.props.fixedRows);
       this.fixRowHandler('.__main .rt-tr-group');
             
       const rowHeight = document.querySelector('.__main .rt-tr-group').offsetHeight;

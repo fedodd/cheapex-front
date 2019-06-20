@@ -1,7 +1,15 @@
+:root .resultPageWrapper {
+  display: flex;
+  flex-direction: column;
+  padding-left: 15px;
+  box-sizing: border-box;
+  height: 100vh;
+}
+
 :root .resultPage {
   position: relative;
-  overflow-x: scroll;
-  
+  overflow: scroll;
+  flex: 1;
   
   & > * {
     position: sticky;

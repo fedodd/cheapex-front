@@ -192,11 +192,14 @@ class ResultPage extends Component {
   }
 
   componentDidMount () {
-    this.sliderRef.current !== null ? clickDrugHandler(this.sliderRef.current): null;
+    console.log(this.sliderRef);
     
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.tablerows.length !== this.state.tablerows.length) {
+      clickDrugHandler(this.sliderRef.current);
+    }
     
     console.log('componentDidupdate resultpage', classes.resultPage, document.querySelector('.' + classes.resultPage).height);
     let currentHeight = this.sliderRef.current.offsetHeight;
@@ -214,7 +217,7 @@ class ResultPage extends Component {
   render() {    
     if (this.state.tablerows.length === 0) {
       return (
-        <div className={classes.resultPage} ref={this.sliderRef}>
+        <div className={classes.resultPage}>
           <Spinner />
         </div>
       ) 
@@ -252,21 +255,24 @@ class ResultPage extends Component {
     
 
     return (
-      <div className={classes.resultPage} ref={this.sliderRef} style={{ height: this.state.pageHeight}}>
-
+      <div className={classes.resultPageWrapper}>
         <h1>Лучшие предложения по вашему запросу от {this.state.totalItems} {this.titleEnding}</h1>
-        <Filters 
+        <Filters
           filterHandler={this.complexFilterHandler}
-          totalValues={this.state.totalValues}/>
-        <Table
-          data={this.state.filteredRows}
-          header={this.state.tableHeader}
-          loading={true}
-          className="table __main"
-          addFixedRowHandler={this.addFixedRowHandler}
-          fixedRows={this.state.fixedIndexArray}
-          />
-        {noDataCompaniesTable}
+          totalValues={this.state.totalValues} />
+        <div className={classes.resultPage} ref={this.sliderRef} style={{ height: this.state.pageHeight}}>
+  
+          
+          <Table
+            data={this.state.filteredRows}
+            header={this.state.tableHeader}
+            loading={true}
+            className="table __main"
+            addFixedRowHandler={this.addFixedRowHandler}
+            fixedRows={this.state.fixedIndexArray}
+            />
+          {noDataCompaniesTable}
+        </div>
       </div>
     )
   }

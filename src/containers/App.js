@@ -52,10 +52,10 @@ class App extends Component {
       <BrowserRouter>
         <div className={classes.holder}>
           {resultTables}
-          <ul className={classes.navlinks} style={{paddingTop: "80px"}}>
+          <ul className={classes.navlinks} style={{display: "none"}}>
             {resultLinks}
           </ul>
-          <NavLink to={{ pathname: '/import' }} className={classes.link}>Страница для загрузки данных</NavLink>
+          {/* <NavLink to={{ pathname: '/import' }} className={classes.link}>Страница для загрузки данных</NavLink> */}
           <Route path="/import" component={Form} />
         </div>
       </BrowserRouter>

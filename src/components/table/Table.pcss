@@ -2,6 +2,17 @@
   position: relative;
   width: max-content;
   height: max-content;
+
+/*   &::after {
+    position: fixed;
+    top: 0;
+    right: 0;
+    display: block;
+    width: 10px;
+    height: 100%;
+    background-color: white;
+    content: '';
+  } */
 }
 
 :global .ReactTable {
@@ -152,6 +163,12 @@
 
 
 /* крепим итоговые колонки*/
+:global .rt-tr .rt-th:last-child,
+:global .rt-tr .rt-td:last-child {
+  padding-right: 20px;
+  border-right: 10px solid white;
+}
+
 :global .rt-tr .rt-th:nth-last-child(-n+2),
 :global .rt-tr .rt-td:nth-last-child(-n+2) {
   position: sticky;
@@ -171,7 +188,7 @@
 
 :global .rt-tr .rt-th:nth-last-child(2),
 :global .rt-tr .rt-td:nth-last-child(2) {
-  right: 100px;
+  right: 109px;
 
   :global .is__end .__main  &::before {
     position: absolute;
