@@ -5,7 +5,7 @@ import classes from './App.pcss';
 import ResultPage from './ResultPage/ResultPage';
 import Form from '../components/form/Form';
 import axios from "axios";
-
+//import Aux from "../hoc/Aux";
 
 class App extends Component {
 
@@ -48,15 +48,22 @@ class App extends Component {
                     key={'table' + link} />
     });
 
+    const linksWrapper = () => (
+      <React.Fragment>
+          <ul className={classes.navlinks}>
+            {resultLinks}
+            <NavLink to={{ pathname: '/import' }} className={classes.link}>Страница для загрузки данных</NavLink>
+          </ul>
+          {Form}
+      </React.Fragment>);
+
     return (
       <BrowserRouter>
         <div className={classes.holder}>
           {resultTables}
-          <ul className={classes.navlinks} style={{display: "none"}}>
-            {resultLinks}
-          </ul>
-          {/* <NavLink to={{ pathname: '/import' }} className={classes.link}>Страница для загрузки данных</NavLink> */}
-          <Route path="/import" component={Form} />
+          
+          <Route path="/import" component={linksWrapper} />
+          {linksWrapper}
         </div>
       </BrowserRouter>
     );
