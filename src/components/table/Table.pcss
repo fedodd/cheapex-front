@@ -50,7 +50,6 @@
   z-index: 100;
   align-items: center;
   padding-top: 15px;
-  padding-bottom: 10px;
   background-color: white;
   box-shadow: 0px 0px 5px -5px lightgrey;
 }
@@ -59,9 +58,10 @@
 :global .rt-th  {
   position: relative;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   padding-top: 2px;
+  padding-left: 10px;
   box-sizing: border-box;
   &:first-child {
     justify-content: flex-start;
@@ -69,10 +69,10 @@
 }
 
 :global .rt-th {
+  padding-bottom: 10px;
   box-sizing: border-box;
   outline: none;
   font-weight: bold;
-  
 }
 
 :global .rt-td {
@@ -135,7 +135,6 @@
     box-sizing: border-box;
     width: max-content;
     border-top: 2px #fffcdc solid;
-    
     opacity: 0;
     background-color: #fffcdc;
     box-shadow: inset 0px -1px 0px 0px #fff8b8;
@@ -146,7 +145,7 @@
 :global .rt-td:hover .transcriptWrapper .transcripted,
 :global .rt-th:hover .transcriptWrapper .transcripted {
   opacity: 1;
-  transition: .3s;
+  transition: .6s .3s;
 }
 
 :global .alignedValue {
@@ -194,10 +193,10 @@
     position: absolute;
     top: 0;
     left: 0;
+    box-sizing: border-box;
     width: 1px;
     height: 100%;
-    border-right: 1px rgba(0,0,0,.2) solid;
-    background-image: none;
+    background-color: rgba(0,0,0,.2);
     content: '';
   }
 }
@@ -340,3 +339,9 @@
 :global .superClass {
   background: green !important;
 }
+
+/*:global .rt-td:nth-child(8) {
+  justify-content: flex-start !important;
+  padding-left: 10px;
+  box-sizing: border-box;
+} */

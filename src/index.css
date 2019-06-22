@@ -28,3 +28,7 @@ body {
   font-weight: bold;
   src: url('../src/fonts/TTCommonsMedium.otf') format("otf");
 }
+
+::-webkit-scrollbar:horizontal { 
+    display: none; 
+}

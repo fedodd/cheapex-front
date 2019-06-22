@@ -193,7 +193,7 @@ class ResultPage extends Component {
 
   componentDidMount () {
     console.log(this.sliderRef);
-    
+
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -261,8 +261,6 @@ class ResultPage extends Component {
           filterHandler={this.complexFilterHandler}
           totalValues={this.state.totalValues} />
         <div className={classes.resultPage} ref={this.sliderRef} style={{ height: this.state.pageHeight}}>
-  
-          
           <Table
             data={this.state.filteredRows}
             header={this.state.tableHeader}

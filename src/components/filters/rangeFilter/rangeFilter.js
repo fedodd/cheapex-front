@@ -60,7 +60,7 @@ class RangeFilter extends React.Component {
     
 
     return (
-      <div className="rangeFilter">
+      <div className={classes.rangeFilter}>
         <style>{`
             :root {
               --gradient: ${this.state.generatedStyle};
