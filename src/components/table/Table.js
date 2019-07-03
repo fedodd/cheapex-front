@@ -6,7 +6,7 @@ import Aux from "../../hoc/Aux";
 import Spinner from "../spinner/Spinner";
 import deepCopy from "../../functions/deepCopyArray";
 
-const headerHeight = 48;
+const headerHeight = 43;
 const rowHeight = 28;
 
 class Table extends Component {
@@ -40,7 +40,7 @@ class Table extends Component {
         const className = checkingCell.props.className;
         switch (className) {
           case "dotsConnected":
-            maxLength = 8;
+            maxLength = 7;
             break;
           case "arrowConnected":
             maxLength = 10;
@@ -61,7 +61,7 @@ class Table extends Component {
         }
       } else {
         //console.log('else object without children', checkingCell);
-        maxLength = 7;
+        maxLength = 6;
       }
     } else {
       //console.log('else not object', checkingCell);
