@@ -126,7 +126,7 @@
     top: -2px;
     bottom: 0;
     left: 0;
-    z-index: 9;
+    z-index: 11;
     display: inline-flex;
     align-items: center;
     margin: 0 -.33em;
@@ -156,7 +156,7 @@
 :global .alignedValue__big {
   display: inline-block;
   width: 35px;
-  text-align: center;
+  text-align: left;
 }
 
 
@@ -170,7 +170,7 @@
 :global .rt-tr .rt-th:nth-last-child(-n+2),
 :global .rt-tr .rt-td:nth-last-child(-n+2) {
   position: sticky;
-  right: 0;
+  right: -1px; /* справа появаляются нижние ряды при прокрутке*/
   z-index: 10;
   background-color: white;
 
@@ -186,7 +186,7 @@
 
 :global .rt-tr .rt-th:nth-last-child(2),
 :global .rt-tr .rt-td:nth-last-child(2) {
-  right: 109px;
+  right: 108px; /* справа появаляются нижние ряды при прокрутке, поэтому меньше чем ширина колонки позиция*/
 
   :global .is__end .__main  &::before {
     position: absolute;
