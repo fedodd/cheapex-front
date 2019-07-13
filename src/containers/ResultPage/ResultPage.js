@@ -224,8 +224,9 @@ class ResultPage extends Component {
     }
 
     const noDataCompanies = this.state.filteredNoDataCompanies;
-    
-    noDataCompanies.map((row, index) => row[0] = this.state.filteredRows.length + 1 + index);
+    console.log('noDataCompanies', noDataCompanies);
+    //noDataCompanies.map((row, index) => row[0] = this.state.filteredRows.length + 1 + index);
+    noDataCompanies.map((row, index) => row[0] = null);
 
     let noDataCompaniesTable = 
           (<ReactTable 

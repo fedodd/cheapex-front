@@ -6,16 +6,13 @@ import Aux from "../../hoc/Aux";
 import Spinner from "../spinner/Spinner";
 import deepCopy from "../../functions/deepCopyArray";
 
-const headerHeight = 43;
-const rowHeight = 28;
-
 class Table extends Component {
 
 
   state = {
     fixrowsCounter: 0,
-    headerHeight: 0,
-    rowHeight: 0,
+    headerHeight: 49,
+    rowHeight: 34,
     totalFixHeight: 0,
     fixedrows: [],
     loading: this.props.loading,
@@ -171,13 +168,13 @@ class Table extends Component {
 
   componentDidMount() {
     // this.fixRowHandler('.__main .rt-tr-group');
-    const rowHeight = document.querySelector('.__main .rt-tr-group').offsetHeight;
-    const headerHeight = document.querySelector('.__main .rt-thead.-headerGroups').offsetHeight;
+    //const rowHeight = document.querySelector('.__main .rt-tr-group').offsetHeight;
+    //const headerHeight = document.querySelector('.__main .rt-thead.-headerGroups').offsetHeight;
 
     this.setState({
-      headerHeight: headerHeight,
-      rowHeight: rowHeight,
-      totalFixHeight: headerHeight,
+      //headerHeight: headerHeight,
+      //rowHeight: rowHeight,
+      totalFixHeight: this.state.headerHeight,
       loading: true
     });
   }
@@ -194,13 +191,13 @@ class Table extends Component {
     if (this.props.data !== prevProps.data && this.props.data.length) {
       // this.fixRowHandler('.__main .rt-tr-group');
             
-      const rowHeight = document.querySelector('.__main .rt-tr-group').offsetHeight;
-      const headerHeight = document.querySelector('.__main .rt-thead.-headerGroups').offsetHeight;
+      //const rowHeight = document.querySelector('.__main .rt-tr-group').offsetHeight;
+      //const headerHeight = document.querySelector('.__main .rt-thead.-headerGroups').offsetHeight;
 
       this.setState({
-        headerHeight: headerHeight,
-        rowHeight: rowHeight,
-        totalFixHeight: headerHeight,
+        //headerHeight: headerHeight,
+        //rowHeight: rowHeight,
+        //totalFixHeight: headerHeight,
         loading: true
       });
     }
@@ -247,7 +244,7 @@ class Table extends Component {
                 onClick: (e) => this.props.addFixedRowHandler(id),
                 className: isFixed ? "fixed" : "",
                 style: {
-                  top: isFixed ? headerHeight + this.props.fixedRows.indexOf(id) * rowHeight + "px" : "auto"
+                  top: isFixed ? this.state.headerHeight + this.props.fixedRows.indexOf(id) * this.state.rowHeight + "px" : "auto"
                 }
               }
             }}

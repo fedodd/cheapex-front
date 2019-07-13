@@ -2,17 +2,6 @@
   position: relative;
   width: max-content;
   height: max-content;
-
-/*   &::after {
-    position: fixed;
-    top: 0;
-    right: 0;
-    display: block;
-    width: 10px;
-    height: 100%;
-    background-color: white;
-    content: '';
-  } */
 }
 
 :global .ReactTable {
@@ -41,7 +30,8 @@
 :global .ReactTable .rt-tr {
   position: relative;
   display: flex;
-  height: 28px;
+  height: 34px;
+  
 }
 
 :global .ReactTable .rt-thead {
@@ -69,13 +59,16 @@
 }
 
 :global .rt-th {
+  justify-content: center;
   padding-bottom: 10px;
   box-sizing: border-box;
   outline: none;
+  //border: 1px solid black;
 }
 
 :global .rt-td {
   box-sizing: border-box;
+  border-bottom: 1px solid rgba(0,0,0,.1);
 }
 
 :global .rt-thead.-header {
@@ -271,13 +264,19 @@
   text-decoration: underline;
 }
 
-:global .__noData .rt-td:last-child {
-  color: #f33;
+:global .ReactTable.table.__noData {
+  position: relative;
+  width: var(--tableWidth);
 }
 
-:global .__noData {
+:global .__noData .rt-td:last-child { 
+  padding-left: 40px;
+  //color: #f33;
+}
+
+:global .__noData .rt-td:nth-child(-n+2) {
   position: sticky;
-  left: 0;
+  z-index: 21;
 }
 
 .drugable {
@@ -315,10 +314,6 @@
     width: 100%;
     text-align: right;
   }
-}
-
-:global .rt-table .rt-th {
-  justify-content: flex-end;
 }
 
 :global .rt-table .rt-td,
