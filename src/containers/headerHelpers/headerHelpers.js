@@ -143,12 +143,15 @@ const headerHelpers = (fullData) => {
 
   //добавим знак равно
 
-  connectedDaysData.map(row => console.log(row[row.length - 2], row[row.length-1]));
+  
 
   //функция по удалению вспомогательных колонок
   const deleteColumns = [...helpers.connectArrow.columns].concat(helpers.calculators.dMaxConnectDots.columns).concat(helpers.transcript);
   const cleanedData = deleteHandler(connectedDaysData, deleteColumns);
-
+  cleanedData.map(row => {
+    //row[row.length - 2] = <div className="with_equally">= {row[row.length - 2]}</div>;
+    //row[row.length - 1] = <div className="with_equally">= {row[row.length - 1]}</div>;
+  });
   //удалим колонки из header
   const headerForClean = {
     header: transcriptedHeader,

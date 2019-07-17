@@ -195,7 +195,7 @@ class ResultPage extends Component {
   }
 
   componentDidMount () {
-    console.log(this.sliderRef);
+
   }
 
   componentDidUpdate(prevProps, prevState) {

@@ -7,9 +7,22 @@ const addUnitHandler = (data, addons) => {
     return targetColumns.map(targetIndex => {
       const currentElem = dataRow[targetIndex];
       if ((!isNaN(currentElem)) || (!isNaN(String(currentElem).replace(",", ".")))) {
-        dataRow[targetIndex] = <span className="is__rightAlign">{String(currentElem).replace(".", ",") + unit}</span>
+
+        if (targetIndex === targetColumns[targetColumns.length-1]) {
+          dataRow[targetIndex] = <div className="with_equally"><span>= </span><span className="is__rightAlign">{String(currentElem).replace(".", ",") + unit}</span></div> 
+        } else {
+          dataRow[targetIndex] = <span className="is__rightAlign">{String(currentElem).replace(".", ",") + unit}</span>
+        }
+        
       } else {
-        dataRow[targetIndex] = <span className="is__rightAlign">{currentElem}</span>
+        
+        if (targetIndex === targetColumns[targetColumns.length - 1]) {
+          dataRow[targetIndex] = <div className="with_equally"><span>= </span><span className="is__rightAlign">{currentElem}</span></div> 
+        } else {
+          dataRow[targetIndex] = <span className="is__rightAlign">{currentElem}</span>
+        }
+
+        
       }
       return null;
     });

@@ -5,7 +5,9 @@ const clickDrugHandler = (slider) => {
   let startX;
   let scrollLeft;
   let sl = 0;
-  if (slider.scrollWidth === slider.clientWidth) {
+  console.log('i am here!', slider.scrollWidth, slider.clientWidth);
+  if (slider.scrollWidth !== slider.clientWidth) {
+    console.log('i am here!');
     slider.classList.add('is__end');
   }
 
