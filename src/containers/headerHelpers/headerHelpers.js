@@ -141,6 +141,10 @@ const headerHelpers = (fullData) => {
   const connectedArrowData = connectorHandler(withImagesData, helpers.connectArrow);
   const connectedDaysData = connectorHandler(connectedArrowData, helpers.calculators.dMaxConnectDots);
 
+  //добавим знак равно
+
+  connectedDaysData.map(row => console.log(row[row.length - 2], row[row.length-1]));
+
   //функция по удалению вспомогательных колонок
   const deleteColumns = [...helpers.connectArrow.columns].concat(helpers.calculators.dMaxConnectDots.columns).concat(helpers.transcript);
   const cleanedData = deleteHandler(connectedDaysData, deleteColumns);

@@ -154,7 +154,10 @@ class ResultPage extends Component {
     let fixedIndexArray = this.state.fixedIndexArray;
     const checkIndex = fixedIndexArray.indexOf(index);
     (checkIndex === -1) ? fixedIndexArray.push(index) : fixedIndexArray.splice(checkIndex, 1);
-    
+    fixedIndexArray.sort(function (a, b) {
+      return a - b;
+    });
+    console.log(fixedIndexArray);
     this.setState({
       fixedIndexArray: fixedIndexArray
     });
@@ -193,24 +196,19 @@ class ResultPage extends Component {
 
   componentDidMount () {
     console.log(this.sliderRef);
-
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.tablerows.length !== this.state.tablerows.length) {
       clickDrugHandler(this.sliderRef.current);
     }
-    
-    console.log('componentDidupdate resultpage', classes.resultPage, document.querySelector('.' + classes.resultPage).height);
+    //console.log('componentDidupdate resultpage', classes.resultPage, document.querySelector('.' + classes.resultPage).height);
     let currentHeight = this.sliderRef.current.offsetHeight;
-    if (prevProps.pageHeight !== this.state.pageHeight && this.state.pageHeight !== currentHeight) {
-      
+    if (prevProps.pageHeight !== this.state.pageHeight && this.state.pageHeight !== currentHeight) {   
       this.setState({
         pageHeight: currentHeight
       })
     }
-    
-  
   }
 
 
@@ -224,7 +222,6 @@ class ResultPage extends Component {
     }
 
     const noDataCompanies = this.state.filteredNoDataCompanies;
-    console.log('noDataCompanies', noDataCompanies);
     //noDataCompanies.map((row, index) => row[0] = this.state.filteredRows.length + 1 + index);
     noDataCompanies.map((row, index) => row[0] = null);
 

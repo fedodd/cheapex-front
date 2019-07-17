@@ -7,6 +7,11 @@ import Spinner from "../spinner/Spinner";
 import deepCopy from "../../functions/deepCopyArray";
 
 class Table extends Component {
+  constructor(props) {
+    super(props);
+    this.tableContainerRef = React.createRef();
+
+  }
 
 
   state = {
@@ -170,7 +175,6 @@ class Table extends Component {
     // this.fixRowHandler('.__main .rt-tr-group');
     //const rowHeight = document.querySelector('.__main .rt-tr-group').offsetHeight;
     //const headerHeight = document.querySelector('.__main .rt-thead.-headerGroups').offsetHeight;
-
     this.setState({
       //headerHeight: headerHeight,
       //rowHeight: rowHeight,
@@ -181,7 +185,7 @@ class Table extends Component {
 
   // запускаем спиннер с задежкой 
   delayHandler = () => {
-    window.setTimeout(() => { this.setState({ loading: false }) }, 200);
+    window.setTimeout(() => { this.setState({ loading: false }) }, 100);
     return <Spinner />;
   }
 
@@ -204,11 +208,8 @@ class Table extends Component {
   }
 
   render() {
-    console.log('render');
-    let tableWidth = 0;
-    if (document.getElementById('tableContainer')) {
-      tableWidth = document.getElementById('tableContainer').offsetWidth;
-    }
+    console.log('table.js render');
+
     let data = (this.props.data.length === 0) ? [[]] : deepCopy(this.props.data);
 
     //пересчет номеров строк
@@ -220,10 +221,11 @@ class Table extends Component {
 
     return (
       <Aux>
-        <div className={classes.tableContainer} id="tableContainer">
+        <div className={classes.tableContainer} id="tableContainer" ref={this.tableContainerRef}>
+         
           <style>{`
             :root {
-              --tableWidth: ${tableWidth}px;
+              --tableWidth: ${this.tableContainerRef.current ? this.tableContainerRef.current.offsetWidth: 0}px;
               }
             `}
           </style>
@@ -238,7 +240,7 @@ class Table extends Component {
             getTrGroupProps={(_state, rowInfo) => {
               const id = rowInfo.row[0].props.uniqkey;
               const isFixed = this.props.fixedRows && this.props.fixedRows.includes(id);
-              console.log(this.props.fixedrows);
+              //console.log(this.props.fixedRows);
               
               return {
                 onClick: (e) => this.props.addFixedRowHandler(id),
