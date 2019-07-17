@@ -5,24 +5,23 @@ const addUnitHandler = (data, addons) => {
   //функция connector добавляет единицы измерения и т.п. из headerHelper
   const addUnit = (dataRow, targetColumns, unit) => {
     return targetColumns.map(targetIndex => {
+      
       const currentElem = dataRow[targetIndex];
       if ((!isNaN(currentElem)) || (!isNaN(String(currentElem).replace(",", ".")))) {
 
-        if (targetIndex === targetColumns[targetColumns.length-1]) {
-          dataRow[targetIndex] = <div className="with_equally"><span>= </span><span className="is__rightAlign">{String(currentElem).replace(".", ",") + unit}</span></div> 
+        if (targetIndex === targetColumns[targetColumns.length - 1] && unit ==='$') {
+          dataRow[targetIndex] = <div className="with_equally"><span>= </span><span className="is__rightAlign">{String(currentElem).replace(".", ",") + '  ' + unit}</span></div> 
         } else {
-          dataRow[targetIndex] = <span className="is__rightAlign">{String(currentElem).replace(".", ",") + unit}</span>
+          dataRow[targetIndex] = <span className="is__rightAlign">{String(currentElem).replace(".", ",") + ' ' + unit}</span>
         }
         
       } else {
         
-        if (targetIndex === targetColumns[targetColumns.length - 1]) {
+        if (targetIndex === targetColumns[targetColumns.length - 1] && unit === '$') {
           dataRow[targetIndex] = <div className="with_equally"><span>= </span><span className="is__rightAlign">{currentElem}</span></div> 
         } else {
           dataRow[targetIndex] = <span className="is__rightAlign">{currentElem}</span>
         }
-
-        
       }
       return null;
     });

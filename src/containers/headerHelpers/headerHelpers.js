@@ -34,22 +34,22 @@ const headerHelpers = (fullData) => {
   const helpers = {
     addons: {
       addHour: {
-        unit: ' ч.',
+        unit: 'ч.',
         columns: []
       },
       addDollar: {
-        unit: ' $',
+        unit: '$',
         columns: []
       },
       addPercent: {
-        unit: ' %',
+        unit: '%',
         columns: []
       },
     },
 
     calculators: {
       priceDollar: {
-        unit: ' $',
+        unit: '$',
         columns: []
       },
       dMin: [],
@@ -61,7 +61,7 @@ const headerHelpers = (fullData) => {
 
     transcript: [],
     connectArrow: {
-      unit: ' →  ',
+      unit: '→',
       columns: []
     },
     images: []
