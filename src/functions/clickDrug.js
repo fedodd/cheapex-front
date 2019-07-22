@@ -5,10 +5,15 @@ const clickDrugHandler = (slider) => {
   let startX;
   let scrollLeft;
   let sl = 0;
-  console.log('i am here!', slider.scrollWidth, slider.clientWidth);
+  console.log('i am here!', slider.scrollWidth, slider.clientWidth, slider.scrollWidth - slider.clientWidth, slider.scrollLeft);
+
   if (slider.scrollWidth !== slider.clientWidth) {
-    console.log('i am here!');
-    slider.classList.add('is__end');
+    if ((slider.scrollWidth - slider.clientWidth) <= slider.scrollLeft + 5) {
+      slider.classList.remove('is__end');
+    } else {
+      slider.classList.add('is__end');
+    }
+    
   }
 
   slider.addEventListener('mousedown', (e) => {
@@ -38,7 +43,7 @@ const clickDrugHandler = (slider) => {
 
   slider.addEventListener('scroll', (e) => {
     if (slider.scrollLeft === sl) return;
-
+    console.log()
     if ((slider.scrollWidth - slider.clientWidth) <= slider.scrollLeft + 5) {
       slider.classList.remove('is__end');
     } else {

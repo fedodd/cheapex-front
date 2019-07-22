@@ -25,8 +25,7 @@ class Table extends Component {
     
   }
 
-  getColumnWidth = (rows, accessor, headerText) => {
-    const maxWidth = 200;
+  getColumnWidth = (rows, accessor) => {
     const magicSpacing = 11;
     let maxLength = 0;
     const checkingRow = rows[0];
@@ -34,7 +33,7 @@ class Table extends Component {
     // последние колонки ставим заданной ширины
     if (checkingCell === checkingRow[checkingRow.length - 1] || checkingCell === checkingRow[checkingRow.length - 2]) {
      
-      maxLength = 10;
+      maxLength = 9;
     } else if (checkingCell === checkingRow[0]) {
       maxLength = 4;
     } else if (typeof (checkingCell) === 'object') {
@@ -53,6 +52,7 @@ class Table extends Component {
           case "company":
             [...rows].map(row => {
               maxLength = (row[accessor].props.children.length > maxLength) ? maxLength = row[accessor].props.children.length : maxLength;
+              
               return null;
             });
             maxLength < 11 ? maxLength = 11 : null;
@@ -73,14 +73,12 @@ class Table extends Component {
         return null;
       });
     }
-
-    return Math.min(maxWidth, maxLength * magicSpacing)
+    return Math.round(maxLength * magicSpacing + 10); /* 10px - padding */
   }
 
   //создаем колонки с их заголовками и уровнями для react-table
   tableColumnsHandler = (inputHeader, outputHeader, data) => {
     let headerMap = inputHeader.header.reduce((acc, el, index) => {
-
       // Пробуем взять элемент с нужным ключом. Элементы - объекты с value - react element и checkedName - названий колонок из исходной таблицы. под ключом checkedName будем записывать  value в acc и проверять - есть ли уже такой элемент
       let currentRow = null;
 
@@ -93,7 +91,8 @@ class Table extends Component {
           'Header': el.value,
           'accessor': String(index),
           'minWidth': 50,
-          'width': this.getColumnWidth(data, String(index), currentRow['Header'])
+          'maxWidth': 200,
+          'width': this.getColumnWidth(data, String(index))
         }];
       } else {
         // если такая колонка уже есть, то спрашиваем - есть ли уже дочерние колонки. если нет - создаем подколонки, переместив в нижний уровень колонку с тем же названием
@@ -112,7 +111,8 @@ class Table extends Component {
               'Header': el.value,
               'accessor': String(index),
               'minWidth': 50,
-              'width': this.getColumnWidth(data, String(index), currentRow['Header']),
+              'maxWidth': 200,
+              'width': this.getColumnWidth(data, String(index)),
               'headerClassName': 'superClass'
             }]);
           currentRow['accessor'] = null;
@@ -122,7 +122,8 @@ class Table extends Component {
             'Header': el.value,
             'accessor': String(index),
             'minWidth': 50,
-            'width': this.getColumnWidth(data, String(index), currentRow['Header']),
+            'maxWidth': 200,
+            'width': this.getColumnWidth(data, String(index)),
               'headerClassName': 'superClass'
           });
         }
@@ -139,45 +140,10 @@ class Table extends Component {
 
   }
 
-  //навешиваем listener on click записываем позицию ряда и перерсчитываем каждый раз при клике. 
-  // fixRowHandler = (targetClass) => {
-  //   [...document.querySelectorAll(targetClass)].map((row, index) => {
-  //     const fixedRows = this.props.fixedRows;
-
-  //     const rowIndex = row.querySelector('[uniqkey]').getAttribute('uniqkey');
-  //     fixedRows.includes(rowIndex) ? row.classList.add('fixed') : null;
-
-  //     row.addEventListener('click', e => {
-
-  //       this.props.addFixedRowHandler(rowIndex);
-  //       let totalFixHeight = this.state.totalFixHeight;
-  //       const rowHeight = this.state.rowHeight;
-
-  //       if (row.classList.contains('fixed')) {
-  //         row.classList.remove('fixed');
-  //       } else {
-  //         row.classList.add('fixed');
-  //       }
-
-  //       let acc = this.state.headerHeight;
-  //       totalFixHeight = [...document.querySelectorAll(targetClass + '.fixed')].reduce((acc, row) => {
-  //         row.style.top = acc + 'px';
-  //         return acc + rowHeight;
-  //       }, acc);
-
-  //       this.setState({ totalFixHeight: totalFixHeight });
-  //     });
-  //     return null;
-  //   })
-  // };
-
   componentDidMount() {
-    // this.fixRowHandler('.__main .rt-tr-group');
-    //const rowHeight = document.querySelector('.__main .rt-tr-group').offsetHeight;
-    //const headerHeight = document.querySelector('.__main .rt-thead.-headerGroups').offsetHeight;
+
     this.setState({
-      //headerHeight: headerHeight,
-      //rowHeight: rowHeight,
+
       totalFixHeight: this.state.headerHeight,
       loading: true
     });
@@ -185,7 +151,7 @@ class Table extends Component {
 
   // запускаем спиннер с задежкой 
   delayHandler = () => {
-    window.setTimeout(() => { this.setState({ loading: false }) }, 100);
+    window.setTimeout(() => { this.setState({ loading: false }) }, 300);
     return <Spinner />;
   }
 
@@ -193,22 +159,13 @@ class Table extends Component {
     // запускаем спиннер с задежкой если изменидись данные в таблице
     
     if (this.props.data !== prevProps.data && this.props.data.length) {
-      // this.fixRowHandler('.__main .rt-tr-group');
-            
-      //const rowHeight = document.querySelector('.__main .rt-tr-group').offsetHeight;
-      //const headerHeight = document.querySelector('.__main .rt-thead.-headerGroups').offsetHeight;
-
       this.setState({
-        //headerHeight: headerHeight,
-        //rowHeight: rowHeight,
-        //totalFixHeight: headerHeight,
         loading: true
       });
     }
   }
 
   render() {
-    console.log('table.js render');
 
     let data = (this.props.data.length === 0) ? [[]] : deepCopy(this.props.data);
 
@@ -218,14 +175,14 @@ class Table extends Component {
     // проверяем - если данные еще не загрузились -выводим пустую строку
     //создаем колонки с их заголовками и уровнями для react-table
     const tableHeader = this.tableColumnsHandler(this.props.header, [], data);
-
+    const companiesWidth = tableHeader[1].columns[0].width;
     return (
       <Aux>
         <div className={classes.tableContainer} id="tableContainer" ref={this.tableContainerRef}>
-         
           <style>{`
             :root {
               --tableWidth: ${this.tableContainerRef.current ? this.tableContainerRef.current.offsetWidth: 0}px;
+              --companiesWidth: ${companiesWidth ? companiesWidth + 'px' : 'auto'};
               }
             `}
           </style>

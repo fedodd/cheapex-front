@@ -6,7 +6,7 @@
 
 :global .ReactTable {
   position: relative;
-  box-sizing: border-box;
+
   width: max-content;
   height: max-content;
 }
@@ -48,36 +48,29 @@
 :global .rt-th  {
   position: relative;
   display: flex;
+  flex: none !important;
   justify-content: flex-start;
   align-items: center;
   padding-top: 2px;
+  padding-right: 10px;
   padding-left: 10px;
-  box-sizing: border-box;
-  &:first-child {
-    justify-content: flex-start;
-  }
+
 }
 
 :global .rt-th {
-  justify-content: center;
   padding-bottom: 10px;
-  box-sizing: border-box;
+
   outline: none;
-  //border: 1px solid black;
 }
 
 :global .rt-td {
-  box-sizing: border-box;
-  border-bottom: 1px solid rgba(0,0,0,.1);
+
+  border-bottom: 1px solid rgba(0,0,0, .1);
 }
 
 :global .rt-thead.-header {
   display: none;
 }
-
-/* :global .rt-tr-group {
-  margin-left: 10px;
-} */
 
 :global .rt-tr-group .rt-td:first-child {
   justify-content: flex-end;
@@ -107,7 +100,7 @@
 :global .transcriptWrapper {
   display: inline-flex;
   align-items: center;
-  box-sizing: border-box;
+ 
   height: 100%;
 
   :global .rt-th & {
@@ -119,12 +112,13 @@
     top: -2px;
     bottom: 0;
     left: 0;
-    z-index: 11;
+    z-index: 10;
     display: inline-flex;
+    flex-wrap: nowrap;
     align-items: center;
     margin: 0 -.33em;
     padding: 0 .33em;
-    box-sizing: border-box;
+ 
     width: max-content;
     border-top: 2px #fffcdc solid;
     opacity: 0;
@@ -136,8 +130,9 @@
 
 :global .rt-td:hover .transcriptWrapper .transcripted,
 :global .rt-th:hover .transcriptWrapper .transcripted {
+  z-index: 11;
   opacity: 1;
-  transition: .6s .6s;
+  transition: opacity .6s .6s;
 }
 
 :global .alignedValue {
@@ -154,11 +149,6 @@
 
 
 /* крепим итоговые колонки*/
-:global .rt-tr .rt-th:last-child,
-:global .rt-tr .rt-td:last-child {
-  padding-right: 20px;
-  border-right: 10px solid white;
-}
 
 :global .rt-tr .rt-th:nth-last-child(-n+2),
 :global .rt-tr .rt-td:nth-last-child(-n+2) {
@@ -180,13 +170,13 @@
 
 :global .rt-tr .rt-th:nth-last-child(2),
 :global .rt-tr .rt-td:nth-last-child(2) {
-  right: 110px; /* справа появаляются нижние ряды при прокрутке, поэтому меньше чем ширина колонки позиция*/
+  right: 109px; 
 
   :global .is__end .__main  &::before {
     position: absolute;
     top: 0;
     left: 0;
-    box-sizing: border-box;
+
     width: 1px;
     height: 100%;
     background-color: rgba(0,0,0,.2);
@@ -215,8 +205,8 @@
 
 :global .rt-tr .rt-th:nth-child(2),
 :global .rt-tr .rt-td:nth-child(2) {
-  left: 44px;
-  :global .is__scrolling .__main &::after {
+  left: 54px;
+  :global .is__scrolling .table &::after {
     position: absolute;
     top: 0;
     right: 0;
@@ -263,22 +253,29 @@
   text-decoration: underline;
 }
 
-:global .ReactTable.table.__noData {
-  position: relative;
-  width: var(--tableWidth);
+:global .__noData .rt-td {
+  &:last-child { 
+    padding-left: 40px;
+    //color: #f33;
+  }
+
+  &:last-child { 
+    padding-left: 40px;
+    //color: #f33;
+  }
+
+  &:second-child { 
+    width: var(--companiesWidth);
+  }
 }
 
-:global .__noData .rt-td:last-child { 
-  padding-left: 40px;
-  //color: #f33;
-}
 
 :global .__noData .rt-td:nth-child(-n+2) {
   position: sticky;
   z-index: 21;
 }
 
-.drugable {
+/* .drugable {
   display: block;
   overflow-x: scroll;
   width: 100%;
@@ -291,7 +288,7 @@
     height: 100px;
     border: 2px solid black;
   }
-}
+} */
 
 /* aligning */
 
@@ -331,14 +328,9 @@
   background: green !important;
 }
 
-/*:global .rt-td:nth-child(8) {
-  justify-content: flex-start !important;
-  padding-left: 10px;
-  box-sizing: border-box;
-} */
-
 :global div.with_equally {
   display: flex;
   justify-content: space-between;
+  padding-left: 10px;
   width: 100%;
 }

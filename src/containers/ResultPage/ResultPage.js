@@ -195,7 +195,9 @@ class ResultPage extends Component {
   }
 
   componentDidMount () {
-
+    //window.addEventListener());
+    console.log('result page componentDidMount');
+    window.addEventListener("resize", e => setTimeout(e => clickDrugHandler(this.sliderRef.current), 100), false);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -223,7 +225,7 @@ class ResultPage extends Component {
 
     const noDataCompanies = this.state.filteredNoDataCompanies;
     //noDataCompanies.map((row, index) => row[0] = this.state.filteredRows.length + 1 + index);
-    noDataCompanies.map((row, index) => row[0] = null);
+    noDataCompanies.map(row => row[0] = null);
 
     let noDataCompaniesTable = 
           (<ReactTable 
@@ -232,11 +234,11 @@ class ResultPage extends Component {
               'Header': '№',
               'accessor': '0',
               'minWidth': 44, 
-              'width': 44
+              'width': 54
             }, {
               'Header': 'вебсайт', 
               'accessor': '1',
-              'width': 160  
+              'width': 164  
             },
               {
                 'Header': 'ответили',
