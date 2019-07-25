@@ -26,7 +26,7 @@ class Table extends Component {
   }
 
   getColumnWidth = (rows, accessor) => {
-    const magicSpacing = 11;
+    const magicSpacing = 10;
     let maxLength = 0;
     const checkingRow = rows[0];
     const checkingCell = rows[0][accessor];
@@ -41,10 +41,10 @@ class Table extends Component {
         const className = checkingCell.props.className;
         switch (className) {
           case "dotsConnected":
-            maxLength = 7;
+            maxLength = 8;
             break;
           case "arrowConnected":
-            maxLength = 10;
+            maxLength = 11;
             break;
           case "transcriptWrapper":
             maxLength = 6;
@@ -73,7 +73,7 @@ class Table extends Component {
         return null;
       });
     }
-    return Math.round(maxLength * magicSpacing + 10); /* 10px - padding */
+    return Math.round(maxLength * magicSpacing); /* 10px - padding */
   }
 
   //создаем колонки с их заголовками и уровнями для react-table
@@ -112,10 +112,12 @@ class Table extends Component {
               'accessor': String(index),
               'minWidth': 50,
               'maxWidth': 200,
+              'className': 'columnGroup',
               'width': this.getColumnWidth(data, String(index)),
               'headerClassName': 'superClass'
             }]);
           currentRow['accessor'] = null;
+          console.log(currentRow.columns);
           // если уже есть подколонки - просто добавляем ещу одну
         } else {
           currentRow.columns = currentRow.columns.concat({

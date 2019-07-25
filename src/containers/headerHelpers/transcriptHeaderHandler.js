@@ -8,6 +8,16 @@ const transcriptHeaderHandler = (header, headerShort, targetColumns) => {
     // eslint-disable-next-line no-unused-expressions
     ( targetColumns.includes(index) ) ? transcriptedClass = "transcripted" : null;
 
+    /** newElem;
+
+    if (index >= header.length-2) {
+      newElem = {
+        value: <span className="transcriptWrapper">{headerShort[index]}<span></<span className={transcriptedClass}>{elem}</span></span>,
+        checkedName: elem
+      }
+    }
+
+     */
     let newElem = {
       value: <span className="transcriptWrapper">{headerShort[index]}<span className={transcriptedClass}>{elem}</span></span>,
       checkedName: elem

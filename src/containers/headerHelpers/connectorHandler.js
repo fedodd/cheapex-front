@@ -13,10 +13,10 @@ const connectorHandler = (data, connector) => {
           //если коннектор - три точки нам надо выравнить цифры по колонке...
           if (connector.unit === '...') {
             if (targetIndex === connector.columns[connector.columns.length-1]) {
-              acc[acc.length - 1] = <div className="dotsConnected">=<span className="alignedValue">{prevElement}</span><span> {connector.unit} </span><span className="alignedValue">{row[index]}</span></div>;
+              acc[acc.length - 1] = <div className="dotsConnected"><span>= </span><span className="alignedValue"> {prevElement}</span><span> {connector.unit} </span><span className="alignedValue">{row[index]}</span></div>;
 
               if (prevElement === row[index]) {
-                acc[acc.length - 1] = <div className="dotsConnected">=<span className="alignedValue"></span> {connector.unit} <span className="alignedValue">{row[index]}</span></div>;
+                acc[acc.length - 1] = <div className="dotsConnected"><span>= </span><span className="alignedValue"></span> {connector.unit} <span className="alignedValue">{row[index]}</span></div>;
               }
             } else {
               acc[acc.length - 1] = <div className="dotsConnected"><span className="alignedValue">{prevElement}</span><span> {connector.unit} </span><span className="alignedValue">{row[index]}</span></div>;

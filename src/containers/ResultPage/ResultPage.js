@@ -236,12 +236,12 @@ class ResultPage extends Component {
               'minWidth': 44, 
               'width': 54
             }, {
-              'Header': 'вебсайт', 
+              'Header': 'Вебсайт', 
               'accessor': '1',
               'width': 164  
             },
               {
-                'Header': 'ответили',
+                'Header': 'Ответили',
                 'accessor': '2',
                 'minWidth': 40, 
                 'width': 'auto'
@@ -269,7 +269,7 @@ class ResultPage extends Component {
             addFixedRowHandler={this.addFixedRowHandler}
             fixedRows={this.state.fixedIndexArray}
             />
-          {noDataCompaniesTable}
+          {/*noDataCompaniesTable*/}
         </div>
       </div>
     )
