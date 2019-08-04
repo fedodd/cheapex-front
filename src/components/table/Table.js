@@ -13,16 +13,15 @@ class Table extends Component {
 
   }
 
-
   state = {
     fixrowsCounter: 0,
-    headerHeight: 49,
-    rowHeight: 34,
+    headerHeight: 55, /* row height + 15px padding */
+    rowHeight: 40,
     totalFixHeight: 0,
     fixedrows: [],
     loading: this.props.loading,
     companyWidth: 'auto',
-    
+    columnWidths: []
   }
 
   getColumnWidth = (rows, accessor) => {
@@ -30,6 +29,13 @@ class Table extends Component {
     let maxLength = 0;
     const checkingRow = rows[0];
     const checkingCell = rows[0][accessor];
+    console.log(rows, accessor);
+/*     [...rows].map(row => {
+      
+      maxLength = (`${row[accessor]}`.length > maxLength) ? maxLength = `${row[accessor]}`.length + 2 : maxLength;
+      console.log(row[accessor], row[accessor].offsetWidth );
+      return null;
+    }); */
     // последние колонки ставим заданной ширины
     if (checkingCell === checkingRow[checkingRow.length - 1] || checkingCell === checkingRow[checkingRow.length - 2]) {
      
@@ -37,6 +43,7 @@ class Table extends Component {
     } else if (checkingCell === checkingRow[0]) {
       maxLength = 4;
     } else if (typeof (checkingCell) === 'object') {
+     // console.log(checkingCell);
       if (checkingCell.props.children) {
         const className = checkingCell.props.className;
         switch (className) {
@@ -143,9 +150,7 @@ class Table extends Component {
   }
 
   componentDidMount() {
-
     this.setState({
-
       totalFixHeight: this.state.headerHeight,
       loading: true
     });

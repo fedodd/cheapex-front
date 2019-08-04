@@ -157,7 +157,6 @@ class ResultPage extends Component {
     fixedIndexArray.sort(function (a, b) {
       return a - b;
     });
-    console.log(fixedIndexArray);
     this.setState({
       fixedIndexArray: fixedIndexArray
     });
@@ -195,8 +194,6 @@ class ResultPage extends Component {
   }
 
   componentDidMount () {
-    //window.addEventListener());
-    console.log('result page componentDidMount');
     window.addEventListener("resize", e => setTimeout(e => clickDrugHandler(this.sliderRef.current), 100), false);
   }
 
