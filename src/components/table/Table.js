@@ -15,27 +15,24 @@ class Table extends Component {
 
   state = {
     fixrowsCounter: 0,
-    headerHeight: 55, /* row height + 15px padding */
+    headerHeight: 54, /* row height + 15px padding make it 1 px less to fix gap between fixed rows */
     rowHeight: 40,
     totalFixHeight: 0,
     fixedrows: [],
     loading: this.props.loading,
     companyWidth: 'auto',
-    columnWidths: []
+    //columnsWidth: []
   }
 
   getColumnWidth = (rows, accessor) => {
-    const magicSpacing = 10;
+    //console.log(accessor, this.props.columnsWidth[accessor]);
+    const magicSpacing = 11.5;
+
+    return Math.round(this.props.columnsWidth[accessor] * magicSpacing + 10); /* 10px - padding */
     let maxLength = 0;
     const checkingRow = rows[0];
     const checkingCell = rows[0][accessor];
-    console.log(rows, accessor);
-/*     [...rows].map(row => {
-      
-      maxLength = (`${row[accessor]}`.length > maxLength) ? maxLength = `${row[accessor]}`.length + 2 : maxLength;
-      console.log(row[accessor], row[accessor].offsetWidth );
-      return null;
-    }); */
+    //console.log(rows, accessor);
     // последние колонки ставим заданной ширины
     if (checkingCell === checkingRow[checkingRow.length - 1] || checkingCell === checkingRow[checkingRow.length - 2]) {
      
@@ -80,6 +77,7 @@ class Table extends Component {
         return null;
       });
     }
+
     return Math.round(maxLength * magicSpacing); /* 10px - padding */
   }
 

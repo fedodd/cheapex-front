@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from "axios";
 //import { Route } from 'react-router-dom';
 import Filters from "../../components/filters/Filters";
-import headerHelpers from "../headerHelpers/headerHelpers";
+import headerHelpers from "./headerHelpers/headerHelpers";
 import Table from '../../components/table/Table';
 import classes from './ResultPage.pcss';
 import declOfNum from "../../functions/declOfNum";
@@ -151,12 +151,13 @@ class ResultPage extends Component {
   }
 
   addFixedRowHandler = (index) => {
-    let fixedIndexArray = this.state.fixedIndexArray;
+    let fixedIndexArray = [...this.state.fixedIndexArray];
     const checkIndex = fixedIndexArray.indexOf(index);
     (checkIndex === -1) ? fixedIndexArray.push(index) : fixedIndexArray.splice(checkIndex, 1);
     fixedIndexArray.sort(function (a, b) {
       return a - b;
     });
+    console.log(fixedIndexArray, this.state.fixedIndexArray);
     this.setState({
       fixedIndexArray: fixedIndexArray
     });
@@ -183,7 +184,8 @@ class ResultPage extends Component {
         totalItems: data.tablerows.length,
         noDataCompanies: data.noDataCompanies,
         filteredNoDataCompanies: data.noDataCompanies,
-        totalValues: totalValues
+        totalValues: totalValues,
+        columnsWidth: data.columnsWidth
       });
     }).catch(error => {
       console.log('error!', error);
@@ -265,6 +267,7 @@ class ResultPage extends Component {
             className="table __main"
             addFixedRowHandler={this.addFixedRowHandler}
             fixedRows={this.state.fixedIndexArray}
+            columnsWidth={this.state.columnsWidth}
             />
           {/*noDataCompaniesTable*/}
         </div>
