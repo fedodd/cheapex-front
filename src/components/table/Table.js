@@ -21,14 +21,25 @@ class Table extends Component {
     fixedrows: [],
     loading: this.props.loading,
     companyWidth: 'auto',
-    //columnsWidth: []
+    columnsWidth: this.props.columnsWidth,
+    magicSpacing: 11
+  }
+
+  calculateColumnsWidth = () => {
+    let newColumnsWidth = this.state.columnsWidth.map(elem => Math.round(elem * this.state.magicSpacing) + 10);/*  10 - padding */
+    newColumnsWidth[1] += 20;
+    newColumnsWidth[newColumnsWidth.length - 1] += this.state.magicSpacing;
+    newColumnsWidth[newColumnsWidth.length - 2] += (20 + this.state.magicSpacing);
+    this.setState({
+      columnsWidth: newColumnsWidth
+    })
   }
 
   getColumnWidth = (rows, accessor) => {
     //console.log(accessor, this.props.columnsWidth[accessor]);
-    const magicSpacing = 11.5;
-
-    return Math.round(this.props.columnsWidth[accessor] * magicSpacing + 10); /* 10px - padding */
+    const magicSpacing = 11;
+    //console.log(Math.round(this.props.columnsWidth[accessor] * magicSpacing));
+    return Math.round(this.props.columnsWidth[accessor] * magicSpacing); /* 10px - padding */
     let maxLength = 0;
     const checkingRow = rows[0];
     const checkingCell = rows[0][accessor];
@@ -97,7 +108,7 @@ class Table extends Component {
           'accessor': String(index),
           'minWidth': 50,
           'maxWidth': 200,
-          'width': this.getColumnWidth(data, String(index))
+          'width': this.state.columnsWidth[String(index)]
         }];
       } else {
         // если такая колонка уже есть, то спрашиваем - есть ли уже дочерние колонки. если нет - создаем подколонки, переместив в нижний уровень колонку с тем же названием
@@ -118,7 +129,7 @@ class Table extends Component {
               'minWidth': 50,
               'maxWidth': 200,
               'className': 'columnGroup',
-              'width': this.getColumnWidth(data, String(index)),
+              'width': this.state.columnsWidth[String(index)],
               'headerClassName': 'superClass'
             }]);
           currentRow['accessor'] = null;
@@ -130,7 +141,7 @@ class Table extends Component {
             'accessor': String(index),
             'minWidth': 50,
             'maxWidth': 200,
-            'width': this.getColumnWidth(data, String(index)),
+            'width': this.state.columnsWidth[String(index)],
               'headerClassName': 'superClass'
           });
         }
@@ -147,7 +158,12 @@ class Table extends Component {
 
   }
 
+  static getDerivedStateFromProps(props, state) {
+    
+  }
+
   componentDidMount() {
+    this.calculateColumnsWidth();
     this.setState({
       totalFixHeight: this.state.headerHeight,
       loading: true
@@ -181,6 +197,7 @@ class Table extends Component {
     //создаем колонки с их заголовками и уровнями для react-table
     const tableHeader = this.tableColumnsHandler(this.props.header, [], data);
     const companiesWidth = tableHeader[1].columns[0].width;
+    const columnsWidth = this.state.columnsWidth;
     return (
       <Aux>
         <div className={classes.tableContainer} id="tableContainer" ref={this.tableContainerRef}>
@@ -188,6 +205,9 @@ class Table extends Component {
             :root {
               --tableWidth: ${this.tableContainerRef.current ? this.tableContainerRef.current.offsetWidth: 0}px;
               --companiesWidth: ${companiesWidth ? companiesWidth + 'px' : 'auto'};
+              --firstColumnWidth: ${columnsWidth[0]}px;
+              --lastColumnWidth: ${columnsWidth[columnsWidth.length-1] - 1}px;
+              --magicSpacing: ${this.state.magicSpacing}px;
               }
             `}
           </style>

@@ -136,16 +136,16 @@
 
 :global .alignedValue {
   display: inline-block;
-  width: 28px;
+  width: calc(var(--magicSpacing) * 2);
   text-align: right;
-  :global .dotsConnected & {
-    width: 20px;
-  }
+/*   :global .dotsConnected & {
+    width: var(---magicSpacing);
+  } */
 }
 
 :global .alignedValue__big {
   display: inline-block;
-  width: 35px;
+  width: calc(var(--magicSpacing) * 3);
   text-align: left;
 }
 
@@ -173,7 +173,7 @@
 
 :global .rt-tr .rt-th:nth-last-child(2),
 :global .rt-tr .rt-td:nth-last-child(2) {
-  right: 90px; 
+  right: var(--lastColumnWidth) ;
 
   :global .is__end .__main  &::before {
     position: absolute;
@@ -208,7 +208,7 @@
 
 :global .rt-tr .rt-th:nth-child(2),
 :global .rt-tr .rt-td:nth-child(2) {
-  left: 40px;
+  left: var(--firstColumnWidth);
   :global .is__scrolling .table.__main &::after { /* убрать main если полоску будем и на второй таблице показывать*/
     position: absolute;
     top: 0;
@@ -322,7 +322,7 @@
 
   &:nth-child(2) {
     justify-content: flex-start;
-    padding-left: 15px;
+    //padding-left: 15px;
   }
 }
 

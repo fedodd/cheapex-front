@@ -73,15 +73,15 @@ const headerHelpers = (fullData) => {
     switch (helper) {
       case "add(ч.)":
         helpers.addons.addHour.columns.push(index);
-        helpers.addedColumnsLength[index] = 2;
+        helpers.addedColumnsLength[index] = 1.5;
         break;
       case "add($)":
         helpers.addons.addDollar.columns.push(index);
-        helpers.addedColumnsLength[index] = 2;
+        helpers.addedColumnsLength[index] = 1;
         break;
       case "add(%)":
         helpers.addons.addPercent.columns.push(index);
-        helpers.addedColumnsLength[index] = 2;
+        helpers.addedColumnsLength[index] = 1;
         break;
       case "transcript":
         helpers.transcript.push(index);
@@ -89,7 +89,7 @@ const headerHelpers = (fullData) => {
         break;
       case "connect(arrow)":
         helpers.connectArrow.columns.push(index);
-        helpers.addedColumnsLength[index] = 2;
+        helpers.addedColumnsLength[index] = 2.2;
         //helpers.addedColumnsLength[index - 1] = helpers.addedColumnsLength[index - 1] + 3; /* [ index -1 ]cause this column will be deleted */
         break;
       case "dMin":
@@ -98,13 +98,13 @@ const headerHelpers = (fullData) => {
         break;
       case "dMax(connect(…))":
         helpers.calculators.dMaxConnectDots.columns.push(index);
-        helpers.addedColumnsLength[index] = 1;
+        helpers.addedColumnsLength[index] = 1; /* 1 length for dots and 1 and 1 for second number */
         //helpers.addedColumnsLength[index - 1] = helpers.addedColumnsLength[index - 1] + 3; /* [ index -1 ]cause this column will be deleted */
         break;
       case "price($)":
         helpers.calculators.priceDollar.columns.push(index);
         helpers.addons.addDollar.columns.push(index);
-        helpers.addedColumnsLength[index] = 2;
+        helpers.addedColumnsLength[index] = 1;
         break;
       case "image":
         helpers.images.push(index);
@@ -144,10 +144,12 @@ const headerHelpers = (fullData) => {
       
       const addedValue = helpers.addedColumnsLength[index];
       let valueLength;
-      if (helpers.transcript.includes(index) || cell === null) {
+/* company name tighter than other columns, cause it's latin and all - lower case */
+      if (index === 1) {
+        valueLength = cell.toString().length * .75 ;
+      } else if (helpers.transcript.includes(index) || cell === null) {
         valueLength = 0;
       } else {
-
         valueLength = cell.toString().length + addedValue;
       } 
       
@@ -160,9 +162,16 @@ const headerHelpers = (fullData) => {
     return acc;
   }, []);
   const concatedColumnsWidth = columnsWidth.reduce((acc, column, index) => {
-    if (helpers.connectArrow.columns.includes(index) || helpers.calculators.dMaxConnectDots.columns.includes(index)) {
+    if (helpers.connectArrow.columns.includes(index)) {
       acc[index - 1] = acc[index-1] + column;
-    } 
+    } else if (helpers.calculators.dMaxConnectDots.columns.includes(index)) {/* т.к. мы делаем с расчетом на двузначные числа, то делаем минимальной ширину с учетом этого */
+      if (acc[index-1] < 5) {
+        acc[index - 1] = 5;
+      } else {
+        acc[index - 1] = acc[index - 1] + column;
+      }
+      
+    }
     acc[index] = column;
     return acc;
   }, []);
@@ -179,7 +188,10 @@ const headerHelpers = (fullData) => {
   const transcriptedData = transcriptHandler(withUnitsData, helpers.transcript);
 
   //функция по замене текста на картинки
-  const withImagesData = imageHandler(transcriptedData, helpers.images);
+  
+  //const withImagesData = imageHandler(transcriptedData, helpers.images);
+  //Оставляем текст вместо картинок
+  const withImagesData = transcriptedData;
 
   //функция по объединению колонок
   const connectedArrowData = connectorHandler(withImagesData, helpers.connectArrow);
