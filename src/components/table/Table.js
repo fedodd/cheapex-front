@@ -56,43 +56,60 @@ class Table extends Component {
           'accessor': String(index),
           'minWidth': 50,
           'maxWidth': 200,
+          'className': 'parentColumn',
           'width': this.state.columnsWidth[String(index)]
         }];
+      } else if (currentRow.columns.length === 1) {
+        currentRow.columns[currentRow.columns.length - 1].className = 'firstChildrenColumn';
+        currentRow.columns[currentRow.columns.length - 1].width = currentRow.columns[currentRow.columns.length - 1].width + 30;
+        currentRow.columns = currentRow.columns.concat({
+          'Header': el.value,
+          'accessor': String(index),
+          'minWidth': 50,
+          'maxWidth': 200,
+          'width': this.state.columnsWidth[String(index)],
+          'className': 'childrenColumn'
+        });
       } else {
+        
         // если такая колонка уже есть, то спрашиваем - есть ли уже дочерние колонки. если нет - создаем подколонки, переместив в нижний уровень колонку с тем же названием
 
         //(currentRow['columns']) ? null : currentRow['columns'] = [];
+        currentRow.columns = currentRow.columns.concat({
+          'Header': el.value,
+          'accessor': String(index),
+          'minWidth': 50,
+          'maxWidth': 200,
+          'width': this.state.columnsWidth[String(index)],
+          'className': 'childrenColumn'
+        });
 
-        if (currentRow['columns'].length === 0) {
+  /*       if (currentRow.columns.length === 1) {
+
+          console.log(currentRow);
 
           currentRow.columns = currentRow.columns.concat([
-            {
-              'Header': currentRow['Header'],
-              'accessor': currentRow['accessor'],
-              'headerClassName': 'superClass'
-            },
             {
               'Header': el.value,
               'accessor': String(index),
               'minWidth': 50,
               'maxWidth': 200,
-              'className': 'columnGroup',
-              'width': this.state.columnsWidth[String(index)],
-              'headerClassName': 'superClass'
+              'className': 'superClass',
+              'width': this.state.columnsWidth[String(index)]
             }]);
           currentRow['accessor'] = null;
           console.log(currentRow.columns);
           // если уже есть подколонки - просто добавляем ещу одну
         } else {
+        //  console.log(currentRow);
           currentRow.columns = currentRow.columns.concat({
             'Header': el.value,
             'accessor': String(index),
             'minWidth': 50,
             'maxWidth': 200,
-            'width': this.state.columnsWidth[String(index)],
-              'headerClassName': 'superClass'
+            'width': this.state.columnsWidth[String(index)]
           });
-        }
+        } */
       }
       // Обновляем запись с нужным ключом
       return acc.set(el.checkedName, currentRow);

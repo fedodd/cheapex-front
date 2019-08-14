@@ -157,7 +157,6 @@ class ResultPage extends Component {
     fixedIndexArray.sort(function (a, b) {
       return a - b;
     });
-    console.log(fixedIndexArray, this.state.fixedIndexArray);
     this.setState({
       fixedIndexArray: fixedIndexArray
     });

@@ -202,8 +202,8 @@ const headerHelpers = (fullData) => {
   const deleteColumns = [...helpers.connectArrow.columns].concat(helpers.calculators.dMaxConnectDots.columns).concat(helpers.transcript);
   const cleanedData = deleteHandler(connectedDaysData, deleteColumns);
   const cleanedColumnsWidth = concatedColumnsWidth.filter((value, index) => !deleteColumns.includes(index));
-  console.log(concatedColumnsWidth, cleanedColumnsWidth, deleteColumns, cleanedData[0]);
-
+/*   console.log(concatedColumnsWidth, cleanedColumnsWidth, deleteColumns, cleanedData[0]);
+ */
   //удалим колонки из header
   const headerForClean = {
     header: transcriptedHeader,
