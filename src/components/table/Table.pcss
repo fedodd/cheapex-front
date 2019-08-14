@@ -88,7 +88,34 @@
 
 :global .arrowConnected {
   position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
   height: 100%;
+
+  & .arrow { 
+    position: relative;
+    display: block;
+    flex-grow: 1;
+    margin: 0 5px;
+    height: 14px; /* font-size */
+    background-image: url('./images/line1.png');
+    background-repeat-x:  repeat;
+
+    &::after {
+      position: absolute;
+      top: 0;
+      right: 0;
+      display: block;
+      width: 4px;
+      height: 16px;
+      background-image: url('./images/arrow2.png');
+      background-size: cover;
+      content: '';
+      
+    }
+  }
 }
 
 :global .rt-td > .transcriptWrapper {
@@ -145,8 +172,8 @@
 
 :global .alignedValue__big {
   display: inline-block;
-  width: calc(var(--magicSpacing) * 3);
   text-align: left;
+  //width: calc(var(--magicSpacing) * 3.5);
 }
 
 

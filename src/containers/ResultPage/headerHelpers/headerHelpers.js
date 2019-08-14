@@ -161,6 +161,7 @@ const headerHelpers = (fullData) => {
     });
     return acc;
   }, []);
+  
   const concatedColumnsWidth = columnsWidth.reduce((acc, column, index) => {
     if (helpers.connectArrow.columns.includes(index)) {
       acc[index - 1] = acc[index-1] + column;

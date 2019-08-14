@@ -36,60 +36,8 @@ class Table extends Component {
   }
 
   getColumnWidth = (rows, accessor) => {
-    //console.log(accessor, this.props.columnsWidth[accessor]);
     const magicSpacing = 11;
-    //console.log(Math.round(this.props.columnsWidth[accessor] * magicSpacing));
     return Math.round(this.props.columnsWidth[accessor] * magicSpacing); /* 10px - padding */
-    let maxLength = 0;
-    const checkingRow = rows[0];
-    const checkingCell = rows[0][accessor];
-    //console.log(rows, accessor);
-    // последние колонки ставим заданной ширины
-    if (checkingCell === checkingRow[checkingRow.length - 1] || checkingCell === checkingRow[checkingRow.length - 2]) {
-     
-      maxLength = 9;
-    } else if (checkingCell === checkingRow[0]) {
-      maxLength = 4;
-    } else if (typeof (checkingCell) === 'object') {
-     // console.log(checkingCell);
-      if (checkingCell.props.children) {
-        const className = checkingCell.props.className;
-        switch (className) {
-          case "dotsConnected":
-            maxLength = 8;
-            break;
-          case "arrowConnected":
-            maxLength = 11;
-            break;
-          case "transcriptWrapper":
-            maxLength = 6;
-            break;
-          case "company":
-            [...rows].map(row => {
-              maxLength = (row[accessor].props.children.length > maxLength) ? maxLength = row[accessor].props.children.length : maxLength;
-              
-              return null;
-            });
-            maxLength < 11 ? maxLength = 11 : null;
-            break;
-          default:
-            //console.log('default class not in list ', checkingCell);
-            maxLength = 7;
-        }
-      } else {
-        //console.log('else object without children', checkingCell);
-        maxLength = 6;
-      }
-    } else {
-      //console.log('else not object', checkingCell);
-      [...rows].map(row => {
-        //console.log(maxLength);
-        maxLength = (`${row[accessor]}`.length > maxLength) ? maxLength = `${row[accessor]}`.length + 2 : maxLength;
-        return null;
-      });
-    }
-
-    return Math.round(maxLength * magicSpacing); /* 10px - padding */
   }
 
   //создаем колонки с их заголовками и уровнями для react-table
@@ -158,9 +106,9 @@ class Table extends Component {
 
   }
 
-  static getDerivedStateFromProps(props, state) {
+/*   static getDerivedStateFromProps(props, state) {
     
-  }
+  } */
 
   componentDidMount() {
     this.calculateColumnsWidth();
@@ -206,7 +154,7 @@ class Table extends Component {
               --tableWidth: ${this.tableContainerRef.current ? this.tableContainerRef.current.offsetWidth: 0}px;
               --companiesWidth: ${companiesWidth ? companiesWidth + 'px' : 'auto'};
               --firstColumnWidth: ${columnsWidth[0]}px;
-              --lastColumnWidth: ${columnsWidth[columnsWidth.length-1] - 1}px;
+              --lastColumnWidth: ${columnsWidth[columnsWidth.length - 1]}px;
               --magicSpacing: ${this.state.magicSpacing}px;
               }
             `}

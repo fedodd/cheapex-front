@@ -203,7 +203,6 @@ class ResultPage extends Component {
     if (prevState.tablerows.length !== this.state.tablerows.length) {
       clickDrugHandler(this.sliderRef.current);
     }
-    //console.log('componentDidupdate resultpage', classes.resultPage, document.querySelector('.' + classes.resultPage).height);
     let currentHeight = this.sliderRef.current.offsetHeight;
     if (prevProps.pageHeight !== this.state.pageHeight && this.state.pageHeight !== currentHeight) {   
       this.setState({
