@@ -60,18 +60,6 @@ class Table extends Component {
           'headerClassName': '',
           'width': this.state.columnsWidth[String(index)]
         }];
-      } else if (currentRow.columns.length === 1) {
-        currentRow.columns[currentRow.columns.length - 1].className = 'firstChildrenColumn';
-        currentRow.headerClassName = 'firstChildrenColumn';
-        currentRow.columns[currentRow.columns.length - 1].width = currentRow.columns[currentRow.columns.length - 1].width + 30;
-        currentRow.columns = currentRow.columns.concat({
-          'Header': el.value,
-          'accessor': String(index),
-          'minWidth': 50,
-          'maxWidth': 200,
-          'width': this.state.columnsWidth[String(index)],
-          'className': 'childrenColumn'
-        });
       } else {
         
         // если такая колонка уже есть, то спрашиваем - есть ли уже дочерние колонки. если нет - создаем подколонки, переместив в нижний уровень колонку с тем же названием
@@ -164,11 +152,20 @@ class Table extends Component {
     //создаем колонки с их заголовками и уровнями для react-table
     const tableHeader = this.tableColumnsHandler(this.props.header, [], data);
 
-    tableHeader.map(header => {
+    tableHeader.map((header, index) => {
       if (header.columns.length > 1) {
-        const target = header.columns[header.columns.length - 1]
-        target.className = 'lastChildrenColumn';
-        target.width = target.width + 30;
+        header.headerClassName = 'firstChildrenColumn';
+        const prevColumn = tableHeader[index - 1].columns[tableHeader[index - 1].columns.length - 1];
+        if (prevColumn.className === 'lastChildrenColumn') {
+          prevColumn.className = '';
+          prevColumn.width = prevColumn.width - 30;
+        };
+        const lastGroupColumn = header.columns[header.columns.length - 1]
+        const firstGroupColumn = header.columns[0];
+        firstGroupColumn.className = 'firstChildrenColumn';
+        firstGroupColumn.width = firstGroupColumn.width + 30;
+        lastGroupColumn.className = 'lastChildrenColumn';
+        lastGroupColumn.width = lastGroupColumn.width + 30;
       }
     });
     const companiesWidth = tableHeader[1].columns[0].width;

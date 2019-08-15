@@ -176,6 +176,7 @@ const headerHelpers = (fullData) => {
     acc[index] = column;
     return acc;
   }, []);
+  //console.log(concatedColumnsWidth, header, headerShort);
  // console.log('columnsWidth, helpers.transcript, helpers.addedColumnsLength, calculatedData[0]', concatedColumnsWidth, helpers.transcript, helpers.addedColumnsLength, calculatedData[0]);
 
   // делаем ссылками сайты компаний
