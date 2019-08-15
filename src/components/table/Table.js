@@ -57,10 +57,12 @@ class Table extends Component {
           'minWidth': 50,
           'maxWidth': 200,
           'className': 'parentColumn',
+          'headerClassName': '',
           'width': this.state.columnsWidth[String(index)]
         }];
       } else if (currentRow.columns.length === 1) {
         currentRow.columns[currentRow.columns.length - 1].className = 'firstChildrenColumn';
+        currentRow.headerClassName = 'firstChildrenColumn';
         currentRow.columns[currentRow.columns.length - 1].width = currentRow.columns[currentRow.columns.length - 1].width + 30;
         currentRow.columns = currentRow.columns.concat({
           'Header': el.value,
@@ -161,6 +163,14 @@ class Table extends Component {
     // проверяем - если данные еще не загрузились -выводим пустую строку
     //создаем колонки с их заголовками и уровнями для react-table
     const tableHeader = this.tableColumnsHandler(this.props.header, [], data);
+
+    tableHeader.map(header => {
+      if (header.columns.length > 1) {
+        const target = header.columns[header.columns.length - 1]
+        target.className = 'lastChildrenColumn';
+        target.width = target.width + 30;
+      }
+    });
     const companiesWidth = tableHeader[1].columns[0].width;
     const columnsWidth = this.state.columnsWidth;
     return (
