@@ -138,7 +138,12 @@ const headerHelpers = (fullData) => {
   const calculatedDataCopy = deepCopy(calculatedData);
 
   //
-
+  //console.log(header, headerShort);
+/*   const headerLength = headerShort.map((elem, index) => {
+    return elem ? elem.length : header[index].length;
+  })
+  console.log(headerLength); */
+  
   const columnsWidth = calculatedDataCopy.reduce((acc, row) => {
     row.map((cell, index) => {
       
@@ -154,7 +159,9 @@ const headerHelpers = (fullData) => {
       } 
       
       //console.log('cell', cell, 'acc[i]', acc[index], 'added', addedValue,'value',  valueLength);
+      
       if (!acc[index] || (acc[index] < valueLength)) {
+
         acc[index] = valueLength;
       }
       return null;
@@ -171,9 +178,9 @@ const headerHelpers = (fullData) => {
       } else {
         acc[index - 1] = acc[index - 1] + column;
       }
-      
-    }
-    acc[index] = column;
+    } 
+    /* check width of header  and if its longer add only 1 length, cause it is enough*/
+    (headerShort[index] && headerShort[index].length > column)  ? acc[index] = column + 1 : acc[index] = column;
     return acc;
   }, []);
   //console.log(concatedColumnsWidth, header, headerShort);

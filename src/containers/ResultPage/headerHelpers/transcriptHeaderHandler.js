@@ -5,10 +5,14 @@ const transcriptHeaderHandler = (header, headerShort, targetColumns) => {
   const objectedFullHeader = header.map((elem, index) => {
     let transcriptedClass = "";
     let valueClass = null;
-    const alignedColumns = ['№', 'Ответили', 'Сертификат'];
+    console.log(header);
+    const alignedColumns = ['№', 'Ответили', 'Сертификат', 'Комиссия', ];
+    const lastColumns = ['= Дней', '= Цена'];
     //console.log(elem);
     if (alignedColumns.includes(elem)) {
         valueClass = 'is__aligned';
+    } else if (lastColumns.includes(elem)) {
+      valueClass = 'is__alt__aligned';
     }
     // eslint-disable-next-line no-unused-expressions
     ( targetColumns.includes(index) ) ? transcriptedClass = "transcripted" : null;

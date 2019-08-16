@@ -10,7 +10,7 @@ class Table extends Component {
   constructor(props) {
     super(props);
     this.tableContainerRef = React.createRef();
-
+    this.tableRef = React.createRef();
   }
 
   state = {
@@ -26,6 +26,7 @@ class Table extends Component {
   }
 
   calculateColumnsWidth = () => {
+    //console.log(this.state.columnsWidth, this.tableRef.current.props.columns );
     let newColumnsWidth = this.state.columnsWidth.map(elem => Math.round(elem * this.state.magicSpacing) + 10);/*  10 - padding */
     newColumnsWidth[1] += 20;
     newColumnsWidth[newColumnsWidth.length - 1] += this.state.magicSpacing;
@@ -35,11 +36,11 @@ class Table extends Component {
     })
   }
 
-  getColumnWidth = (rows, accessor) => {
+/*   getColumnWidth = (rows, accessor) => {
     const magicSpacing = 11;
-    return Math.round(this.props.columnsWidth[accessor] * magicSpacing); /* 10px - padding */
+    return Math.round(this.props.columnsWidth[accessor] * magicSpacing);
   }
-
+ */
   //создаем колонки с их заголовками и уровнями для react-table
   tableColumnsHandler = (inputHeader, outputHeader, data) => {
     let headerMap = inputHeader.header.reduce((acc, el, index) => {
@@ -48,6 +49,7 @@ class Table extends Component {
 
       currentRow = acc.get(el.checkedName);
       // Если такого ещё нет, берём пустой объект  и задаем ему свойства колонок таблицы
+     // console.log(this.state.columnsWidth[index], el.value.props.children[0]);
       if ((!currentRow)) {
         currentRow = {};
         currentRow['Header'] = el.value;
@@ -185,6 +187,7 @@ class Table extends Component {
           </style>
           {this.state.loading ? this.delayHandler() : null}
           <ReactTable
+            ref={this.tableRef}
             className={this.props.className}
             data={data}
             columns={tableHeader}
