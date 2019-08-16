@@ -126,11 +126,15 @@
 :global .transcriptWrapper {
   display: inline-flex;
   align-items: center;
- 
   height: 100%;
 
   :global .rt-th & {
     position: relative;
+  }
+
+  &.is__aligned {
+    justify-content: flex-end;
+    margin-left: auto;
   }
 
   & .transcripted {
@@ -150,10 +154,6 @@
     opacity: 0;
     background-color: #fffcdc;
     box-shadow: inset 0px -1px 0px 0px #fff8b8;
-
-    &.is__aligned {
-      justify-self: flex-end;
-    }
   }
 }
 

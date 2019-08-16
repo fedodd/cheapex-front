@@ -5,8 +5,8 @@ const transcriptHeaderHandler = (header, headerShort, targetColumns) => {
   const objectedFullHeader = header.map((elem, index) => {
     let transcriptedClass = "";
     let valueClass = null;
-    const alignedColumns = ['№', 'Ответили', 'Страховка', 'Сертификат'];
-    console.log(elem);
+    const alignedColumns = ['№', 'Ответили', 'Сертификат'];
+    //console.log(elem);
     if (alignedColumns.includes(elem)) {
         valueClass = 'is__aligned';
     }
@@ -23,8 +23,9 @@ const transcriptHeaderHandler = (header, headerShort, targetColumns) => {
     }
 
      */
+    let wrapperClassName = valueClass ? 'transcriptWrapper ' + valueClass : 'transcriptWrapper';
     let newElem = {
-      value: <span className="transcriptWrapper">{headerShort[index]}<span className={transcriptedClass + ' ' + valueClass}>{elem}</span></span>,
+      value: <span className={wrapperClassName}>{headerShort[index]}<span className={transcriptedClass}>{elem}</span></span>,
       checkedName: elem
     }
 
