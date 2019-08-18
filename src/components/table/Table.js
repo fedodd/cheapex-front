@@ -160,14 +160,14 @@ class Table extends Component {
         const prevColumn = tableHeader[index - 1].columns[tableHeader[index - 1].columns.length - 1];
         if (prevColumn.className === 'lastChildrenColumn') {
           prevColumn.className = '';
-          prevColumn.width = prevColumn.width - 30;
+          prevColumn.width = prevColumn.width - 20;
         };
         const lastGroupColumn = header.columns[header.columns.length - 1]
         const firstGroupColumn = header.columns[0];
         firstGroupColumn.className = 'firstChildrenColumn';
-        firstGroupColumn.width = firstGroupColumn.width + 30;
+        firstGroupColumn.width = firstGroupColumn.width + 20;
         lastGroupColumn.className = 'lastChildrenColumn';
-        lastGroupColumn.width = lastGroupColumn.width + 30;
+        lastGroupColumn.width = lastGroupColumn.width + 20;
       }
     });
     const companiesWidth = tableHeader[1].columns[0].width;
