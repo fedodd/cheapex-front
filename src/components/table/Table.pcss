@@ -169,13 +169,15 @@
   transition: opacity .6s .6s;
 }
 
+:global .dotsConnected .alignedValue {
+  flex-grow: 1;
+  text-align: right;
+}
+
 :global .alignedValue {
   display: inline-block;
-  width: calc(var(--magicSpacing) * 2);
+  width: calc(var(--magicSpacing) * 2.3);
   text-align: right;
-/*   :global .dotsConnected & {
-    width: var(---magicSpacing);
-  } */
 }
 
 :global .alignedValue__big {
@@ -346,6 +348,7 @@
 
   & .dotsConnected {
     display: flex;
+    width: 100%;
     text-align: right;
   }
 }

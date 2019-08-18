@@ -13,7 +13,7 @@ const headerHelpers = (fullData) => {
 
   // массивы заголовков и их коротких значений и очищенные данные + добавим сразу итоговые колонки и номер строки
 
-  const header = ['№', ...fullData[0], '= Дней', '= Дней', '= Цена'];
+  const header = ['№', ...fullData[0], 'Дней', 'Дней', 'Цена'];
   let headerShort = [];
   /* firebase recieve object not array if it's less data in array. that's why we check on array */
   if (Array.isArray(fullData[1])) {
@@ -189,6 +189,7 @@ const headerHelpers = (fullData) => {
         acc[index - 1] = acc[index - 1] + column;
       }
     } 
+    
     /* check width of header  and if its longer add only 1 length, cause it is enough*/
     
     (headerShort[index] && headerShort[index].length > column)  ? acc[index] = column + 1 : acc[index] = column;
