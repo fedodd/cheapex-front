@@ -5,7 +5,7 @@ const transcriptHeaderHandler = (header, headerShort, targetColumns) => {
   const objectedFullHeader = header.map((elem, index) => {
     let transcriptedClass = "";
     let valueClass = null;
-    console.log(header);
+    //console.log(header);
     const alignedColumns = ['№', 'Ответили', 'Сертификат', 'Комиссия', ];
     const lastColumns = ['= Дней', '= Цена'];
     //console.log(elem);

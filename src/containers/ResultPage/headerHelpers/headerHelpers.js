@@ -14,10 +14,19 @@ const headerHelpers = (fullData) => {
   // массивы заголовков и их коротких значений и очищенные данные + добавим сразу итоговые колонки и номер строки
 
   const header = ['№', ...fullData[0], '= Дней', '= Дней', '= Цена'];
-  const headerShort = [null, ...fullData[1], null, null, null];
-  
+  let headerShort = [];
+  /* firebase recieve object not array if it's less data in array. that's why we check on array */
+  if (Array.isArray(fullData[1])) {
+    headerShort = [null, ...fullData[1], null, null, null];
+  } else {
+    let headerArray = [];
+    Object.keys(fullData[1]).map(index => headerArray[index] = fullData[1][index]); 
+    headerShort = [null, ...headerArray, null, null, null];
+  }
+  console.log(headerShort);
   // если сокращенного названия нет, то покажем полное название, сохраним индексы сокращенных колонок, чтобы потом раскрывать их значение
   let headerToTranscript = [];
+  
   headerShort.map((elem, index) => {
     if (elem !== null) {
       headerToTranscript = headerToTranscript.concat(index);
@@ -29,7 +38,8 @@ const headerHelpers = (fullData) => {
   //здесь надо подумать, как потом в другой валюте данные закидывать.
   const helpHeader = [null, ...fullData[2], 'dMin', 'dMax(connect(…))', 'add($)'];
   const transcriptedHeader = transcriptHeaderHandler(header, headerShort, headerToTranscript);
-
+  console.log(header, headerShort, fullData[1], transcriptedHeader);
+  
   // распределяем данные по helpHeader
   const helpers = {
     addons: {
@@ -89,7 +99,7 @@ const headerHelpers = (fullData) => {
         break;
       case "connect(arrow)":
         helpers.connectArrow.columns.push(index);
-        helpers.addedColumnsLength[index] = 2.2;
+        helpers.addedColumnsLength[index] = 1.2;
         //helpers.addedColumnsLength[index - 1] = helpers.addedColumnsLength[index - 1] + 3; /* [ index -1 ]cause this column will be deleted */
         break;
       case "dMin":
@@ -180,6 +190,7 @@ const headerHelpers = (fullData) => {
       }
     } 
     /* check width of header  and if its longer add only 1 length, cause it is enough*/
+    
     (headerShort[index] && headerShort[index].length > column)  ? acc[index] = column + 1 : acc[index] = column;
     return acc;
   }, []);

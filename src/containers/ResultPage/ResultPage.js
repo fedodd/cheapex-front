@@ -163,13 +163,26 @@ class ResultPage extends Component {
   }
 
   componentWillMount() {
+    const test = 'https://react-app-bc4e6.firebaseio.com/importedSheet/' + this.props.link + '.json';
+    axios.get(test).then(response => {
+      console.log(response.data.data);
+
+    }).catch(error => {
+      console.log('error!', error);
+      alert('error!');
+      this.setState({ error: true });
+      // здесь надо прописать сценарии по ошибкам. а где-тоо выше - ловить ошибки - например файл не в том формате или типа того
+    });
+    console.log(test);
+
 
     const fullpath = 'https://react-app-bc4e6.firebaseio.com/importedSheet/' + this.props.link + '.json';
     axios.get(fullpath).then(response => {
       const fullData = response.data.data;
+      
       const data = headerHelpers(fullData);
       /* важно: мы сами генерируем последние три колонки и обращаемся к ним по индексам: -1 цена, -2 максдней, -3 миндней.  важно не сломать эту штуку:)*/
-
+      
       const numericData = data.numericData;
       const filteredRows = deepCopyArray(data.tablerows);
       
