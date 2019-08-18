@@ -23,7 +23,6 @@ const headerHelpers = (fullData) => {
     Object.keys(fullData[1]).map(index => headerArray[index] = fullData[1][index]); 
     headerShort = [null, ...headerArray, null, null, null];
   }
-  console.log(headerShort);
   // если сокращенного названия нет, то покажем полное название, сохраним индексы сокращенных колонок, чтобы потом раскрывать их значение
   let headerToTranscript = [];
   
@@ -38,7 +37,6 @@ const headerHelpers = (fullData) => {
   //здесь надо подумать, как потом в другой валюте данные закидывать.
   const helpHeader = [null, ...fullData[2], 'dMin', 'dMax(connect(…))', 'add($)'];
   const transcriptedHeader = transcriptHeaderHandler(header, headerShort, headerToTranscript);
-  console.log(header, headerShort, fullData[1], transcriptedHeader);
   
   // распределяем данные по helpHeader
   const helpers = {
@@ -148,11 +146,6 @@ const headerHelpers = (fullData) => {
   const calculatedDataCopy = deepCopy(calculatedData);
 
   //
-  //console.log(header, headerShort);
-/*   const headerLength = headerShort.map((elem, index) => {
-    return elem ? elem.length : header[index].length;
-  })
-  console.log(headerLength); */
   
   const columnsWidth = calculatedDataCopy.reduce((acc, row) => {
     row.map((cell, index) => {
@@ -190,9 +183,12 @@ const headerHelpers = (fullData) => {
       }
     } 
     
-    /* check width of header  and if its longer add only 1 length, cause it is enough*/
-    
-    (headerShort[index] && headerShort[index].length > column)  ? acc[index] = column + 1 : acc[index] = column;
+    /* check width of header  and if its longer than 1 and shorter than 2, add 1 length, cause enother one it's only a dot. if its longer, no case to do something  */
+    if (headerShort[index] && headerShort[index].length - column <= 2 && headerShort[index].length - column > 1  )  {
+      acc[index] = column + 1;
+    } else {
+      acc[index] = column
+    };
     return acc;
   }, []);
   //console.log(concatedColumnsWidth, header, headerShort);
