@@ -16,7 +16,7 @@ class Table extends Component {
   state = {
     fixrowsCounter: 0,
     headerHeight: 54, /* row height + 15px padding make it 1 px less to fix gap between fixed rows */
-    rowHeight: 40,
+    rowHeight: 44,
     totalFixHeight: 0,
     fixedrows: [],
     loading: this.props.loading,
