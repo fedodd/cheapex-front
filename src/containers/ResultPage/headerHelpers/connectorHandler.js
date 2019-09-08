@@ -26,12 +26,8 @@ const connectorHandler = (data, connector) => {
               }
             }
 
-
-            
-            
-            
           } else {
-            acc[acc.length - 1] = <div className="arrowConnected"><span className="alignedValue__big">{prevElement}</span><span className="arrow"></span><span>{row[index]}</span></div>;
+            acc[acc.length - 1] = <div className="arrowConnected"><span className="alignedValue__big">{prevElement}</span><div className="arrow"></div><span>{row[index]}</span></div>;
           }
           
         }
