@@ -1,5 +1,5 @@
 import React from "react";
-const transcriptHandler = (data, transcriptColumns, transcriptColumns_alt) => {
+const transcriptHandler = (data, transcriptColumns, hints) => {
 
   data.map(row => {
     transcriptColumns.map((transcriptIndex) => {
@@ -13,7 +13,7 @@ const transcriptHandler = (data, transcriptColumns, transcriptColumns_alt) => {
         return null;
       }
     })
-    transcriptColumns_alt.map((transcriptIndex) => {
+    hints.map((transcriptIndex) => {
       if (row[transcriptIndex] !== null) {
 
         row[transcriptIndex - 1] = <span className="transcriptWrapper is__alt"><span className="transcripted is__alt">{row[transcriptIndex]}</span>{row[transcriptIndex - 1]}</span>

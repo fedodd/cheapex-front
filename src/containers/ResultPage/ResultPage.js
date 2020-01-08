@@ -29,7 +29,6 @@ class ResultPage extends Component {
     filteredNoDataCompanies: [],
     noDataHeader: [],
     tablerows: [],
-
     tableHeader: {
       header: [],
       headerShort: [],

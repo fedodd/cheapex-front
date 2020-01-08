@@ -11,6 +11,78 @@ import deepCopy from "../../../functions/deepCopyArray";
 
 const headerHelpers = (fullData) => {
 
+
+  let jsonData = [...fullData];
+ // console.log('full data' , jsonData);
+
+
+
+  // jsonData[0].map((column, index) => {
+  //   //console.log(column, jsonData[2][index]);
+  //   if (!columnData.hasOwnProperty(column)) {
+  //     columnData[column] = {
+  //       name: column,
+  //       title: jsonData[1][index],
+  //       shortName: jsonData[2][index],
+  //       customIndex: index,
+  //     }
+  //   } else {
+  //     columnData[column][jsonData[3][index]] = null;
+  //   }
+
+  // });
+
+  //jsonData.slice(0, 4);
+  let acc = [];
+
+  for (let i = 4; i < jsonData.length; i++) {
+    let columnData = {};
+    jsonData[0].map((column, index) => {
+
+      if (!columnData.hasOwnProperty(column)) {
+
+        columnData[column] = {
+          title: jsonData[1][index],
+          shortName: jsonData[2][index],
+          [jsonData[3][index]]: jsonData[i][index],
+        }
+      } else {
+        if (jsonData[3][index] === 'hint' && columnData[column].hasOwnProperty('hint') ) {
+          //if hint prop already exsist then add prop name that need to hint
+          columnData[column]['hint_' + jsonData[3][index-1]] = jsonData[i][index];
+        }
+        columnData[column][jsonData[3][index]] = jsonData[i][index];
+      }
+
+    });
+
+    acc = [...acc, columnData];
+  }
+
+  console.log(acc);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   // массивы заголовков и их коротких значений и очищенные данные + добавим сразу итоговые колонки и номер строки
 
   const header = ['№', ...fullData[0], 'Дней', 'Дней', 'Цена'];
@@ -68,7 +140,7 @@ const headerHelpers = (fullData) => {
     },
 
     transcript: [],
-    transcriptAlt: [],
+    hint: [],
     connectArrow: {
       unit: '→',
       columns: []
@@ -96,8 +168,8 @@ const headerHelpers = (fullData) => {
         helpers.transcript.push(index);
         helpers.addedColumnsLength[index] = 0;
         break;
-      case "transcript_number":
-        helpers.transcriptAlt.push(index);
+      case "hint":
+        helpers.hint.push(index);
         helpers.addedColumnsLength[index] = 0;
         break;
       case "connect(arrow)":
@@ -207,7 +279,7 @@ const headerHelpers = (fullData) => {
   const withUnitsData = addUnitHandler(linkedCompaniesData, helpers.addons);
   //функция добавления transcript
 
-  const transcriptedData = transcriptHandler(withUnitsData, helpers.transcript, helpers.transcriptAlt);
+  const transcriptedData = transcriptHandler(withUnitsData, helpers.transcript, helpers.hint);
 
   //функция по замене текста на картинки
 
@@ -220,7 +292,7 @@ const headerHelpers = (fullData) => {
   const connectedDaysData = connectorHandler(connectedArrowData, helpers.calculators.dMaxConnectDots);
 
   //функция по удалению вспомогательных колонок
-  const deleteColumns = [...helpers.connectArrow.columns].concat(helpers.calculators.dMaxConnectDots.columns).concat(helpers.transcript).concat(helpers.transcriptAlt);
+  const deleteColumns = [...helpers.connectArrow.columns].concat(helpers.calculators.dMaxConnectDots.columns).concat(helpers.transcript).concat(helpers.hint);
   const cleanedData = deleteHandler(connectedDaysData, deleteColumns);
   const cleanedColumnsWidth = concatedColumnsWidth.filter((value, index) => !deleteColumns.includes(index));
 /*   console.log(concatedColumnsWidth, cleanedColumnsWidth, deleteColumns, cleanedData[0]);
@@ -251,7 +323,28 @@ const headerHelpers = (fullData) => {
     indexData: indexData,
     columnsWidth: cleanedColumnsWidth
   };
-  return exportData;
+
+
+
+
+
+
+
+
+
+
+
+
+    return exportData;
+
+
 }
+
+
+
+
+
+
+
 
 export default headerHelpers;
