@@ -79,15 +79,19 @@ class ResultPage extends Component {
     }
   }
 
-  //склонения к слову 
+  //склонения к слову
   titleEnding = declOfNum(this.state.totalItems, ['компании', 'компаний', 'компаний']);
 
-// фильтрация по поиску. передаем ее в компонент search и возвращаем оттуда event из инпута. 
+// фильтрация по поиску. передаем ее в компонент search и возвращаем оттуда event из инпута.
   searchFilterHandler = (rows, event) => {
     let targetString = '';
-    if (event === undefined) {
-      targetString = document.getElementById('searchFilter').value;
-    }  else {
+    // if (event === undefined) {
+    //   targetString = document.getElementById('searchFilter').value;
+    // }  else {
+    //   targetString = event.target.value.toLowerCase();
+    // }
+
+    if (event !== undefined) {
       targetString = event.target.value.toLowerCase();
     }
 
@@ -114,7 +118,8 @@ class ResultPage extends Component {
     let targetValue = 0;
 
     if (event === null) {
-      targetValue = document.getElementById('rangeFilter').value;
+      // targetValue = document.getElementById('rangeFilter').value;
+      targetValue = 0;
     } else {
       targetValue = event.target.value;
     }
@@ -143,7 +148,7 @@ class ResultPage extends Component {
     }
 
     const updatedValues = this.minMaxHandler(numericData, rows, totalValues);
-    
+
     this.setState({
       filteredRows: rows,
       totalValues: updatedValues
@@ -166,13 +171,13 @@ class ResultPage extends Component {
     const fullpath = 'https://react-app-bc4e6.firebaseio.com/importedSheet/' + this.props.link + '.json';
     axios.get(fullpath).then(response => {
       const fullData = response.data.data;
-      
+
       const data = headerHelpers(fullData);
       /* важно: мы сами генерируем последние три колонки и обращаемся к ним по индексам: -1 цена, -2 максдней, -3 миндней.  важно не сломать эту штуку:)*/
-      
+
       const numericData = data.numericData;
       const filteredRows = deepCopyArray(data.tablerows);
-      
+
       const totalValues = this.minMaxHandler(numericData, filteredRows, this.state.totalValues);
       this.setState({
         numericData: data.numericData,
@@ -203,7 +208,7 @@ class ResultPage extends Component {
       clickDrugHandler(this.sliderRef.current);
     }
     let currentHeight = this.sliderRef.current.offsetHeight;
-    if (prevProps.pageHeight !== this.state.pageHeight && this.state.pageHeight !== currentHeight) {   
+    if (prevProps.pageHeight !== this.state.pageHeight && this.state.pageHeight !== currentHeight) {
       this.setState({
         pageHeight: currentHeight
       })
@@ -211,45 +216,45 @@ class ResultPage extends Component {
   }
 
 
-  render() {    
+  render() {
     if (this.state.tablerows.length === 0) {
       return (
         <div className={classes.resultPage}>
           <Spinner />
         </div>
-      ) 
+      )
     }
 
     const noDataCompanies = this.state.filteredNoDataCompanies;
     //noDataCompanies.map((row, index) => row[0] = this.state.filteredRows.length + 1 + index);
     noDataCompanies.map(row => row[0] = null);
 
-    let noDataCompaniesTable = 
-          (<ReactTable 
+    let noDataCompaniesTable =
+          (<ReactTable
             data={noDataCompanies}
             columns={[{
               'Header': '№',
               'accessor': '0',
-              'minWidth': 44, 
+              'minWidth': 44,
               'width': 54
             }, {
-              'Header': 'Вебсайт', 
+              'Header': 'Вебсайт',
               'accessor': '1',
-              'width': 164  
+              'width': 164
             },
               {
                 'Header': 'Ответили',
                 'accessor': '2',
-                'minWidth': 40, 
+                'minWidth': 40,
                 'width': 'auto'
               }
             ]}
             showPaginationBottom={false}
             defaultPageSize={1}
-            pageSize={noDataCompanies.length} 
+            pageSize={noDataCompanies.length}
             className="table __noData"
             />);
-    
+
 
     return (
       <div className={classes.resultPageWrapper}>
