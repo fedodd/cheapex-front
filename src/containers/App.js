@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, NavLink } from 'react-router-dom';
 import classes from './App.pcss';
-import declOfNum from "../functions/declOfNum";
+
 import ResultPage from './ResultPage/ResultPage';
 import Form from '../components/form/Form';
 import axios from "axios";
@@ -24,8 +24,6 @@ class App extends Component {
     });
   }
 
-  titleEnding = declOfNum(this.state.totalItems, ['компании', 'компаний', 'компаний']);
-
   render () {
     // попытка генерации адресов
     
@@ -37,28 +35,28 @@ class App extends Component {
       )
     }
 
-    console.log('linksArray', linksArray);
+    
     const resultLinks = linksArray.map(link => {
       return <li key={'links' + link}>
         <NavLink to={'/' + link} className={classes.link}>Страница c результатами {link}</NavLink>
-        <Route path={'/' + link}
-          render={(routeProps) => (<ResultPage {...routeProps}
-            link={link} />)} />
+        
       </li>
     });
-
-    console.log('resultLinks', resultLinks);
-
+    const resultTables = linksArray.map(link => {
+      return <Route path={'/' + link}
+                    render={(routeProps) => (<ResultPage {...routeProps}
+                    link={link} />)}
+                    key={'table' + link} />
+    });
+    console.log(window.location.href);
     return (
       <BrowserRouter>
         <div className={classes.holder}>
-          <ul>
+          {resultTables}
+          <ul className={classes.navlinks} style={{position: 'absolute', zIndex: '-1', top: '0'}}>
             {resultLinks}
-            
-           
           </ul>
-          
-          <NavLink to={{ pathname: '/import' }} className={classes.link}>Страница для загрузки данных</NavLink>
+          {/* <NavLink to={{ pathname: '/import' }} className={classes.link}>Страница для загрузки данных</NavLink> */}
           <Route path="/import" component={Form} />
         </div>
       </BrowserRouter>

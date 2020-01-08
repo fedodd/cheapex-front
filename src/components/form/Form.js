@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from "axios";
 import Papa from "papaparse";
-import withClass from '../../hoc/WithClass';
+import withClass from '../../hoc/withClass';
 import classes from './Form.pcss';
 
 class Form extends Component {

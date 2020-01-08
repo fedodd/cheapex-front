@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classes from './Filters.pcss';
-import Duration from './../filters/duration/Duration';
+import RangeFilter from './rangeFilter/rangeFilter';
 import Search from './search/Search';
 
 
@@ -13,8 +13,11 @@ class name extends Component {
   render() {
     return (
       <div className={classes.filters}>
-        <Search />
-        <Duration />
+        <Search 
+          filterHandler={this.props.filterHandler}/>
+        <RangeFilter 
+          filterHandler={this.props.filterHandler}
+          totalValues ={this.props.totalValues}/>
       </div>
      );
   }

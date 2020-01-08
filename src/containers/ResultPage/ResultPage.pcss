@@ -1,0 +1,42 @@
+:root .resultPageWrapper {
+  display: flex;
+  flex-direction: column;
+  padding-right: 15px;
+  padding-left: 15px;
+  box-sizing: border-box;
+  height: 100vh;
+  background-color: white;
+
+  & h1 {
+    visibility: hidden; /*  */
+    margin: 0;
+    padding: 0;
+    height: 0;
+  }
+}
+
+:root .resultPage {
+  position: relative;
+  overflow: scroll;
+  flex: 1;
+  
+  & > * {
+    position: sticky;
+    left: 0;
+  }
+  /* huide scrollbar */
+  &::-webkit-scrollbar {
+    
+    display: none;
+  }
+}
+
+.noDataList {
+  padding: 0;
+  list-style: none;
+
+  & li {
+    margin: 0;
+    padding: 0;
+  }
+}
