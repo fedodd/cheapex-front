@@ -4,7 +4,7 @@ import addUnitHandler from "./addUnitHandler";
 import imageHandler from "./imageHandler";
 import connectorHandler from "./connectorHandler";
 import deleteHandler from "./deleteHandler";
-import transcriptHandler from "./transcriptHanlder";
+import transcriptHandler from "./transcriptHandler";
 import transcriptHeaderHandler from "./transcriptHeaderHandler";
 import companiesHandler from "./companiesHandler";
 import deepCopy from "../../../functions/deepCopyArray";
@@ -20,12 +20,12 @@ const headerHelpers = (fullData) => {
     headerShort = [null, ...fullData[1], null, null, null];
   } else {
     let headerArray = [];
-    Object.keys(fullData[1]).map(index => headerArray[index] = fullData[1][index]); 
+    Object.keys(fullData[1]).map(index => headerArray[index] = fullData[1][index]);
     headerShort = [null, ...headerArray, null, null, null];
   }
   // если сокращенного названия нет, то покажем полное название, сохраним индексы сокращенных колонок, чтобы потом раскрывать их значение
   let headerToTranscript = [];
-  
+
   headerShort.map((elem, index) => {
     if (elem !== null) {
       headerToTranscript = headerToTranscript.concat(index);
@@ -37,7 +37,7 @@ const headerHelpers = (fullData) => {
   //здесь надо подумать, как потом в другой валюте данные закидывать.
   const helpHeader = [null, ...fullData[2], 'dMin', 'dMax(connect(…))', 'add($)'];
   const transcriptedHeader = transcriptHeaderHandler(header, headerShort, headerToTranscript);
-  
+
   // распределяем данные по helpHeader
   const helpers = {
     addons: {
@@ -68,6 +68,7 @@ const headerHelpers = (fullData) => {
     },
 
     transcript: [],
+    transcriptAlt: [],
     connectArrow: {
       unit: '→',
       columns: []
@@ -93,6 +94,10 @@ const headerHelpers = (fullData) => {
         break;
       case "transcript":
         helpers.transcript.push(index);
+        helpers.addedColumnsLength[index] = 0;
+        break;
+      case "transcript_number":
+        helpers.transcriptAlt.push(index);
         helpers.addedColumnsLength[index] = 0;
         break;
       case "connect(arrow)":
@@ -138,7 +143,7 @@ const headerHelpers = (fullData) => {
     return [...acc, [index + 1 + data.length, ...row]];
   }, []);
   noDataCompanies = companiesHandler(noDataCompanies);
-  
+
   // функции для обработки helperHeader
 
   //подсчитаем нужные колонки с помощью функции калькулятора, отправив в нее данные и helpers. Сделаем deepcopy данных для дальнейшей обработки, оставив цифровые для фильтров, отправив calculatedData в state
@@ -146,10 +151,10 @@ const headerHelpers = (fullData) => {
   const calculatedDataCopy = deepCopy(calculatedData);
 
   //
-  
+
   const columnsWidth = calculatedDataCopy.reduce((acc, row) => {
     row.map((cell, index) => {
-      
+
       const addedValue = helpers.addedColumnsLength[index];
       let valueLength;
 /* company name tighter than other columns, cause it's latin and all - lower case */
@@ -159,10 +164,10 @@ const headerHelpers = (fullData) => {
         valueLength = 0;
       } else {
         valueLength = cell.toString().length + addedValue;
-      } 
-      
+      }
+
       //console.log('cell', cell, 'acc[i]', acc[index], 'added', addedValue,'value',  valueLength);
-      
+
       if (!acc[index] || (acc[index] < valueLength)) {
 
         acc[index] = valueLength;
@@ -171,7 +176,7 @@ const headerHelpers = (fullData) => {
     });
     return acc;
   }, []);
-  
+
   const concatedColumnsWidth = columnsWidth.reduce((acc, column, index) => {
     if (helpers.connectArrow.columns.includes(index)) {
       acc[index - 1] = acc[index-1] + column;
@@ -181,8 +186,8 @@ const headerHelpers = (fullData) => {
       } else {
         acc[index - 1] = acc[index - 1] + column;
       }
-    } 
-    
+    }
+
     /* check width of header  and if its longer than 1 and shorter than 2, add 1 length, cause enother one it's only a dot. if its longer, no case to do something  */
     if (headerShort[index] && headerShort[index].length - column <= 2 && headerShort[index].length - column > 1  )  {
       acc[index] = column + 1;
@@ -196,16 +201,16 @@ const headerHelpers = (fullData) => {
 
   // делаем ссылками сайты компаний
   const linkedCompaniesData = companiesHandler(calculatedDataCopy);
-  
+
   //функция addUnit добавляет единицы измерения и т.п. из headerHelper
-  
+
   const withUnitsData = addUnitHandler(linkedCompaniesData, helpers.addons);
   //функция добавления transcript
 
-  const transcriptedData = transcriptHandler(withUnitsData, helpers.transcript);
+  const transcriptedData = transcriptHandler(withUnitsData, helpers.transcript, helpers.transcriptAlt);
 
   //функция по замене текста на картинки
-  
+
   //const withImagesData = imageHandler(transcriptedData, helpers.images);
   //Оставляем текст вместо картинок
   const withImagesData = transcriptedData;
@@ -215,7 +220,7 @@ const headerHelpers = (fullData) => {
   const connectedDaysData = connectorHandler(connectedArrowData, helpers.calculators.dMaxConnectDots);
 
   //функция по удалению вспомогательных колонок
-  const deleteColumns = [...helpers.connectArrow.columns].concat(helpers.calculators.dMaxConnectDots.columns).concat(helpers.transcript);
+  const deleteColumns = [...helpers.connectArrow.columns].concat(helpers.calculators.dMaxConnectDots.columns).concat(helpers.transcript).concat(helpers.transcriptAlt);
   const cleanedData = deleteHandler(connectedDaysData, deleteColumns);
   const cleanedColumnsWidth = concatedColumnsWidth.filter((value, index) => !deleteColumns.includes(index));
 /*   console.log(concatedColumnsWidth, cleanedColumnsWidth, deleteColumns, cleanedData[0]);
@@ -224,10 +229,10 @@ const headerHelpers = (fullData) => {
   const headerForClean = {
     header: transcriptedHeader,
     headerShort: transcriptedHeader,
-    headerToTranscript: headerToTranscript 
+    headerToTranscript: headerToTranscript
   };
   const cleanedHeader = deleteHandler(headerForClean, deleteColumns);
-  
+
   const indexData = cleanedData.reduce((acc, elem, index) => {
     const currentRow = {
       index: index,
@@ -236,7 +241,7 @@ const headerHelpers = (fullData) => {
     return [...acc, currentRow];
   }, []);
 
-  
+
 
   const exportData = {
     numericData: calculatedData,

@@ -18,7 +18,7 @@ class App extends Component {
 
     axios.get('https://react-app-bc4e6.firebaseio.com/importedSheet.json').then(response => {
       const resultLinks = Object.keys(response.data);
-      this.setState({ 
+      this.setState({
         resultLinks: resultLinks
       });
     });
@@ -26,7 +26,7 @@ class App extends Component {
 
   render () {
     // попытка генерации адресов
-    
+
     const linksArray = this.state.resultLinks;
 
     if (this.state.resultLinks.length === 0) {
@@ -35,11 +35,11 @@ class App extends Component {
       )
     }
 
-    
+
     const resultLinks = linksArray.map(link => {
       return <li key={'links' + link}>
         <NavLink to={'/' + link} className={classes.link}>Страница c результатами {link}</NavLink>
-        
+
       </li>
     });
     const resultTables = linksArray.map(link => {
@@ -56,7 +56,7 @@ class App extends Component {
           <ul className={classes.navlinks} style={{position: 'absolute', zIndex: '-1', top: '0'}}>
             {resultLinks}
           </ul>
-          {/* <NavLink to={{ pathname: '/import' }} className={classes.link}>Страница для загрузки данных</NavLink> */}
+          <NavLink to={{ pathname: '/import' }} className={classes.link}>Страница для загрузки данных</NavLink>
           <Route path="/import" component={Form} />
         </div>
       </BrowserRouter>
