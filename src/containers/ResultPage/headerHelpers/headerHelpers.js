@@ -8,58 +8,120 @@ import transcriptHandler from "./transcriptHandler";
 import transcriptHeaderHandler from "./transcriptHeaderHandler";
 import companiesHandler from "./companiesHandler";
 import deepCopy from "../../../functions/deepCopyArray";
+import { Object } from "core-js";
 
 const headerHelpers = (fullData) => {
 
 
-  let jsonData = [...fullData];
+  let toJsonData = [...fullData];
  // console.log('full data' , jsonData);
 
+  let jsonData = [];
 
-
-  // jsonData[0].map((column, index) => {
-  //   //console.log(column, jsonData[2][index]);
-  //   if (!columnData.hasOwnProperty(column)) {
-  //     columnData[column] = {
-  //       name: column,
-  //       title: jsonData[1][index],
-  //       shortName: jsonData[2][index],
-  //       customIndex: index,
-  //     }
-  //   } else {
-  //     columnData[column][jsonData[3][index]] = null;
-  //   }
-
-  // });
-
-  //jsonData.slice(0, 4);
-  let acc = [];
-
-  for (let i = 4; i < jsonData.length; i++) {
-    let columnData = {};
-    jsonData[0].map((column, index) => {
-
+  for (let i = 4; i < toJsonData.length; i++) {
+    let columnData = {
+      data: {
+        currency: '$',
+        dMax: null,
+        dMin: null,
+        totalPrice: null,
+      }
+    };
+    toJsonData[0].map((column, index) => {
       if (!columnData.hasOwnProperty(column)) {
 
+        switch (toJsonData[3][index]) {
+          case 'price($)':
+            columnData.data.totalPrice = columnData.data.totalPrice + toJsonData[i][index];
+            break;
+          case 'dMin':
+            columnData.data.dMin = columnData.data.dMin +  toJsonData[i][index];
+            break;
+          case 'dMax(connect(…))':
+            columnData.data.dMax = columnData.data.dMax + toJsonData[i][index];
+            break;
+
+          default:
+            break;
+        }
+
+        // [3] - type of data, toJsonData[i][index] - value for each row
         columnData[column] = {
-          title: jsonData[1][index],
-          shortName: jsonData[2][index],
-          [jsonData[3][index]]: jsonData[i][index],
+          title: toJsonData[1][index],
+          shortName: toJsonData[2][index],
+          [toJsonData[3][index]]: toJsonData[i][index],
+
         }
       } else {
-        if (jsonData[3][index] === 'hint' && columnData[column].hasOwnProperty('hint') ) {
-          //if hint prop already exsist then add prop name that need to hint
-          columnData[column]['hint_' + jsonData[3][index-1]] = jsonData[i][index];
-        }
-        columnData[column][jsonData[3][index]] = jsonData[i][index];
-      }
+        switch (toJsonData[3][index]) {
+          case 'price($)':
+            columnData.data.totalPrice = columnData.data.totalPrice + toJsonData[i][index];
+            break;
+          case 'dMin':
+            columnData.data.dMin = columnData.data.dMin + toJsonData[i][index];
+            break;
+          case 'dMax(connect(…))':
+            columnData.data.dMax = columnData.data.dMax + toJsonData[i][index];
+            break;
 
+          default:
+            break;
+        }
+        if (toJsonData[3][index] === 'hint' && columnData[column].hasOwnProperty('hint') ) {
+          //if hint prop already exsist then add prop name that need to hint
+          columnData[column]['hint_' + toJsonData[3][index-1]] = toJsonData[i][index];
+        }
+        columnData[column][toJsonData[3][index]] = toJsonData[i][index];
+      }
     });
 
-    acc = [...acc, columnData];
+    jsonData = [...jsonData, columnData];
   }
 
-  console.log(acc);
+  console.log(jsonData);
+
+  jsonData.map(row => {
+
+    Object.keys(row).map(key => {
+      switch (key) {
+        case "Веб-сайт":
+
+          break;
+        case "Ответили":
+
+          break;
+        case "Офис":
+
+          break;
+        case "Перевозка по Китаю":
+
+          break;
+        case "Переупаковка":
+
+          break;
+        case "Международная перевозка":
+
+          break;
+        case "Таможенный платеж":
+
+          break;
+        case "Перевозка по России":
+
+          break;
+        case "Сертификат":
+
+          break;
+        case "Страховка":
+
+          break;
+        case "Комиссия":
+
+          break;
+        default:
+          break;
+      }
+    })
+  })
 
 
 
