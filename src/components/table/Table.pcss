@@ -31,7 +31,7 @@
   position: relative;
   display: flex;
   height: 44px;
-  
+
 }
 
 :global .ReactTable .rt-thead {
@@ -94,39 +94,43 @@
   width: 100%;
   height: 100%;
 
-  & .arrow { 
+  & .arrow {
     position: relative;
     display: block;
     flex-grow: 1;
     margin: 0 5px;
-    height: 14px; /* font-size */
-    background-image: url('./images/line1.png');
+    height: 17.28px;
+    background: linear-gradient(to top, transparent, transparent 8px, #000 8px, #000 9px, transparent 9px);
     background-repeat-x:  repeat;
 
     &::after {
       position: absolute;
-      top: 0;
-      right: 0;
+      right: -2px;
+      bottom: 0px;
       display: block;
       width: 4px;
-      height: 16px;
-      background-image: url('./images/arrow2.png');
-      background-size: cover;
+      height: 12px;
+      background-image: url('./images/arrow3.png');
+      background-repeat: no-repeat;
+      background-size: 100%;
       content: '';
-      
     }
   }
 }
 
 :global .rt-td > .transcriptWrapper {
   position: relative;
-
-} 
+}
 
 :global .transcriptWrapper {
   display: inline-flex;
   align-items: center;
   height: 100%;
+
+  & .spanWrapper {
+    position: relative;
+    z-index: 1000;
+  }
 
   :global .rt-th & {
     position: relative;
@@ -149,22 +153,58 @@
     left: 0;
     z-index: 10;
     display: inline-flex;
+    visibility: hidden;
     flex-wrap: nowrap;
     align-items: center;
     margin: 0 -.5em;
     padding: 0 .5em;
- 
     width: max-content;
     border-top: 2px #fffcdc solid;
     opacity: 0;
     background-color: #fffcdc;
     box-shadow: inset 0px -1px 0px 0px #fff8b8;
   }
+
+  &.is__alt {
+    width: 100%;
+  }
+
+  &.is__alt .transcripted {
+    top: unset;
+    right: unset;
+    bottom: 0;
+    /* 20px padding + 50% half of cell   */
+    left: calc(50% - 20px);
+    visibility: hidden;
+    padding: 20px 15px;
+    width: 180px;
+    height: max-content;
+    border: 0;
+    border-radius: 2px;
+    text-align: left;
+    opacity: 0;
+    color: #fffefc;
+    background-color: #444444;
+    box-shadow: none;
+    transform: translateY(100%);
+
+    &::before {
+      position: absolute;
+      top: -20px;
+      box-sizing: border-box;
+      width: 10px;
+      height: 10px;
+      border: 10px solid transparent;
+      border-bottom: 10px solid #444444;
+      content: '';
+    }
+  }
 }
 
 :global .rt-td:hover .transcriptWrapper .transcripted,
 :global .rt-th:hover .transcriptWrapper .transcripted {
-  z-index: 11;
+  z-index: 31;
+  visibility: visible;
   opacity: 1;
   transition: opacity .6s .6s;
 }
@@ -195,10 +235,8 @@
   right: 0; /* справа появаляются нижние ряды при прокрутке*/
   z-index: 10;
   justify-content: flex-start;
-
-  
   background-color: white;
-  
+
   :global .rt-tr-group.fixed & {
     z-index: 20;
     background-color: #fff9b8;
@@ -268,10 +306,9 @@
   z-index: 20;
   background-color: #fff9b8;
 
-
   &:hover {
+    z-index: 21;
     background-color: #f2f2e5;
-      
   }
 }
 
@@ -296,17 +333,17 @@
 }
 
 :global .__noData .rt-td {
-  &:last-child { 
+  &:last-child {
     padding-left: 40px;
     //color: #f33;
   }
 
-  &:last-child { 
+  &:last-child {
     padding-left: 40px;
     //color: #f33;
   }
 
-  &:second-child { 
+  &:second-child {
     width: var(--companiesWidth);
   }
 }
@@ -335,7 +372,7 @@
 /* aligning */
 
 :global .rt-td  {
-  
+
   & .is__rightAlign {
     margin-left: -5px;
     width: 100%;
