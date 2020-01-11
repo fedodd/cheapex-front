@@ -68,7 +68,7 @@ const headerHelpers = (fullData) => {
     jsonData = [...jsonData, rowData];
   }
 
-  console.log(jsonData);
+  // console.log(jsonData);
 
 
 
@@ -78,52 +78,77 @@ const headerHelpers = (fullData) => {
   answeredData.forEach((row, index) => {
       row['index'] = index +1;
     });
-  console.log(answeredData);
 
-  let resultData = [];
+  //console.log(answwe);
 
-  jsonData.map(row => {
+
+  let answeredHeader = answeredData.reduce( (acc, row) => {
 
     Object.keys(row).map(key => {
       switch (key) {
         case "Веб-сайт":
-
+          return [...acc, {
+            'Header': row[key].header.title,
+            'accessor': 'веб-сайт',
+          }]
           break;
         case "Ответили":
-
+          return [...acc, {
+            'Header': row[key].header.title,
+            'accessor': 'ответили',
+          }]
           break;
         case "Офис":
-
+          return [...acc, {
+            'Header': row[key].header.title,
+            'accessor': 'офис',
+          }]
           break;
         case "Перевозка по Китаю":
-
+          return acc;
           break;
         case "Переупаковка":
+          return acc;
 
           break;
         case "Международная перевозка":
+          return acc;
 
           break;
         case "Таможенный платеж":
+          return acc;
 
           break;
         case "Перевозка по России":
+          return acc;
 
           break;
         case "Сертификат":
+          return acc;
 
           break;
         case "Страховка":
+          return acc;
 
           break;
         case "Комиссия":
+          return acc;
 
           break;
         default:
+          return acc;
           break;
       }
     })
-  })
+  }, []);
+
+  console.log(answeredHeader);
+
+  // console.log(answeredData);
+
+  let resultData = [];
+
+
 
 
 
@@ -379,29 +404,19 @@ const headerHelpers = (fullData) => {
 
 
 
-  const exportData = {
-    numericData: calculatedData,
-    tablerows: cleanedData,
-    tableHeader: cleanedHeader,
-    noDataCompanies: noDataCompanies,
-    indexData: indexData,
-    columnsWidth: cleanedColumnsWidth
-  };
+  // const exportData = {
+  //   numericData: calculatedData,
+  //   tablerows: cleanedData,
+  //   tableHeader: cleanedHeader,
+  //   noDataCompanies: noDataCompanies,
+  //   indexData: indexData,
+  //   columnsWidth: cleanedColumnsWidth,
+  //   jsonData: answeredData
+  // };
 
+   // return exportData;
 
-
-
-
-
-
-
-
-
-
-
-    return exportData;
-
-
+  return answeredData;
 }
 
 

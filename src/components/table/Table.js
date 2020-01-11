@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import ReactTable from "react-table";
-
+import {
+  useTable,
+} from "react-table";
 import classes from './Table.pcss';
 import Aux from "../../hoc/Aux";
 import Spinner from "../spinner/Spinner";
@@ -63,7 +64,7 @@ class Table extends Component {
           'width': this.state.columnsWidth[String(index)]
         }];
       } else {
-        
+
         // если такая колонка уже есть, то спрашиваем - есть ли уже дочерние колонки. если нет - создаем подколонки, переместив в нижний уровень колонку с тем же названием
 
         //(currentRow['columns']) ? null : currentRow['columns'] = [];
@@ -116,7 +117,7 @@ class Table extends Component {
   }
 
 /*   static getDerivedStateFromProps(props, state) {
-    
+
   } */
 
   componentDidMount() {
@@ -127,7 +128,7 @@ class Table extends Component {
     });
   }
 
-  // запускаем спиннер с задежкой 
+  // запускаем спиннер с задежкой
   delayHandler = () => {
     window.setTimeout(() => { this.setState({ loading: false }) }, 300);
     return <Spinner />;
@@ -135,7 +136,7 @@ class Table extends Component {
 
   componentDidUpdate(prevProps) {
     // запускаем спиннер с задежкой если изменидись данные в таблице
-    
+
     if (this.props.data !== prevProps.data && this.props.data.length) {
       this.setState({
         loading: true
@@ -198,7 +199,7 @@ class Table extends Component {
               const id = rowInfo.row[0].props.uniqkey;
               const isFixed = this.props.fixedRows && this.props.fixedRows.includes(id);
               //console.log(this.props.fixedRows);
-              
+
               return {
                 onClick: (e) => this.props.addFixedRowHandler(id),
                 className: isFixed ? "fixed" : "",
@@ -214,4 +215,4 @@ class Table extends Component {
   }
 };
 
-export default Table; 
+export default Table;

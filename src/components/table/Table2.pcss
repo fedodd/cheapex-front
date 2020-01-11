@@ -1,0 +1,27 @@
+thead tr:last-child {
+  visibility: hidden;
+}
+
+.table {
+  position: relative;
+  height: 100vh;
+  background-color: white;
+}
+
+:global th .transcriptWrapper {
+  position: relative;
+
+  & .with_transcripted {
+    position: absolute;
+    top: 0;
+    left: 0;
+    visibility: hidden;
+    transition: .6s .6s;
+  }
+
+  &:hover {
+    & .with_transcripted {
+      visibility: visible;
+    }
+  }
+}

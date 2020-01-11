@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route, NavLink } from 'react-router-dom';
 import classes from './App.pcss';
 
-import ResultPage from './ResultPage/ResultPage';
+//import ResultPage from './ResultPage/ResultPage';
+import ResultPage from './ResultPage/ResultPage2';
 import Form from '../components/form/Form';
 import axios from "axios";
 
