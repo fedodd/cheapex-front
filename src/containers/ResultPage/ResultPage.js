@@ -6,7 +6,9 @@ import headerHelpers from "./headerHelpers/headerHelpers";
 import Table from '../../components/table/Table';
 import classes from './ResultPage.pcss';
 import declOfNum from "../../functions/declOfNum";
-import ReactTable from "react-table";
+import {
+  useTable,
+} from "react-table";
 //import filterByValue from "../../functions/filterByValue";
 import arrayMinMax from '../../functions/arrayMinMax';
 import deepCopyArray from "../../functions/deepCopyArray";

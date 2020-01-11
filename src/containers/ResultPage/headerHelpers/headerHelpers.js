@@ -9,6 +9,7 @@ import transcriptHeaderHandler from "./transcriptHeaderHandler";
 import companiesHandler from "./companiesHandler";
 import deepCopy from "../../../functions/deepCopyArray";
 import { Object } from "core-js";
+import calculateFunc from "./calculateFunc";
 
 const headerHelpers = (fullData) => {
 
@@ -16,69 +17,70 @@ const headerHelpers = (fullData) => {
   let toJsonData = [...fullData];
  // console.log('full data' , jsonData);
 
+
   let jsonData = [];
 
   for (let i = 4; i < toJsonData.length; i++) {
-    let columnData = {
+    let rowData = {
       data: {
         currency: '$',
+      },
+      days: {
+        title: '=Дней',
+        shortName: null,
         dMax: null,
         dMin: null,
+      },
+      price: {
+        title: '=Цена',
+        shortName: null,
         totalPrice: null,
       }
     };
+
     toJsonData[0].map((column, index) => {
-      if (!columnData.hasOwnProperty(column)) {
-
-        switch (toJsonData[3][index]) {
-          case 'price($)':
-            columnData.data.totalPrice = columnData.data.totalPrice + toJsonData[i][index];
-            break;
-          case 'dMin':
-            columnData.data.dMin = columnData.data.dMin +  toJsonData[i][index];
-            break;
-          case 'dMax(connect(…))':
-            columnData.data.dMax = columnData.data.dMax + toJsonData[i][index];
-            break;
-
-          default:
-            break;
-        }
+      if (!rowData.hasOwnProperty(column)) {
 
         // [3] - type of data, toJsonData[i][index] - value for each row
-        columnData[column] = {
-          title: toJsonData[1][index],
-          shortName: toJsonData[2][index],
+        rowData[column] = {
+          header: {
+            title: toJsonData[1][index],
+            shortName: toJsonData[2][index],
+          },
           [toJsonData[3][index]]: toJsonData[i][index],
-
         }
+        // calculate data for summary columns put column name, index, imported row data and row obj
+        rowData = calculateFunc(toJsonData[3][index], index, toJsonData[i], rowData);
+
       } else {
-        switch (toJsonData[3][index]) {
-          case 'price($)':
-            columnData.data.totalPrice = columnData.data.totalPrice + toJsonData[i][index];
-            break;
-          case 'dMin':
-            columnData.data.dMin = columnData.data.dMin + toJsonData[i][index];
-            break;
-          case 'dMax(connect(…))':
-            columnData.data.dMax = columnData.data.dMax + toJsonData[i][index];
-            break;
+        // calculate data for summary columns
+        rowData = calculateFunc(toJsonData[3][index], index, toJsonData[i], rowData);
 
-          default:
-            break;
+        //if hint prop already exsist then add prop name that need to hint
+        if (toJsonData[3][index] === 'hint' && rowData[column].hasOwnProperty('hint') ) {
+          rowData[column]['hint_' + toJsonData[3][index-1]] = toJsonData[i][index];
         }
-        if (toJsonData[3][index] === 'hint' && columnData[column].hasOwnProperty('hint') ) {
-          //if hint prop already exsist then add prop name that need to hint
-          columnData[column]['hint_' + toJsonData[3][index-1]] = toJsonData[i][index];
-        }
-        columnData[column][toJsonData[3][index]] = toJsonData[i][index];
+
+        rowData[column][toJsonData[3][index]] = toJsonData[i][index];
       }
     });
 
-    jsonData = [...jsonData, columnData];
+    jsonData = [...jsonData, rowData];
   }
 
   console.log(jsonData);
+
+
+
+  let answeredData = jsonData.filter(row =>
+    !isNaN(row['Ответили']['add(hours)'])
+    );
+  answeredData.forEach((row, index) => {
+      row['index'] = index +1;
+    });
+  console.log(answeredData);
+
+  let resultData = [];
 
   jsonData.map(row => {
 
