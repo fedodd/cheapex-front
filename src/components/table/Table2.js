@@ -5,6 +5,9 @@ import classes from './Table2.pcss';
 function Table({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
 
+  // const memoColumns = React.useMemo(() => columns, []);
+  // const memoData = [React.useMemo(() => data, [])]
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -15,6 +18,8 @@ function Table({ columns, data }) {
     columns,
     data,
   })
+
+
 
   // Render the UI for your table
   return (

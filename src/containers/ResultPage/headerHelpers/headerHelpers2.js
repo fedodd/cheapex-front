@@ -81,14 +81,8 @@ const headerHelpers = (fullData) => {
     }
   }
 
-
-
-
   for (let i = 4; i < toJsonData.length; i++) {
     let rowData = {
-      data: {
-        currency: '$',
-      },
       days: {
         title: '=Дней',
         shortName: null,
@@ -132,6 +126,17 @@ const headerHelpers = (fullData) => {
     jsonData = [...jsonData, rowData];
   }
 
+  let accessorArray = Object.values(columns).reduce((acc, topColumn) => {
+
+    topColumn.columns.map(column => acc = [...acc, column.accessor]);
+    return acc;
+  }, []);
+
+  console.log(accessorArray);
+
+
+
+
   let answeredData = jsonData.filter(row =>
     !isNaN(row['Ответили']['add(hours)'])
     );
@@ -141,70 +146,24 @@ const headerHelpers = (fullData) => {
 
   //console.log(answwe);
 
-
-  let answeredHeader = answeredData.reduce( (acc, row) => {
-
-    Object.keys(row).map(key => {
-      switch (key) {
-        case "Веб-сайт":
-
-          acc = [...acc, key];
-          break;
-        case "Ответили":
-          return [...acc, {
-            'Header': row[key].header.title,
-            'accessor': 'ответили',
-          }]
-          break;
-        case "Офис":
-          return [...acc, {
-            'Header': row[key].header.title,
-            'accessor': 'офис',
-          }]
-          break;
-        case "Перевозка по Китаю":
-          return acc;
-          break;
-        case "Переупаковка":
-          return acc;
+  answeredData.forEach(row => {
+    row.map(column => {
+      switch (column.Header) {
+        case value:
 
           break;
-        case "Международная перевозка":
-          return acc;
 
-          break;
-        case "Таможенный платеж":
-          return acc;
-
-          break;
-        case "Перевозка по России":
-          return acc;
-
-          break;
-        case "Сертификат":
-          return acc;
-
-          break;
-        case "Страховка":
-          return acc;
-
-          break;
-        case "Комиссия":
-          return acc;
-
-          break;
         default:
-          return acc;
           break;
       }
     })
-    return acc;
-  }, []);
+  });
+
+
 
   return {
     columns,
-    data: jsonData,
-    header
+    data: jsonData
   };
 }
 

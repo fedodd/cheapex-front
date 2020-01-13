@@ -29,9 +29,11 @@ class ResultPage extends Component {
     axios.get(fullpath).then(response => {
       const fullData = response.data.data;
 
+
       let results = headerHelpers(fullData);
+
+      console.log(results);
       let columns = Object.values(results.columns);
-      console.log(columns);
 
       /* важно: мы сами генерируем последние три колонки и обращаемся к ним по индексам: -1 цена, -2 максдней, -3 миндней.  важно не сломать эту штуку:)*/
 
@@ -58,9 +60,6 @@ class ResultPage extends Component {
       // здесь надо прописать сценарии по ошибкам. а где-тоо выше - ловить ошибки - например файл не в том формате или типа того
     });
   }
-
-
-
 
   render() {
 
