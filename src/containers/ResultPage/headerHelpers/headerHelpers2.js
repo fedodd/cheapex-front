@@ -28,8 +28,16 @@ const headerHelpers = (fullData) => {
   //   </div>
   // )
 
+  //copy accessors and index of column to work with data
+  let columnIndexes = [];
+
   toJsonData[0].map((columnName, index) => {
     let columnType = toJsonData[3][index];
+
+    let accessorName = columnName + '_' + columnType;
+    //copy accessors and index of column to work with data
+    columnIndexes[index] = accessorName;
+
     if (!columns.hasOwnProperty(columnName)) {
       let header = null;
       toJsonData[2][index] === null ?
@@ -42,15 +50,16 @@ const headerHelpers = (fullData) => {
         columns: [{
           Header: columnName + '_',
           id: columnName + '_',
-          accessor: columnName + '_' + columnType,
+          accessor: accessorName,
         }]
-      }
+      };
+
     } else {
       if (['dMin', 'price($)', 'image'].find(elem => elem === columnType)) {
         columns[columnName].columns.push({
             Header: columnType,
-            id: columnName + '_' + columnType,
-            accessor: columnName + '_' + columnType,
+            id: accessorName,
+            accessor: accessorName,
           })
       }
      // console.log(findedHeader);
@@ -81,6 +90,9 @@ const headerHelpers = (fullData) => {
     }
   }
 
+  console.log(columns);
+
+
   for (let i = 4; i < toJsonData.length; i++) {
     let rowData = {
       days: {
@@ -96,6 +108,13 @@ const headerHelpers = (fullData) => {
       }
     };
 
+    let newData = {}
+
+    columnIndexes.map((columnIndex, index) => {
+      //console.log('column indexes', columnIndex, index);
+
+    })
+
     toJsonData[0].map((column, index) => {
       if (!rowData.hasOwnProperty(column)) {
 
@@ -105,6 +124,7 @@ const headerHelpers = (fullData) => {
             title: toJsonData[1][index],
             shortName: toJsonData[2][index],
           },
+          columnIndex: index,
           [toJsonData[3][index]]: toJsonData[i][index],
         };
         // calculate data for summary columns put column name, index, imported row data and row obj
@@ -118,7 +138,6 @@ const headerHelpers = (fullData) => {
         if (toJsonData[3][index] === 'hint' && rowData[column].hasOwnProperty('hint') ) {
           rowData[column]['hint_' + toJsonData[3][index-1]] = toJsonData[i][index];
         }
-
         rowData[column][toJsonData[3][index]] = toJsonData[i][index];
       }
     });
@@ -146,18 +165,6 @@ const headerHelpers = (fullData) => {
 
   //console.log(answwe);
 
-  answeredData.forEach(row => {
-    row.map(column => {
-      switch (column.Header) {
-        case value:
-
-          break;
-
-        default:
-          break;
-      }
-    })
-  });
 
 
 
