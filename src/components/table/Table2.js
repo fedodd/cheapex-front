@@ -17,8 +17,8 @@ function Table({ columns, data }) {
   } = useTable({
     columns,
     data,
-  })
-
+  });
+  //console.log(columns, data);
 
 
   // Render the UI for your table

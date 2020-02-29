@@ -1,13 +1,15 @@
 import React from "react";
-import calculateHandler from "./calculateHandler";
-import addUnitHandler from "./addUnitHandler";
-import imageHandler from "./imageHandler";
-import connectorHandler from "./connectorHandler";
-import deleteHandler from "./deleteHandler";
-import transcriptHandler from "./transcriptHandler";
-import transcriptHeaderHandler from "./transcriptHeaderHandler";
-import companiesHandler from "./companiesHandler";
-import deepCopy from "../../../functions/deepCopyArray";
+import generateColumns from "./generateColumns";
+import generateData from "./generateData";
+// import calculateHandler from "./calculateHandler";
+// import addUnitHandler from "./addUnitHandler";
+// import imageHandler from "./imageHandler";
+// import connectorHandler from "./connectorHandler";
+// import deleteHandler from "./deleteHandler";
+// import transcriptHandler from "./transcriptHandler";
+// import transcriptHeaderHandler from "./transcriptHeaderHandler";
+// import companiesHandler from "./companiesHandler";
+// import deepCopy from "../../../functions/deepCopyArray";
 import { Object } from "core-js";
 import calculateFunc from "./calculateFunc";
 
@@ -20,7 +22,7 @@ const headerHelpers = (fullData) => {
 
   let data = null;
   let header = toJsonData.slice(0, 4);
-  let columns = {};
+  //let columns = {};
 
   // let columnHeader = (
   //   <div>
@@ -28,58 +30,9 @@ const headerHelpers = (fullData) => {
   //   </div>
   // )
 
-  toJsonData[0].map((columnName, index) => {
-    let columnType = toJsonData[3][index];
-    if (!columns.hasOwnProperty(columnName)) {
-      let header = null;
-      toJsonData[2][index] === null ?
-        header = <span className='transcriptWrapper'>{columnName}</span>
-        : header = <span className='transcriptWrapper'>{toJsonData[2][index]}<span className='with_transcripted'>{columnName}</span></span>
-
-      columns[columnName] =  {
-        Header: header,
-        id: columnName,
-        columns: [{
-          Header: columnName + '_',
-          id: columnName + '_',
-          accessor: columnName + '_' + columnType,
-        }]
-      }
-    } else {
-      if (['dMin', 'price($)', 'image'].find(elem => elem === columnType)) {
-        columns[columnName].columns.push({
-            Header: columnType,
-            id: columnName + '_' + columnType,
-            accessor: columnName + '_' + columnType,
-          })
-      }
-     // console.log(findedHeader);
-
-    }
-
-    return null;
-
-  });
-
-  columns = {
-    ...columns,
-    'Дней': {
-      Header: 'Дней',
-      id: 'Дней_',
-      columns: [
-        {Header: '=дней_',
-        accessor: 'totalDays'},
-      ]
-    },
-    'Цена': {
-      Header: 'Цена',
-      id: 'Цена_',
-      columns: [
-        {Header: '=цена_',
-        accessor: 'totalPrice'},
-      ]
-    }
-  }
+  const columns = generateColumns(header);
+  let columnsArray = [];
+  Object.values(columns).map(value => columnsArray.push(value));
 
   for (let i = 4; i < toJsonData.length; i++) {
     let rowData = {
@@ -101,10 +54,10 @@ const headerHelpers = (fullData) => {
 
         // [3] - type of data, toJsonData[i][index] - value for each row
         rowData[column] = {
-          header: {
-            title: toJsonData[1][index],
-            shortName: toJsonData[2][index],
-          },
+          // header: {
+          //   title: toJsonData[1][index],
+          //   shortName: toJsonData[2][index],
+          // },
           [toJsonData[3][index]]: toJsonData[i][index],
         };
         // calculate data for summary columns put column name, index, imported row data and row obj
@@ -126,44 +79,83 @@ const headerHelpers = (fullData) => {
     jsonData = [...jsonData, rowData];
   }
 
-  let accessorArray = Object.values(columns).reduce((acc, topColumn) => {
-
-    topColumn.columns.map(column => acc = [...acc, column.accessor]);
-    return acc;
-  }, []);
-
-  console.log(accessorArray);
 
 
 
+
+  // let accessorArray = Object.values(columns).reduce((acc, topColumn) => {
+
+  //   topColumn.columns.map(column => acc = [...acc, column.accessor]);
+  //   return acc;
+  // }, []);
 
   let answeredData = jsonData.filter(row =>
     !isNaN(row['Ответили']['add(hours)'])
     );
   answeredData.forEach((row, index) => {
       row['index'] = index +1;
+      row['dataType'] = header[3][index]
     });
 
-  //console.log(answwe);
+  let combinedData = [];
 
-  answeredData.forEach(row => {
-    row.map(column => {
-      switch (column.Header) {
-        case value:
-
-          break;
-
-        default:
-          break;
-      }
-    })
-  });
+  console.log(answeredData);
 
 
+  // answeredData.forEach((row, rowIndex) => {
+  //   Object.keys(row).map(column => {
+  //     switch (column) {
+  //       case 'Веб-сайт':
+  //         const tag = <span>{row[column].value}</span>;
+  //         answeredData[rowIndex][column] = tag;
+  //         break;
+  //       case 'Ответили':
+  //         return (<span>{row[column]['add(hours)']}</span>)
+  //         break;
+  //       case 'Офис':
+  //         //return (<span>{column.value}</span>);
+  //         break;
+  //       case 'Перевозка по Китаю':
+  //         //return (<span>{column.value}</span>);
+  //         break;
+  //       case 'Переупаковка':
+  //         //return (<span>{column.value}</span>);
+  //         break;
+  //       case 'Международная перевозка':
+  //         //return (<span>{column.value}</span>);
+  //         break;
+  //       case 'Таможенный платеж':
+  //         //return (<span>{column.value}</span>);
+  //         break;
+  //       case 'Перевозка по России':
+  //         //return (<span>{column.value}</span>);
+  //         break;
+  //       case 'Сертификат':
+  //         //return (<span>{column.value}</span>);
+  //         break;
+  //       case 'Страховка':
+  //         //return (<span>{column.value}</span>);
+  //         break;
+  //       case 'Комиссия':
+  //         //return (<span>{column.value}</span>);
+  //         break;
+  //       case 'days':
+  //         //return (<span>{column.value}</span>);
+  //         break;
+  //       case 'price':
+  //         //return (<span>{column.value}</span>);
+  //         break;
+  //       default:
+  //         break;
+  //     }
+  //   })
+  // });
+
+  const superData = generateData(answeredData, columnsArray);
 
   return {
-    columns,
-    data: jsonData
+    columns: columnsArray,
+    data: superData
   };
 }
 

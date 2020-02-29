@@ -1,16 +1,16 @@
 :root .resultPageWrapper {
-  display: flex;
   flex-direction: column;
   padding-right: 15px;
   padding-left: 15px;
   box-sizing: border-box;
   height: 100vh;
   background-color: white;
+  display: flex;
 }
 
 :root .resultPage {
-  position: relative;
   overflow: scroll;
+  position: relative;
   flex: 1;
 
   & > * {
@@ -19,7 +19,6 @@
   }
   /* huide scrollbar */
   &::-webkit-scrollbar {
-
     display: none;
   }
 }
