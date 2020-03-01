@@ -5,6 +5,7 @@ import axios from "axios";
 import headerHelpers from "./headerHelpers/headerHelpers2";
 import Table from '../../components/table/Table2';
 import TableCell from '../../components/table/tableCell';
+import serverData from "./serverData";
 // import classes from './ResultPage.pcss';
 // import declOfNum from "../../functions/declOfNum";
 // import {
@@ -57,7 +58,11 @@ function ResultPage(props) {
     const fullpath = 'https://react-app-bc4e6.firebaseio.com/importedSheet/' + props.link + '.json';
     const fetchData = async () => {
       const result = await axios(fullpath);
-      const fullData = result.data.data;
+      console.log(result);
+
+      //const fullData = result.data.data;
+      const fullData = serverData;
+
       const fullResults = headerHelpers(fullData);
       //console.log(fullResults);
 
