@@ -48,7 +48,7 @@ export default (headerData) => {
       id: 'Дней',
       columns: [
         {Header: '=Дней',
-        accessor: 'totalDays',
+        accessor: 'Дней',
         dataType: null,
         cellIndexes: []},
       ]
@@ -58,7 +58,7 @@ export default (headerData) => {
       id: 'Цена',
       columns: [
         {Header: '=Цена',
-        accessor: 'totalPrice',
+        accessor: 'Цена',
         dataType: 'price($)',
         cellIndexes: []},
       ]

@@ -31,7 +31,6 @@
   position: relative;
   display: flex;
   height: 44px;
-
 }
 
 :global .ReactTable .rt-thead {
@@ -45,7 +44,7 @@
 }
 
 :global .rt-td,
-:global .rt-th  {
+:global .rt-th {
   position: relative;
   display: flex;
   flex: none !important;
@@ -54,11 +53,10 @@
   padding-top: 2px;
   padding-right: 5px;
   padding-left: 5px;
-  color: pink;
 }
 
 :global .rt-td,
-:global th  {
+:global th {
   position: relative;
   display: flex;
   flex: none !important;
@@ -67,7 +65,6 @@
   padding-top: 2px;
   padding-right: 5px;
   padding-left: 5px;
-  color: pink;
 }
 
 :global .rt-th {
@@ -77,8 +74,7 @@
 }
 
 :global .rt-td {
-
-  border-bottom: 1px solid rgba(0,0,0, .1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 :global .rt-thead.-header {
@@ -114,8 +110,15 @@
     flex-grow: 1;
     margin: 0 5px;
     height: 17.28px;
-    background: linear-gradient(to top, transparent, transparent 8px, #000 8px, #000 9px, transparent 9px);
-    background-repeat-x:  repeat;
+    background: linear-gradient(
+      to top,
+      transparent,
+      transparent 8px,
+      #000 8px,
+      #000 9px,
+      transparent 9px
+    );
+    background-repeat-x: repeat;
 
     &::after {
       position: absolute;
@@ -124,10 +127,10 @@
       display: block;
       width: 4px;
       height: 12px;
-      background-image: url('./images/arrow3.png');
+      background-image: url("./images/arrow3.png");
       background-repeat: no-repeat;
       background-size: 100%;
-      content: '';
+      content: "";
     }
   }
 }
@@ -155,7 +158,7 @@
     margin-left: auto;
   }
 
-/*   &.is__alt__aligned {
+  /*   &.is__alt__aligned {
     margin-right: auto;
     padding-left: 20px;
   } */
@@ -170,8 +173,8 @@
     visibility: hidden;
     flex-wrap: nowrap;
     align-items: center;
-    margin: 0 -.5em;
-    padding: 0 .5em;
+    margin: 0 -0.5em;
+    padding: 0 0.5em;
     width: max-content;
     border-top: 2px #fffcdc solid;
     opacity: 0;
@@ -210,7 +213,7 @@
       height: 10px;
       border: 10px solid transparent;
       border-bottom: 10px solid #444444;
-      content: '';
+      content: "";
     }
   }
 }
@@ -220,7 +223,7 @@
   z-index: 31;
   visibility: visible;
   opacity: 1;
-  transition: opacity .6s .6s;
+  transition: opacity 0.6s 0.6s;
 }
 
 :global .dotsConnected .alignedValue {
@@ -240,11 +243,10 @@
   //width: calc(var(--magicSpacing) * 3.5);
 }
 
-
 /* крепим итоговые колонки*/
 
-:global .rt-tr .rt-th:nth-last-child(-n+2),
-:global .rt-tr .rt-td:nth-last-child(-n+2) {
+:global .rt-tr .rt-th:nth-last-child(-n + 2),
+:global .rt-tr .rt-td:nth-last-child(-n + 2) {
   position: sticky;
   right: 0; /* справа появаляются нижние ряды при прокрутке*/
   z-index: 10;
@@ -263,24 +265,24 @@
 
 :global .rt-tr .rt-th:nth-last-child(2),
 :global .rt-tr .rt-td:nth-last-child(2) {
-  right: var(--lastColumnWidth) ;
+  right: var(--lastColumnWidth);
   padding-left: 20px;
 
-  :global .is__end .__main  &::before {
+  :global .is__end .__main &::before {
     position: absolute;
     top: 0;
     left: 0;
 
     width: 1px;
     height: 100%;
-    background-color: rgba(0,0,0,.2);
-    content: '';
+    background-color: rgba(0, 0, 0, 0.2);
+    content: "";
   }
 }
 
 /* крепим названия компаний*/
-:global .rt-th:nth-child(-n+2),
-:global .rt-td:nth-child(-n+2) {
+:global .rt-th:nth-child(-n + 2),
+:global .rt-td:nth-child(-n + 2) {
   position: sticky;
   left: 0;
   z-index: 10;
@@ -300,15 +302,16 @@
 :global .rt-tr .rt-th:nth-child(2),
 :global .rt-tr .rt-td:nth-child(2) {
   left: var(--firstColumnWidth);
-  :global .is__scrolling .table.__main &::after { /* убрать main если полоску будем и на второй таблице показывать*/
+  :global .is__scrolling .table.__main &::after {
+    /* убрать main если полоску будем и на второй таблице показывать*/
     position: absolute;
     top: 0;
     right: 0;
     width: 1px;
     height: 100%;
-    border-right: 1px rgba(0,0,0,.2) solid;
+    border-right: 1px rgba(0, 0, 0, 0.2) solid;
     background-image: none;
-    content: '';
+    content: "";
   }
 }
 
@@ -329,8 +332,8 @@
 :global .rt-tr-group:hover {
   background-color: #eef0f4;
 
-  & .rt-td:nth-last-child(-n+2),
-  & .rt-td:nth-child(-n+2) {
+  & .rt-td:nth-last-child(-n + 2),
+  & .rt-td:nth-child(-n + 2) {
     background-color: #eef0f4;
   }
 }
@@ -362,8 +365,7 @@
   }
 }
 
-
-:global .__noData .rt-td:nth-child(-n+2) {
+:global .__noData .rt-td:nth-child(-n + 2) {
   position: sticky;
   z-index: 21;
 }
@@ -385,15 +387,14 @@
 
 /* aligning */
 
-:global .rt-td  {
-
+:global .rt-td {
   & .is__rightAlign {
     margin-left: -5px;
     width: 100%;
     text-align: right;
   }
 
-    & .is__centerAlign {
+  & .is__centerAlign {
     width: 100%;
     text-align: center;
   }
@@ -407,7 +408,6 @@
 
 :global .rt-table .rt-td,
 :global .rt-table .rt-th {
-
   &:first-child {
     justify-content: flex-end;
   }
@@ -418,7 +418,6 @@
   }
 }
 
-
 :global .firstChildrenColumn {
   padding-left: 20px;
 }
@@ -426,8 +425,6 @@
 :global .lastChildrenColumn {
   padding-right: 20px;
 }
-
-
 
 :global div.with__equally {
   display: flex;

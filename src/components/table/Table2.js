@@ -24,23 +24,23 @@ function Table({ columns, data }) {
   // Render the UI for your table
   return (
     <table {...getTableProps()} className={classes.table}>
-      <thead>
+      <thead className={classes.rtThead}>
         {headerGroups.map(headerGroup => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
+          <tr  className={classes.rtThGroup} {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => (
-              <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+              <th className={classes.rtTh} {...column.getHeaderProps()}>{column.render('Header')}</th>
             ))}
           </tr>
         ))}
       </thead>
-      <tbody {...getTableBodyProps()}>
+      <tbody className={classes.rtTbody} {...getTableBodyProps()}>
         {rows.map(
           (row, i) => {
             prepareRow(row);
             return (
-              <tr {...row.getRowProps()}>
+              <tr className={classes.rtTrGroup} {...row.getRowProps()}>
                 {row.cells.map(cell => {
-                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                  return <td className={classes.rtTd} {...cell.getCellProps()}>{cell.render('Cell')}</td>
                 })}
               </tr>
             )}

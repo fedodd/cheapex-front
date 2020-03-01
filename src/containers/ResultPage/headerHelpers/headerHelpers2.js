@@ -67,69 +67,19 @@ const headerHelpers = (fullData) => {
   // }
   // console.log(jsonData)
 
-  // //filter from not answered
-  // let answeredData = jsonData.filter(row =>
-  //   !isNaN(row['Ответили']['add(hours)'])
-  //   );
-  // answeredData.forEach((row, index) => {
-  //     row['index'] = index +1;
-  //     row['dataType'] = header[3][index]
-  //   });
+
 
     //первые четыре строки это хедер
   const cleanedData = toJsonData.slice(4);
-
-  const superData = generateData(cleanedData, columns);
-
-  // answeredData.forEach((row, rowIndex) => {
-  //   Object.keys(row).map(column => {
-  //     switch (column) {
-  //       case 'Веб-сайт':
-  //         const tag = <span>{row[column].value}</span>;
-  //         answeredData[rowIndex][column] = tag;
-  //         break;
-  //       case 'Ответили':
-  //         return (<span>{row[column]['add(hours)']}</span>)
-  //         break;
-  //       case 'Офис':
-  //         //return (<span>{column.value}</span>);
-  //         break;
-  //       case 'Перевозка по Китаю':
-  //         //return (<span>{column.value}</span>);
-  //         break;
-  //       case 'Переупаковка':
-  //         //return (<span>{column.value}</span>);
-  //         break;
-  //       case 'Международная перевозка':
-  //         //return (<span>{column.value}</span>);
-  //         break;
-  //       case 'Таможенный платеж':
-  //         //return (<span>{column.value}</span>);
-  //         break;
-  //       case 'Перевозка по России':
-  //         //return (<span>{column.value}</span>);
-  //         break;
-  //       case 'Сертификат':
-  //         //return (<span>{column.value}</span>);
-  //         break;
-  //       case 'Страховка':
-  //         //return (<span>{column.value}</span>);
-  //         break;
-  //       case 'Комиссия':
-  //         //return (<span>{column.value}</span>);
-  //         break;
-  //       case 'days':
-  //         //return (<span>{column.value}</span>);
-  //         break;
-  //       case 'price':
-  //         //return (<span>{column.value}</span>);
-  //         break;
-  //       default:
-  //         break;
-  //     }
-  //   })
+    //filter from not answered
+  let filteredData = cleanedData
+    .filter(row => !isNaN(row[1]));
+  // filteredData.forEach(row => {
+  //   calculateFunc(row);
   // });
 
+  const superData = generateData(filteredData, columns);
+  console.log(superData);
 
 
   return {

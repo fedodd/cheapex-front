@@ -64,6 +64,7 @@ function ResultPage(props) {
       let jsxData = fullResults.data.map(row => {
         let newRow = {};
         //console.log(row);
+
         for ( let [key, value] of Object.entries(row)) {
           newRow[key] = <TableCell column={key} data={value}/>
         }
