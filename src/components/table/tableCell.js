@@ -10,7 +10,7 @@ const tableCell = (props) => {
 
   return (
     <div>
-      <p>{cell}</p>
+      <p>{props.data.value}</p>
     </div>
   );
 };

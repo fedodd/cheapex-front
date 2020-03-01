@@ -2,17 +2,26 @@ export default (data, columnsArray) => {
 
   const flatColumns = columnsArray.reduce((acc, column) => [...acc, ...column.columns], [])
 
+  const createRow = (columns, row) => {
 
-  const createRow = (columns, data) => {
-    let row = {};
-    console.log(columns)
+    let updatedRow = {};
     columns.map((column, index) => {
-      let cellData = {...data[column.Header], dataType: column.dataType}
-      row[column.accessor] = cellData;
+      let cellData = {};
+      //console.log(column, row);
+      column.cellIndexes.map(rowIndex => {
+
+        //console.log(row);
+
+        cellData[rowIndex[1]] = row[rowIndex[0]];
+        //console.log(rowIndex, cellData, rowIndex[0] );
+      })
+      updatedRow[column.accessor] = cellData;
     });
 
-    return row;
+    return updatedRow;
   }
+
+
 
   return data.map(row => createRow(flatColumns, row));
 }

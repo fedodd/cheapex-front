@@ -1,7 +1,6 @@
 import React from "react";
 
 export default (headerData) => {
-
   let columns = [];
   headerData[0].map((columnName, index) => {
     let columnType = headerData[3][index];
@@ -18,17 +17,23 @@ export default (headerData) => {
           Header: columnName,
           id: columnName + '_',
           accessor: columnName + '_' + columnType,
+          cellIndexes: [[index, columnType]],
           dataType: columnType
         }]
       }
     } else {
+
       if (['dMin', 'price($)', 'image'].find(elem => elem === columnType)) {
         columns[columnName].columns.push({
             Header: columnType,
             id: columnName + '_' + columnType,
             accessor: columnName + '_' + columnType,
+            cellIndexes: [[index, columnType]],
             dataType: columnType
           })
+      } else {
+        const lastColumnIndex = columns[columnName].columns.length - 1;
+        columns[columnName].columns[lastColumnIndex].cellIndexes.push([index, columnType]);
       }
     }
 
@@ -44,7 +49,8 @@ export default (headerData) => {
       columns: [
         {Header: '=Дней',
         accessor: 'totalDays',
-        dataType: null},
+        dataType: null,
+        cellIndexes: []},
       ]
     },
     'Цена': {
@@ -53,10 +59,14 @@ export default (headerData) => {
       columns: [
         {Header: '=Цена',
         accessor: 'totalPrice',
-        dataType: 'price($)'},
+        dataType: 'price($)',
+        cellIndexes: []},
       ]
     }
   }
 
-  return columns;
+  let columnsArray = [];
+  Object.values(columns).map(value => columnsArray.push(value));
+
+  return columnsArray;
 }
