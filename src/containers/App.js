@@ -5,24 +5,25 @@ import classes from './App.pcss';
 //import ResultPage from './ResultPage/ResultPage';
 import ResultPage from './ResultPage/ResultPage2';
 import Form from '../components/form/Form';
-import axios from "axios";
+//import axios from "axios";
 
 
 class App extends Component {
 
   state = {
-    resultLinks: []
+    //!!!!!!
+    resultLinks: ['-Ly5DjCqcRv6lOLFSr__']
   };
 
   componentDidMount() {
     // здесь загружаем importedSheet и генерим адреса страниц - нужно замутить массив с рутами как мы делали в form, только для рут
 
-    axios.get('https://react-app-bc4e6.firebaseio.com/importedSheet.json').then(response => {
-      const resultLinks = Object.keys(response.data);
-      this.setState({
-        resultLinks: resultLinks
-      });
-    });
+    // axios.get('https://react-app-bc4e6.firebaseio.com/importedSheet.json').then(response => {
+    //   const resultLinks = Object.keys(response.data);
+    //   this.setState({
+    //     resultLinks: resultLinks
+    //   });
+    // });
   }
 
   render () {
@@ -57,7 +58,7 @@ class App extends Component {
           <ul className={classes.navlinks} style={{position: 'absolute', zIndex: '-1', top: '0'}}>
             {resultLinks}
           </ul>
-          <NavLink to={{ pathname: '/import' }} className={classes.link}>Страница для загрузки данных</NavLink>
+          {/* <NavLink to={{ pathname: '/import' }} className={classes.link}>Страница для загрузки данных</NavLink> */}
           <Route path="/import" component={Form} />
         </div>
       </BrowserRouter>

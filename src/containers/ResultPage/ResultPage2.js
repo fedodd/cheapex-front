@@ -21,7 +21,7 @@ import serverData from "./serverData";
 function ResultPage(props) {
 
   const [error, setError] = useState(null);
-  const [loaded, setLoaded] = useState(false);
+  const [loaded, setLoaded] = useState(true);
   const [data, setData] = useState([
 
     // {web: '12',
@@ -55,36 +55,36 @@ function ResultPage(props) {
   ]);
 
   useEffect(() => {
-    const fullpath = 'https://react-app-bc4e6.firebaseio.com/importedSheet/' + props.link + '.json';
-    const fetchData = async () => {
-      const result = await axios(fullpath);
-      console.log(result);
+    // const fullpath = 'https://react-app-bc4e6.firebaseio.com/importedSheet/' + props.link + '.json';
+    // const fetchData = async () => {
+    //   const result = await axios(fullpath);
+    //   console.log(result);
 
-      //const fullData = result.data.data;
-      const fullData = serverData;
+              //const fullData = result.data.data;
+              const fullData = serverData;
 
-      const fullResults = headerHelpers(fullData);
-      //console.log(fullResults);
+              const fullResults = headerHelpers(fullData);
+              //console.log(fullResults);
 
-      let jsxData = fullResults.data.map(row => {
-        let newRow = {};
-        //console.log(row);
+              let jsxData = fullResults.data.map(row => {
+                let newRow = {};
+                //console.log(row);
 
-        for ( let [key, value] of Object.entries(row)) {
-          newRow[key] = <TableCell column={key} data={value}/>
-        }
-        return newRow;
+                for ( let [key, value] of Object.entries(row)) {
+                  newRow[key] = <TableCell column={key} data={value}/>
+                }
+                return newRow;
 
-        // row.map(cell => <TableCell column={key} data={value} />)
-      });
-      //console.log(fullResults);
+                // row.map(cell => <TableCell column={key} data={value} />)
+              });
+              //console.log(fullResults);
 
-      setData(jsxData);
-      setColumns(fullResults.columns);
-      setLoaded(true);
-      //console.log(columns);
-    }
-    fetchData();
+              setData(jsxData);
+              setColumns(fullResults.columns);
+              setLoaded(true);
+              //console.log(columns);
+    // }
+    // fetchData();
   }, []);
 
 

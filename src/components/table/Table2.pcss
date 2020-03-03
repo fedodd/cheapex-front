@@ -1,20 +1,19 @@
-:global thead tr:last-child {
+.thead .tr:last-child {
   visibility: hidden;
 }
 
-:global .table {
+.table {
   position: relative;
   height: 100vh;
   background-color: white;
 }
 
-:global th .transcriptWrapper,
-:global td .transcriptWrapper {
+.tr :global .transcriptWrapper {
   position: relative;
   width: 100%;
   height: 100%;
 
-  & .with_transcripted {
+  & :global .with_transcripted {
     position: absolute;
     top: 0;
     left: 0;
@@ -23,7 +22,7 @@
   }
 
   &:hover {
-    & .with_transcripted {
+    & :global .with_transcripted {
       visibility: visible;
     }
   }

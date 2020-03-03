@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { useTable } from 'react-table';
 import classes from './Table2.pcss';
+//import classes from './Table.pcss';
 
 function Table({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
@@ -24,23 +25,23 @@ function Table({ columns, data }) {
   // Render the UI for your table
   return (
     <table {...getTableProps()} className={classes.table}>
-      <thead className={classes.rtThead}>
+      <thead className={classes.thead}>
         {headerGroups.map(headerGroup => (
-          <tr  className={classes.rtThGroup} {...headerGroup.getHeaderGroupProps()}>
+          <tr  className={classes.tr + ' ' + classes.__head} {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => (
               <th className={classes.rtTh} {...column.getHeaderProps()}>{column.render('Header')}</th>
             ))}
           </tr>
         ))}
       </thead>
-      <tbody className={classes.rtTbody} {...getTableBodyProps()}>
+      <tbody className={classes.tbody} {...getTableBodyProps()}>
         {rows.map(
           (row, i) => {
             prepareRow(row);
             return (
-              <tr className={classes.rtTrGroup} {...row.getRowProps()}>
+              <tr className={classes.tr} {...row.getRowProps()}>
                 {row.cells.map(cell => {
-                  return <td className={classes.rtTd} {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                  return <td className={classes.tcell} {...cell.getCellProps()}>{cell.render('Cell')}</td>
                 })}
               </tr>
             )}
