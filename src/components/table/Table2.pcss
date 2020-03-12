@@ -1,19 +1,35 @@
-.thead .tr:last-child {
-  visibility: hidden;
+.tableContainer {
+  position: relative;
+  width: max-content;
+  height: max-content;
 }
 
 .table {
   position: relative;
   height: 100vh;
   background-color: white;
+  width: max-content;
+  height: max-content;
 }
 
-.tr :global .transcriptWrapper {
+.company {
+  width: 100%;
+  color: #2040a0;
+  &:hover {
+    color: #f33;
+  }
+}
+
+.thead .tr:last-child {
+  visibility: hidden;
+}
+
+.tr .transcriptWrapper {
   position: relative;
   width: 100%;
   height: 100%;
 
-  & :global .with_transcripted {
+  & .transcript {
     position: absolute;
     top: 0;
     left: 0;
@@ -22,7 +38,7 @@
   }
 
   &:hover {
-    & :global .with_transcripted {
+    & .transcript {
       visibility: visible;
     }
   }

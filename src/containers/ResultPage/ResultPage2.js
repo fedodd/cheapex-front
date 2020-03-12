@@ -71,6 +71,8 @@ function ResultPage(props) {
                 //console.log(row);
 
                 for ( let [key, value] of Object.entries(row)) {
+                  console.log(key, value);
+
                   newRow[key] = <TableCell column={key} data={value}/>
                 }
                 return newRow;

@@ -29,7 +29,7 @@ function Table({ columns, data }) {
         {headerGroups.map(headerGroup => (
           <tr  className={classes.tr + ' ' + classes.__head} {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => (
-              <th className={classes.rtTh} {...column.getHeaderProps()}>{column.render('Header')}</th>
+              <th className={classes.th} {...column.getHeaderProps()}>{column.render('Header')}</th>
             ))}
           </tr>
         ))}
@@ -41,7 +41,7 @@ function Table({ columns, data }) {
             return (
               <tr className={classes.tr} {...row.getRowProps()}>
                 {row.cells.map(cell => {
-                  return <td className={classes.tcell} {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                  return <td className={classes.td} {...cell.getCellProps()}>{cell.render('Cell')}</td>
                 })}
               </tr>
             )}
