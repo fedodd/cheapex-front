@@ -19,7 +19,7 @@ const tableCell = (props) => {
     for (let [key, value] of Object.entries(props.data)) {
       switch (key) {
         case 'link':
-          cell = <a href={props.data.link}>{props.data.link}</a>
+          cell = <a href={'http://' + props.data.link}>{props.data.link}</a>
           // createCell = cell
           break;
         case 'add(hours)':

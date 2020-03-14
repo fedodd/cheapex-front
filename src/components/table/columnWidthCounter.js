@@ -1,3 +1,0 @@
-const getWidth = (reactEl) => {
-    
-}
