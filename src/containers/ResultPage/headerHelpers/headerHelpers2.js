@@ -1,24 +1,10 @@
-//import React from "react";
 import generateColumns from "./generateColumns";
 import generateData from "./generateData";
-// import calculateHandler from "./calculateHandler";
-// import addUnitHandler from "./addUnitHandler";
-// import imageHandler from "./imageHandler";
-// import connectorHandler from "./connectorHandler";
-// import deleteHandler from "./deleteHandler";
-// import transcriptHandler from "./transcriptHandler";
-// import transcriptHeaderHandler from "./transcriptHeaderHandler";
-// import companiesHandler from "./companiesHandler";
-// import deepCopy from "../../../functions/deepCopyArray";
-//import { Object } from "core-js";
-import calculateFunc from "./calculateFunc";
 
 const headerHelpers = (fullData) => {
 
 
   let toJsonData = [...fullData];
- // console.log('full data' , jsonData);
-  //let jsonData = [];
   let header = toJsonData.slice(0, 4);
   const columns = generateColumns(header);
 
@@ -79,8 +65,6 @@ const headerHelpers = (fullData) => {
   // });
 
   const superData = generateData(filteredData, columns);
-  console.log(superData);
-
 
   return {
     columns: columns,

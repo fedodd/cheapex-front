@@ -19,7 +19,9 @@ const tableCell = (props) => {
     for (let [key, value] of Object.entries(props.data)) {
       switch (key) {
         case 'link':
-          cell = <a href={props.data.link}>{props.data.link}</a>
+          cell = <a
+            href={props.data.link}
+            className={classes.company}>{props.data.link}</a>
           // createCell = cell
           break;
         case 'add(hours)':
@@ -43,7 +45,7 @@ const tableCell = (props) => {
           break;
         case 'connect(arrow)':
           addedValue.push(
-            (<React.Fragment>
+            (<React.Fragment key={key}>
               <span>→</span>
               <span>{props.data['connect(arrow)']}</span>
             </React.Fragment>))
@@ -56,7 +58,7 @@ const tableCell = (props) => {
           break;
         case 'dMax(connect(…))':
           addedValue.push(
-            <React.Fragment>
+            <React.Fragment  key={key}>
               <span>...</span>
               <span>{props.data['dMax(connect(…))']}</span>
             </React.Fragment>)

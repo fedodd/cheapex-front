@@ -64,14 +64,11 @@ function ResultPage(props) {
               const fullData = serverData;
 
               const fullResults = headerHelpers(fullData);
-              //console.log(fullResults);
 
               let jsxData = fullResults.data.map(row => {
                 let newRow = {};
-                //console.log(row);
 
                 for ( let [key, value] of Object.entries(row)) {
-                  console.log(key, value);
 
                   newRow[key] = <TableCell column={key} data={value}/>
                 }
@@ -79,12 +76,9 @@ function ResultPage(props) {
 
                 // row.map(cell => <TableCell column={key} data={value} />)
               });
-              //console.log(fullResults);
-
               setData(jsxData);
               setColumns(fullResults.columns);
               setLoaded(true);
-              //console.log(columns);
     // }
     // fetchData();
   }, []);

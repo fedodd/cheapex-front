@@ -1,4 +1,6 @@
 import React from "react";
+import classes from '../../../components/table/Table2.pcss';
+// import TableCell from '../../components/table/tableCell';
 
 export default (headerData) => {
   let columns = [];
@@ -7,8 +9,8 @@ export default (headerData) => {
     if (!columns.hasOwnProperty(columnName)) {
       let header = null;
       headerData[2][index] === null ?
-        header = <span className='transcriptWrapper'>{columnName}</span>
-        : header = <span className='transcriptWrapper'>{headerData[2][index]}<span className='with_transcripted'>{columnName}</span></span>
+        header = < span className = {classes.transcriptWrapper}>{columnName}</span>
+        : header = <span className={classes.transcriptWrapper}>{headerData[2][index]}<span className={classes.transcript}>{columnName}</span></span>
 
       columns[columnName] =  {
         Header: header,
