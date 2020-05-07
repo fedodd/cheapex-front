@@ -3,7 +3,6 @@ import generateData from "./generateData";
 
 const headerHelpers = (fullData) => {
 
-
   let toJsonData = [...fullData];
   let header = toJsonData.slice(0, 4);
   const columns = generateColumns(header);

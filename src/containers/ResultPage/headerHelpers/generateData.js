@@ -10,7 +10,7 @@ export default (data, columnsArray) => {
         'dMax(connect(…))': 0
       },
       "Цена": {
-        value: 0
+        'price($)': 0
       }
     };
 
@@ -22,7 +22,7 @@ export default (data, columnsArray) => {
         cellData[rowIndex[1]] = row[rowIndex[0]];
         switch (rowIndex[1]) {
           case 'price($)':
-          updatedRow['Цена']['value'] = calculator(updatedRow['Цена']['value'], row[rowIndex[0]]);
+          updatedRow['Цена']['price($)'] = calculator(updatedRow['Цена']['price($)'], row[rowIndex[0]]);
           break;
         case 'dMin':
           updatedRow['Дней']['dMin'] = calculator(updatedRow['Дней']['dMin'], row[rowIndex[0]]);

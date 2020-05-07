@@ -2,16 +2,17 @@ import React, {useState, useEffect} from 'react';
 import classes from './Table2.pcss';
 
 const tableCell = (props) => {
+  console.log(props.data)
 
   //const [cell, createCell] = useState(props.data.value);
   let cell = <span>{props.data.value}</span>;
-  const hint = props.data.hint ? <span className={classes.hint + ' ' + classes.transcript}>{props.data.hint}</span> : null;
 
 
   // useEffect(()=> {
   //   createCell(props.column);
 
   // })
+  let hint = null;
   let transcript = null;
   let addedValue = [];
   const useCraftCell = () => {
@@ -25,23 +26,19 @@ const tableCell = (props) => {
           // createCell = cell
           break;
         case 'add(hours)':
-          cell = <span>{props.data['add(hours)']}ч.</span>
+          cell = <span className={classes.is__number}>{props.data['add(hours)']} ч.</span>
           // createCell = cell
           break;
         case 'price($)':
-          cell = <span>{props.data['price($)']}$</span>
+          cell = <span  className={classes.is__number}>{props.data['price($)']} $</span>
           // createCell = cell
           break;
         case 'add(%)':
-          cell = <span>{props.data['add(%)']}%</span>
-          // createCell = cell
+          cell = <span  className={classes.is__number}>{props.data['add(%)']} %</span>
           break;
         case 'transcript':
-          //console.log(cell.props.children);
-          transcript = <span className={classes.transcript}>{props.data.transcript}</span>;
-          //cell.props.children.add(<span className="with_transcripted">{props.data.transcript}</span>)
-
-          // createCell = cell
+          //maybe check on empty cells for all data?
+          transcript = props.data.transcript ? <span className={classes.transcript}>{props.data.transcript}</span> : null;
           break;
         case 'connect(arrow)':
           addedValue.push(
@@ -65,8 +62,7 @@ const tableCell = (props) => {
           break;
 
         case 'hint':
-          let newCell = cell;
-          // createCell = cell
+          hint = <span className={classes.hint}>{props.data.hint}</span>;
           break;
 
         default:
@@ -79,7 +75,7 @@ const tableCell = (props) => {
 
 
   return (
-    <div className={classes.transcriptWrapper}>
+    <div className={classes.cell}>
       {hint}
       {transcript}
       {cell}
