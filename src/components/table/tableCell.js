@@ -2,8 +2,6 @@ import React, {useState, useEffect} from 'react';
 import classes from './Table2.pcss';
 
 const tableCell = (props) => {
-  console.log(props.data)
-
   //const [cell, createCell] = useState(props.data.value);
   let cell = <span>{props.data.value}</span>;
 

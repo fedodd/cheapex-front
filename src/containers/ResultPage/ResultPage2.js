@@ -6,7 +6,7 @@ import headerHelpers from "./headerHelpers/headerHelpers2";
 import Table from '../../components/table/Table2';
 import TableCell from '../../components/table/tableCell';
 import serverData from "./serverData";
-// import classes from './ResultPage.pcss';
+import classes from './ResultPage.pcss';
 // import declOfNum from "../../functions/declOfNum";
 // import {
 //   useTable,
@@ -83,6 +83,8 @@ function ResultPage(props) {
     // fetchData();
   }, []);
 
+  const pageHeight = '600px';
+
 
   // useEffect(() => {
   //   // const fullpath = 'https://react-app-bc4e6.firebaseio.com/importedSheet/' + props.link + '.json';
@@ -105,8 +107,12 @@ function ResultPage(props) {
 
 
   return (
-    <div>
-      {loaded ? <Table columns={columns} data={data} /> : <p>loading</p>}
+    <div  className={classes.resultPageWrapper}>
+      <div
+        className={classes.resultPage}
+        style={{ height: pageHeight}}>
+          {loaded ? <Table columns={columns} data={data} /> : <p>loading</p>}
+      </div>
     </div>
   );
 }

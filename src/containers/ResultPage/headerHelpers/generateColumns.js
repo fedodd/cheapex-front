@@ -3,13 +3,17 @@ import classes from '../../../components/table/Table2.pcss';
 
 export default (headerData) => {
   let columns = [];
+  const alignedColumns = ['№', 'Ответили', 'Сертификат', 'Комиссия', ];
+
+
   headerData[0].map((columnName, index) => {
     let columnType = headerData[3][index];
+    let classNames = alignedColumns.includes(columnName) ? classes.headerCell + ' ' + classes.is__aligned : classes.headerCell;
     if (!columns.hasOwnProperty(columnName)) {
       let header = null;
       headerData[2][index] === null ?
-        header = < span className = {classes.cell}>{columnName}</span>
-        : header = <span className={classes.cell}>{headerData[2][index]}<span className={classes.transcript}>{columnName}</span></span>
+        header = < span className = {classNames}>{columnName}</span>
+        : header = <span className={classNames}>{headerData[2][index]}<span className={classes.transcript}>{columnName}</span></span>
 
       columns[columnName] =  {
         Header: header,
