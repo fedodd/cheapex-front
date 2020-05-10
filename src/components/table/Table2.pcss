@@ -51,9 +51,18 @@
     padding-right: 0;
   }
 
+  /* &:after {
+    position: static;
+    content: "";
+    display: inline-block;
+    width: 20px;
+    height: 100%;
+  } */
+
   .is__aligned {
     /* cuase we add padding to dif headerGrops need to position -10px */
-    right: -10px;
+    position: -10px;
+    right: -20px;
     justify-content: flex-end;
     margin-left: auto;
   }
@@ -84,7 +93,6 @@
 .td {
   padding: 0 var(--padding-cell);
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  /* border-collapse:collapse */
 }
 
 .cell {
@@ -93,6 +101,10 @@
   height: 100%;
   display: flex;
   align-items: center;
+
+  .td:first-child & {
+    justify-content: flex-end;
+  }
 
   & .is__number {
     width: 100%;

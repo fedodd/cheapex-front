@@ -3,20 +3,12 @@ import classes from '../../../components/table/Table2.pcss';
 
 export default (headerData) => {
   let columns = [];
-  const alignedColumns = ['№', 'Ответили', 'Сертификат', 'Комиссия', ];
-
 
   headerData[0].map((columnName, index) => {
     let columnType = headerData[3][index];
-    let classNames = alignedColumns.includes(columnName) ? classes.headerCell + ' ' + classes.is__aligned : classes.headerCell;
     if (!columns.hasOwnProperty(columnName)) {
-      let header = null;
-      headerData[2][index] === null ?
-        header = < span className = {classNames}>{columnName}</span>
-        : header = <span className={classNames}>{headerData[2][index]}<span className={classes.transcript}>{columnName}</span></span>
-
       columns[columnName] =  {
-        Header: header,
+        Header: setTableHeader(columnName, headerData[2][index]),
         id: columnName,
         columns: [{
           Header: columnName,
@@ -52,7 +44,7 @@ export default (headerData) => {
       id: '№',
       columns: [
         {
-          Header: '№',
+          Header: setTableHeader('№'),
           accessor: '№',
           dataType: null,
           cellIndexes: []
@@ -64,20 +56,24 @@ export default (headerData) => {
       Header: 'Дней',
       id: 'Дней',
       columns: [
-        {Header: '=Дней',
-        accessor: 'Дней',
-        dataType: null,
-        cellIndexes: []},
+        {
+          Header: setTableHeader ('=Дней'),
+          accessor: 'Дней',
+          dataType: null,
+          cellIndexes: []
+        },
       ]
     },
     'Цена': {
       Header: 'Цена',
       id: 'Цена',
       columns: [
-        {Header: '=Цена',
-        accessor: 'Цена',
-        dataType: 'price($)',
-        cellIndexes: []},
+        {
+          Header: setTableHeader('=Цена'),
+          accessor: 'Цена',
+          dataType: 'price($)',
+          cellIndexes: []
+        },
       ]
     }
   }
@@ -86,4 +82,17 @@ export default (headerData) => {
   Object.values(columns).map(value => columnsArray.push(value));
 
   return columnsArray;
+}
+
+function setTableHeader(columnName, transcriptedName) {
+  const alignedColumns = ['№', 'Ответили', 'Сертификат', 'Комиссия', ];
+  let classNames = alignedColumns.includes(columnName) ? classes.headerCell + ' ' + classes.is__aligned : classes.headerCell;
+
+  const header = transcriptedName === null ?
+      <span className = {classNames}>{columnName}</span>
+      : <span className={classNames}>{transcriptedName}
+          <span className={classes.transcript}>{columnName}
+          </span>
+        </span>
+  return header
 }
