@@ -14,6 +14,7 @@ const tableCell = (props) => {
   let transcript = null;
   let addedValue = [];
   const useCraftCell = () => {
+    // console  .log(props.data)
 
     for (let [key, value] of Object.entries(props.data)) {
       switch (key) {
@@ -64,6 +65,9 @@ const tableCell = (props) => {
           break;
 
         default:
+          // console.log(key);
+
+          // cell = (<span>{value}</span>)
           break;
       }
     }

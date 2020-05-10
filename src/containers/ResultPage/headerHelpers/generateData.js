@@ -2,7 +2,7 @@ export default (data, columnsArray) => {
 
   const flatColumns = columnsArray.reduce((acc, column) => [...acc, ...column.columns], [])
 
-  const createRow = (columns, row) => {
+  const createRow = (columns, row, rowIndex) => {
 
     let updatedRow = {
       "Дней": {
@@ -15,20 +15,21 @@ export default (data, columnsArray) => {
     };
 
 
-    columns.map((column, index) => {
+    columns.map(column => {
       let cellData = {};
-      column.cellIndexes.map(rowIndex => {
 
-        cellData[rowIndex[1]] = row[rowIndex[0]];
-        switch (rowIndex[1]) {
+      // cellINdex is a [index, name]
+      column.cellIndexes.map(cellIndex => {
+        cellData[cellIndex[1]] = row[cellIndex[0]];
+        switch (cellIndex[1]) {
           case 'price($)':
-          updatedRow['Цена']['price($)'] = calculator(updatedRow['Цена']['price($)'], row[rowIndex[0]]);
+          updatedRow['Цена']['price($)'] = calculator(updatedRow['Цена']['price($)'], row[cellIndex[0]]);
           break;
         case 'dMin':
-          updatedRow['Дней']['dMin'] = calculator(updatedRow['Дней']['dMin'], row[rowIndex[0]]);
+          updatedRow['Дней']['dMin'] = calculator(updatedRow['Дней']['dMin'], row[cellIndex[0]]);
           break;
         case 'dMax(connect(…))':
-          updatedRow['Дней']['dMax(connect(…))'] = calculator(updatedRow['Дней']['dMax(connect(…))'], row[rowIndex[0]]);
+          updatedRow['Дней']['dMax(connect(…))'] = calculator(updatedRow['Дней']['dMax(connect(…))'], row[cellIndex[0]]);
           break;
         default:
           break;
@@ -40,13 +41,13 @@ export default (data, columnsArray) => {
       }
 
     });
-
+    updatedRow['№'] = {value: rowIndex};
     return updatedRow;
   }
 
-  return data.map(row => createRow(flatColumns, row));
+  return data.map((row, index) => createRow(flatColumns, row, index+1));
 }
 
-function calculator (acc, item){
+function calculator (acc, item) {
   return isNaN(item) ? acc : acc + item;
 }

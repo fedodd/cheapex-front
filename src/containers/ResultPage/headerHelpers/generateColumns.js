@@ -47,6 +47,18 @@ export default (headerData) => {
   });
 
   columns = {
+    '№': {
+      Header: '№',
+      id: '№',
+      columns: [
+        {
+          Header: '№',
+          accessor: '№',
+          dataType: null,
+          cellIndexes: []
+        },
+      ]
+    },
     ...columns,
     'Дней': {
       Header: 'Дней',

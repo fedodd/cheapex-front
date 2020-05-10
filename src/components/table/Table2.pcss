@@ -33,7 +33,6 @@
   background-color: white;
   box-shadow: 0px 0px 5px -5px lightgrey;
   & .tr:last-child {
-    /* visibility: hidden; */
     display: none;
   }
 }
@@ -46,11 +45,14 @@
   padding-left: var(--padding-cell);
   padding-right: 20px;
   text-align: left;
+  padding-bottom: 10px;
+  outline: none;
   &:last-child {
     padding-right: 0;
   }
 
   .is__aligned {
+    /* cuase we add padding to dif headerGrops need to position -10px */
     right: -10px;
     justify-content: flex-end;
     margin-left: auto;
@@ -67,7 +69,8 @@
     z-index: 20;
     background-color: white;
     display: inline-block;
-    padding: 0 10px;
+    padding-right: 10px;
+    width: max-content;
   }
 
   &:hover {
