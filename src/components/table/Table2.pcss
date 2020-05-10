@@ -1,5 +1,6 @@
 :root {
   --magicSpacing: 11px;
+  --lastColumnWidth: 200px;
 }
 
 .tableContainer {
@@ -100,6 +101,32 @@
 .td {
   padding: 0 var(--padding-cell);
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* style sticky columns */
+.td:nth-last-child(-n + 2),
+.th:nth-last-child(-n + 2) {
+  position: sticky;
+  right: 0; /* справа появаляются нижние ряды при прокрутке*/
+  z-index: 10;
+  justify-content: flex-start;
+  background-color: white;
+}
+
+.td:nth-last-child(2),
+.th:nth-last-child(2) {
+  right: var(--lastColumnWidth);
+  padding-left: 20px;
+
+  &::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    content: "";
+  }
 }
 
 .cell {
