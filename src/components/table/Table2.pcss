@@ -1,3 +1,7 @@
+:root {
+  --magicSpacing: 11px;
+}
+
 .tableContainer {
   position: relative;
   width: max-content;
@@ -163,7 +167,7 @@
 
   &:hover {
     /* this z-index made for hint be upper than enother cells */
-    z-index: 20;
+    z-index: 31;
     & .transcript,
     & .hint {
       visibility: visible;
@@ -201,4 +205,12 @@
     background-size: 100%;
     content: "";
   }
+}
+
+.alignedValue {
+  display: inline-block;
+  width: calc(var(--magicSpacing) * 2.3);
+  text-align: right;
+  flex-grow: 1;
+  text-align: right;
 }

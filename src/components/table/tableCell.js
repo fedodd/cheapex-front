@@ -13,6 +13,7 @@ const tableCell = (props) => {
   let hint = null;
   let transcript = null;
   let addedValue = [];
+  let addedClassNames = [];
   const useCraftCell = () => {
     // console  .log(props.data)
 
@@ -53,10 +54,14 @@ const tableCell = (props) => {
           cell = (<span>{props.data.dMin}</span>)
           break;
         case 'dMax(connect(…))':
+          let newCell = <span className={classes.alignedValue}>{cell.props.children}</span>;
+
+          cell = newCell;
+          addedClassNames.push(classes.alignedValue)
           addedValue.push(
             <React.Fragment  key={key}>
               <span>...</span>
-              <span>{props.data['dMax(connect(…))']}</span>
+              <span className={classes.alignedValue}>{props.data['dMax(connect(…))']}</span>
             </React.Fragment>)
           break;
 
