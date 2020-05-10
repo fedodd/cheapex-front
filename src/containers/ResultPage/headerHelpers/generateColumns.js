@@ -40,11 +40,11 @@ export default (headerData) => {
 
   columns = {
     '№': {
-      Header: '№',
+      Header: setTableHeader('№'),
       id: '№',
       columns: [
         {
-          Header: setTableHeader('№'),
+          Header: '№',
           accessor: '№',
           dataType: null,
           cellIndexes: []
@@ -53,11 +53,11 @@ export default (headerData) => {
     },
     ...columns,
     'Дней': {
-      Header: 'Дней',
+      Header: setTableHeader('=Дней'),
       id: 'Дней',
       columns: [
         {
-          Header: setTableHeader ('=Дней'),
+          Header: '=Дней',
           accessor: 'Дней',
           dataType: null,
           cellIndexes: []
@@ -65,11 +65,11 @@ export default (headerData) => {
       ]
     },
     'Цена': {
-      Header: 'Цена',
+      Header: setTableHeader('=Цена'),
       id: 'Цена',
       columns: [
         {
-          Header: setTableHeader('=Цена'),
+          Header: '=Цена',
           accessor: 'Цена',
           dataType: 'price($)',
           cellIndexes: []
@@ -85,14 +85,15 @@ export default (headerData) => {
 }
 
 function setTableHeader(columnName, transcriptedName) {
-  const alignedColumns = ['№', 'Ответили', 'Сертификат', 'Комиссия', ];
+  const alignedColumns = ['№', 'Ответили', 'Сертификат', 'Комиссия' ];
   let classNames = alignedColumns.includes(columnName) ? classes.headerCell + ' ' + classes.is__aligned : classes.headerCell;
 
-  const header = transcriptedName === null ?
-      <span className = {classNames}>{columnName}</span>
-      : <span className={classNames}>{transcriptedName}
+
+  const header = (transcriptedName === null || transcriptedName === undefined) ?
+      (<span className={classNames}>{columnName}</span>)
+      : (<span className={classNames}>{transcriptedName}
           <span className={classes.transcript}>{columnName}
           </span>
-        </span>
+        </span>)
   return header
 }

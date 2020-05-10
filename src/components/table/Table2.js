@@ -26,8 +26,10 @@ function Table({ columns, data }) {
   return (
     <table {...getTableProps()} className={classes.table}>
       <thead className={classes.thead}>
+        {console.log(headerGroups)}
         {headerGroups.map(headerGroup => (
-          <tr  className={classes.tr + ' ' + classes.__head} {...headerGroup.getHeaderGroupProps()}>
+
+          <tr className={classes.tr + ' ' + classes.__head} {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => (
               <th className={classes.th} {...column.getHeaderProps()}>{column.render('Header')}</th>
             ))}

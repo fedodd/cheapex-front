@@ -42,7 +42,7 @@ const tableCell = (props) => {
         case 'connect(arrow)':
           addedValue.push(
             (<React.Fragment key={key}>
-              <span>→</span>
+              <span className={classes.arrow}></span>
               <span>{props.data['connect(arrow)']}</span>
             </React.Fragment>))
           break;

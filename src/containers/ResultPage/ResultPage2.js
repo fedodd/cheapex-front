@@ -81,8 +81,6 @@ function ResultPage(props) {
     // fetchData();
   }, []);
 
-  const pageHeight = '600px';
-
 
   // useEffect(() => {
   //   // const fullpath = 'https://react-app-bc4e6.firebaseio.com/importedSheet/' + props.link + '.json';
@@ -108,7 +106,7 @@ function ResultPage(props) {
     <div  className={classes.resultPageWrapper}>
       <div
         className={classes.resultPage}
-        style={{ height: pageHeight}}>
+      >
           {loaded ? <Table columns={columns} data={data} /> : <p>loading</p>}
       </div>
     </div>
