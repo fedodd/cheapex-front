@@ -31,7 +31,7 @@
 }
 
 .thead {
-  position: sticky;
+  /* position: sticky; */
   top: 0;
   z-index: 100;
   padding-top: 15px;
@@ -125,6 +125,30 @@
     width: 1px;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.2);
+    content: "";
+  }
+}
+
+.td:nth-child(-n + 2),
+.th:nth-child(-n + 2) {
+  position: sticky;
+  left: 0;
+  z-index: 10;
+  min-width: 20px;
+  background-color: white;
+}
+
+.td:nth-child(2),
+.th:nth-child(2) {
+  left: var(--firstColumnWidth);
+  &::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1px;
+    height: 100%;
+    border-right: 1px rgba(0, 0, 0, 0.2) solid;
+    background-image: none;
     content: "";
   }
 }

@@ -244,13 +244,13 @@
 
 /* крепим итоговые колонки*/
 
-:global .rt-tr .rt-th:nth-last-child(-n + 2),
+/* :global .rt-tr .rt-th:nth-last-child(-n + 2),
 :global .rt-tr .rt-td:nth-last-child(-n + 2) {
   position: sticky;
   right: 0; /* справа появаляются нижние ряды при прокрутке*/
   z-index: 10;
   justify-content: flex-start;
-  background-color: white;
+  background-color: white; */
 
   :global .rt-tr-group.fixed & {
     z-index: 20;
@@ -262,7 +262,7 @@
   }
 }
 
-:global .rt-tr .rt-th:nth-last-child(2),
+/* :global .rt-tr .rt-th:nth-last-child(2),
 :global .rt-tr .rt-td:nth-last-child(2) {
   right: var(--lastColumnWidth);
   padding-left: 20px;
@@ -276,16 +276,16 @@
     background-color: rgba(0, 0, 0, 0.2);
     content: "";
   }
-}
+} */
 
 /* крепим названия компаний*/
-:global .rt-th:nth-child(-n + 2),
+/* :global .rt-th:nth-child(-n + 2),
 :global .rt-td:nth-child(-n + 2) {
   position: sticky;
   left: 0;
   z-index: 10;
   min-width: 20px;
-  background-color: white;
+  background-color: white; */
 
   :global .rt-tr-group.fixed & {
     z-index: 20;
@@ -297,12 +297,12 @@
   }
 }
 
-:global .rt-tr .rt-th:nth-child(2),
+/* :global .rt-tr .rt-th:nth-child(2),
 :global .rt-tr .rt-td:nth-child(2) {
   left: var(--firstColumnWidth);
-  :global .is__scrolling .table.__main &::after {
+  :global .is__scrolling .table.__main &::after { */
     /* убрать main если полоску будем и на второй таблице показывать*/
-    position: absolute;
+    /* position: absolute;
     top: 0;
     right: 0;
     width: 1px;
@@ -311,7 +311,7 @@
     background-image: none;
     content: "";
   }
-}
+} */
 
 /* fixed rows*/
 

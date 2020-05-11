@@ -1,4 +1,9 @@
-import React from 'react';
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  useLayoutEffect
+} from 'react';
 import { useTable } from 'react-table';
 import classes from './Table2.pcss';
 //import classes from './Table.pcss';
@@ -21,16 +26,55 @@ function Table({ columns, data }) {
   });
   //console.log(columns, data);
 
+  const lastColumnRef = useRef();
+
+  const [lastColumnWidth, setLastColumnWidth] = useState(0)
+
+  useEffect(() => {
+    if (lastColumnRef && lastColumnRef.current) {
+      setLastColumnWidth(document.getElementById('lastColumn').offsetWidth)
+    }
+  }, lastColumnRef.current)
+
+
+
   // Render the UI for your table
   return (
-    <table {...getTableProps()} className={classes.table}>
+    <table
+      {...getTableProps()}
+      className={classes.table}>
+      <style>{`
+        :root {
+          --lastColumnWidth: ${lastColumnWidth}px;
+          }
+        `}
+      </style>
       <thead className={classes.thead}>
         {headerGroups.map(headerGroup => (
 
           <tr className={classes.tr + ' ' + classes.__head} {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map(column => (
-              <th className={classes.th} {...column.getHeaderProps()}>{column.render('Header')}</th>
-            ))}
+            {headerGroup.headers.map((column, index)=> {
+              if (headerGroup.headers.length - 1 === index) {
+                console.log(column)
+                return (
+                  <th
+                    className={classes.th}
+                    ref={lastColumnRef}
+                    id='lastColumn'
+                    {...column.getHeaderProps()}
+                    >{column.render('Header')}
+                  </th>
+                )
+              }
+              return (
+                <th
+                  className={classes.th}
+                  {...column.getHeaderProps()}
+                  >{column.render('Header')}
+                </th>
+              )
+
+            })}
           </tr>
         ))}
       </thead>
