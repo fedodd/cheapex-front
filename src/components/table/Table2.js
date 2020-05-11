@@ -29,13 +29,45 @@ function Table({ columns, data }) {
   const lastColumnRef = useRef();
 
   const [lastColumnWidth, setLastColumnWidth] = useState(0)
+  const [firstColumnWidth, setFirstColumnWidth] = useState(0)
 
   useEffect(() => {
+    // console.log(firstColumnWidth, lastColumnWidth);
     if (lastColumnRef && lastColumnRef.current) {
       setLastColumnWidth(document.getElementById('lastColumn').offsetWidth)
+      setFirstColumnWidth(document.getElementById('firstColumn').offsetWidth)
+
+
     }
+    console.log(firstColumnWidth, lastColumnWidth);
   }, lastColumnRef.current)
 
+  const setIdToTh = (column, index, arrayLength) => {
+    let addedProps = {
+      id: null,
+      ref: null
+    };
+    switch (index) {
+      case 0:
+        addedProps.id = 'firstColumn'
+        break;
+      case (arrayLength-1):
+        addedProps.id = 'lastColumn'
+        addedProps.ref= lastColumnRef
+        break;
+
+      default:
+        break;
+    }
+
+    // console.log({ id })
+    return  <th
+              className={classes.th}
+              {...addedProps}
+              {...column.getHeaderProps()}
+              >{column.render('Header')}
+            </th>
+  }
 
 
   // Render the UI for your table
@@ -46,6 +78,7 @@ function Table({ columns, data }) {
       <style>{`
         :root {
           --lastColumnWidth: ${lastColumnWidth}px;
+          --firstColumnWidth: ${firstColumnWidth}px;
           }
         `}
       </style>
@@ -54,26 +87,7 @@ function Table({ columns, data }) {
 
           <tr className={classes.tr + ' ' + classes.__head} {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column, index)=> {
-              if (headerGroup.headers.length - 1 === index) {
-                console.log(column)
-                return (
-                  <th
-                    className={classes.th}
-                    ref={lastColumnRef}
-                    id='lastColumn'
-                    {...column.getHeaderProps()}
-                    >{column.render('Header')}
-                  </th>
-                )
-              }
-              return (
-                <th
-                  className={classes.th}
-                  {...column.getHeaderProps()}
-                  >{column.render('Header')}
-                </th>
-              )
-
+              return setIdToTh(column, index, headerGroup.headers.length)
             })}
           </tr>
         ))}
