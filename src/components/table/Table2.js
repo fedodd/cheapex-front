@@ -32,14 +32,10 @@ function Table({ columns, data }) {
   const [firstColumnWidth, setFirstColumnWidth] = useState(0)
 
   useEffect(() => {
-    // console.log(firstColumnWidth, lastColumnWidth);
     if (lastColumnRef && lastColumnRef.current) {
-      setLastColumnWidth(document.getElementById('lastColumn').offsetWidth)
-      setFirstColumnWidth(document.getElementById('firstColumn').offsetWidth)
-
-
+      setLastColumnWidth(document.getElementById('lastColumn').getBoundingClientRect().width)
+      setFirstColumnWidth(document.getElementById('firstColumn').getBoundingClientRect().width)
     }
-    console.log(firstColumnWidth, lastColumnWidth);
   }, lastColumnRef.current)
 
   const setIdToTh = (column, index, arrayLength) => {

@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import axios from "axios";
 //import { Route } from 'react-router-dom';
 // import Filters from "../../components/filters/Filters";
 import headerHelpers from "./headerHelpers/headerHelpers2";
 import Table from '../../components/table/Table2';
 import TableCell from '../../components/table/tableCell';
+import clickDrugHandler from "../../functions/clickDrug";
+
 import serverData from "./serverData";
 import classes from './ResultPage.pcss';
 // import declOfNum from "../../functions/declOfNum";
@@ -16,6 +18,8 @@ import classes from './ResultPage.pcss';
 // import deepCopyArray from "../../functions/deepCopyArray";
 // import Spinner from "../../components/spinner/Spinner";
 // import clickDrugHandler from "../../functions/clickDrug";
+
+
 
 
 function ResultPage(props) {
@@ -89,7 +93,7 @@ function ResultPage(props) {
   //   //   let results = headerHelpers(fullData);
   //   //   console.log('i am here', fullData);
   //   //   const tableColumns = useMemo(() => headerHelpers(fullData), [fullData]);
-  //   //   setColumns(tableColumns);
+  //   //   setColumns(tableCoumns);
   //   //   //const tableData = useMemo(() => headerHelpers(fullData), [fullData]);
   //   //   //console.log(tableColumns, tableData);
   //   //   //setData(results.data);
@@ -102,10 +106,14 @@ function ResultPage(props) {
   // }, []);
 
 
+  const sliderRef = useRef();
+
   return (
     <div  className={classes.resultPageWrapper}>
       <div
         className={classes.resultPage}
+        ref={sliderRef}
+        onScroll={e=> setTimeout(e=> clickDrugHandler(sliderRef.current), 100)}
       >
           {loaded ? <Table columns={columns} data={data} /> : <p>loading</p>}
       </div>
