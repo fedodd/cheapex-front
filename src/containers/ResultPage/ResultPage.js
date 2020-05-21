@@ -1,12 +1,14 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import axios from "axios";
 //import { Route } from 'react-router-dom';
 // import Filters from "../../components/filters/Filters";
-import headerHelpers from "./headerHelpers/headerHelpers2";
-import Table from '../../components/table/Table2';
+import headerHelpers from "./headerHelpers/headerHelpers";
+import Table from '../../components/table/Table';
 import TableCell from '../../components/table/tableCell';
-import serverData from "./serverData";
-// import classes from './ResultPage.pcss';
+import clickDrugHandler from "../../functions/clickDrug";
+import Search from "../../components/filters/search/Search";
+
+import classes from './ResultPage.pcss';
 // import declOfNum from "../../functions/declOfNum";
 // import {
 //   useTable,
@@ -16,6 +18,8 @@ import serverData from "./serverData";
 // import deepCopyArray from "../../functions/deepCopyArray";
 // import Spinner from "../../components/spinner/Spinner";
 // import clickDrugHandler from "../../functions/clickDrug";
+
+
 
 
 function ResultPage(props) {
@@ -55,40 +59,29 @@ function ResultPage(props) {
   ]);
 
   useEffect(() => {
-    // const fullpath = 'https://react-app-bc4e6.firebaseio.com/importedSheet/' + props.link + '.json';
-    // const fetchData = async () => {
-    //   const result = await axios(fullpath);
-    //   console.log(result);
+    const fullpath = 'https://react-app-bc4e6.firebaseio.com/importedSheet/' + props.link + '.json';
+    const fetchData = async () => {
+      const result = await axios(fullpath);
+      console.log(result);
 
-              //const fullData = result.data.data;
-              const fullData = serverData;
+              const fullData = result.data.data;
+              // const fullData = serverData;
 
               const fullResults = headerHelpers(fullData);
-              //console.log(fullResults);
 
               let jsxData = fullResults.data.map(row => {
                 let newRow = {};
-                //console.log(row);
-
                 for ( let [key, value] of Object.entries(row)) {
-                  console.log(key, value);
-
                   newRow[key] = <TableCell column={key} data={value}/>
                 }
                 return newRow;
-
-                // row.map(cell => <TableCell column={key} data={value} />)
               });
-              //console.log(fullResults);
-
               setData(jsxData);
               setColumns(fullResults.columns);
               setLoaded(true);
-              //console.log(columns);
-    // }
-    // fetchData();
+    }
+    fetchData();
   }, []);
-
 
   // useEffect(() => {
   //   // const fullpath = 'https://react-app-bc4e6.firebaseio.com/importedSheet/' + props.link + '.json';
@@ -97,7 +90,7 @@ function ResultPage(props) {
   //   //   let results = headerHelpers(fullData);
   //   //   console.log('i am here', fullData);
   //   //   const tableColumns = useMemo(() => headerHelpers(fullData), [fullData]);
-  //   //   setColumns(tableColumns);
+  //   //   setColumns(tableCoumns);
   //   //   //const tableData = useMemo(() => headerHelpers(fullData), [fullData]);
   //   //   //console.log(tableColumns, tableData);
   //   //   //setData(results.data);
@@ -110,9 +103,24 @@ function ResultPage(props) {
   // }, []);
 
 
+  const filterHandler = (event) => {
+    console.log(event)
+  }
+
+  const sliderRef = useRef();
+
   return (
-    <div>
-      {loaded ? <Table columns={columns} data={data} /> : <p>loading</p>}
+    <div  className={classes.resultPageWrapper}>
+      <div>
+        <Search filterHandler={filterHandler}/>
+      </div>
+      <div
+        className={classes.resultPage}
+        ref={sliderRef}
+        onScroll={e=> setTimeout(e=> clickDrugHandler(sliderRef.current), 100)}
+      >
+          {loaded ? <Table columns={columns} data={data} /> : <p>loading</p>}
+      </div>
     </div>
   );
 }

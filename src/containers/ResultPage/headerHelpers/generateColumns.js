@@ -1,17 +1,14 @@
 import React from "react";
+import classes from '../../../components/table/Table.pcss';
 
 export default (headerData) => {
   let columns = [];
+
   headerData[0].map((columnName, index) => {
     let columnType = headerData[3][index];
     if (!columns.hasOwnProperty(columnName)) {
-      let header = null;
-      headerData[2][index] === null ?
-        header = <span className='transcriptWrapper'>{columnName}</span>
-        : header = <span className='transcriptWrapper'>{headerData[2][index]}<span className='with_transcripted'>{columnName}</span></span>
-
       columns[columnName] =  {
-        Header: header,
+        Header: setTableHeader(columnName, headerData[2][index]),
         id: columnName,
         columns: [{
           Header: columnName,
@@ -42,25 +39,41 @@ export default (headerData) => {
   });
 
   columns = {
+    '№': {
+      Header: setTableHeader('№'),
+      id: '№',
+      columns: [
+        {
+          Header: '№',
+          accessor: '№',
+          dataType: null,
+          cellIndexes: []
+        },
+      ]
+    },
     ...columns,
     'Дней': {
-      Header: 'Дней',
+      Header: setTableHeader('=Дней'),
       id: 'Дней',
       columns: [
-        {Header: '=Дней',
-        accessor: 'Дней',
-        dataType: null,
-        cellIndexes: []},
+        {
+          Header: '=Дней',
+          accessor: 'Дней',
+          dataType: null,
+          cellIndexes: []
+        },
       ]
     },
     'Цена': {
-      Header: 'Цена',
+      Header: setTableHeader('=Цена'),
       id: 'Цена',
       columns: [
-        {Header: '=Цена',
-        accessor: 'Цена',
-        dataType: 'price($)',
-        cellIndexes: []},
+        {
+          Header: '=Цена',
+          accessor: 'Цена',
+          dataType: 'price($)',
+          cellIndexes: []
+        },
       ]
     }
   }
@@ -69,4 +82,18 @@ export default (headerData) => {
   Object.values(columns).map(value => columnsArray.push(value));
 
   return columnsArray;
+}
+
+function setTableHeader(columnName, transcriptedName) {
+  const alignedColumns = ['№', 'Ответили', 'Сертификат', 'Комиссия' ];
+  let classNames = alignedColumns.includes(columnName) ? classes.headerCell + ' ' + classes.is__aligned : classes.headerCell;
+
+
+  const header = (transcriptedName === null || transcriptedName === undefined) ?
+      (<span className={classNames}>{columnName}</span>)
+      : (<span className={classNames}>{transcriptedName}
+          <span className={classes.transcript}>{columnName}
+          </span>
+        </span>)
+  return header
 }

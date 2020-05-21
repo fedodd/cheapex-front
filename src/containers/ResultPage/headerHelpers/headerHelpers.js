@@ -1,8 +1,5 @@
-//import React from "react";
 import generateColumns from "./generateColumns";
 import generateData from "./generateData";
-// import deepCopy from "../../../functions/deepCopyArray";
-// import calculateFunc from "./calculateFunc";
 
 const headerHelpers = (fullData) => {
 

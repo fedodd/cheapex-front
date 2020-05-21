@@ -1,50 +1,49 @@
 import React, {useState, useEffect} from 'react';
-import classes from './Table2.pcss';
+import classes from './Table.pcss';
 
 const tableCell = (props) => {
-
   //const [cell, createCell] = useState(props.data.value);
   let cell = <span>{props.data.value}</span>;
-  const hint = props.data.hint ? <span className={classes.hint + ' ' + classes.transcript}>{props.data.hint}</span> : null;
 
 
   // useEffect(()=> {
   //   createCell(props.column);
 
   // })
+  let hint = null;
   let transcript = null;
   let addedValue = [];
+  let addedClassNames = [];
   const useCraftCell = () => {
+    // console  .log(props.data)
 
     for (let [key, value] of Object.entries(props.data)) {
       switch (key) {
         case 'link':
-          cell = <a href={'http://' + props.data.link}>{props.data.link}</a>
-          // createCell = cell
+          cell = <a
+            href={props.data.link}
+            className={classes.company}>{props.data.link}</a>
+
           break;
         case 'add(hours)':
-          cell = <span>{props.data['add(hours)']}ч.</span>
+          cell = <span className={classes.is__number}>{props.data['add(hours)']} ч.</span>
           // createCell = cell
           break;
         case 'price($)':
-          cell = <span>{props.data['price($)']}$</span>
+          cell = <span  className={classes.is__number}>{props.data['price($)']} $</span>
           // createCell = cell
           break;
         case 'add(%)':
-          cell = <span>{props.data['add(%)']}%</span>
-          // createCell = cell
+          cell = <span  className={classes.is__number}>{props.data['add(%)']} %</span>
           break;
         case 'transcript':
-          //console.log(cell.props.children);
-          transcript = <span className={classes.transcript}>{props.data.transcript}</span>;
-          //cell.props.children.add(<span className="with_transcripted">{props.data.transcript}</span>)
-
-          // createCell = cell
+          //maybe check on empty cells for all data?
+          transcript = props.data.transcript ? <span className={classes.transcript}>{props.data.transcript}</span> : null;
           break;
         case 'connect(arrow)':
           addedValue.push(
-            (<React.Fragment>
-              <span>→</span>
+            (<React.Fragment key={key}>
+              <span className={classes.arrow}></span>
               <span>{props.data['connect(arrow)']}</span>
             </React.Fragment>))
           break;
@@ -55,19 +54,25 @@ const tableCell = (props) => {
           cell = (<span>{props.data.dMin}</span>)
           break;
         case 'dMax(connect(…))':
+          let newCell = <span className={classes.alignedValue}>{cell.props.children}</span>;
+
+          cell = newCell;
+          addedClassNames.push(classes.alignedValue)
           addedValue.push(
-            <React.Fragment>
+            <React.Fragment  key={key}>
               <span>...</span>
-              <span>{props.data['dMax(connect(…))']}</span>
+              <span className={classes.alignedValue}>{props.data['dMax(connect(…))']}</span>
             </React.Fragment>)
           break;
 
         case 'hint':
-          let newCell = cell;
-          // createCell = cell
+          hint = <span className={classes.hint}>{props.data.hint}</span>;
           break;
 
         default:
+          // console.log(key);
+
+          // cell = (<span>{value}</span>)
           break;
       }
     }
@@ -77,7 +82,7 @@ const tableCell = (props) => {
 
 
   return (
-    <div className={classes.transcriptWrapper}>
+    <div className={classes.cell}>
       {hint}
       {transcript}
       {cell}

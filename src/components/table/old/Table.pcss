@@ -1,39 +1,39 @@
-.tableContainer {
+/* .tableContainer {
   position: relative;
   width: max-content;
   height: max-content;
-}
+} */
 
-:global .ReactTable {
+/* :global .ReactTable {
   position: relative;
 
   width: max-content;
   height: max-content;
-}
+} */
 
-:global .company {
+/* :global .company {
   width: 100%;
   color: #2040a0;
   &:hover {
     color: #f33;
   }
-}
+} */
 
-:global .rt-tbody {
+/* :global .rt-tbody {
   position: relative;
 
   &.active {
     cursor: -webkit-grab;
   }
-}
+} */
 
-:global .ReactTable .rt-tr {
+/* :global .ReactTable .rt-tr {
   position: relative;
   display: flex;
   height: 44px;
-}
+} */
 
-:global .ReactTable .rt-thead {
+/* :global .ReactTable .rt-thead {
   position: sticky;
   top: 0;
   z-index: 100;
@@ -41,9 +41,9 @@
   padding-top: 15px;
   background-color: white;
   box-shadow: 0px 0px 5px -5px lightgrey;
-}
+} */
 
-:global .rt-td,
+/* :global .rt-td,
 :global .rt-th {
   position: relative;
   display: flex;
@@ -53,9 +53,9 @@
   padding-top: 2px;
   padding-right: 5px;
   padding-left: 5px;
-}
+} */
 
-:global .rt-td,
+/* :global .rt-td,
 :global th {
   position: relative;
   display: flex;
@@ -65,38 +65,37 @@
   padding-top: 2px;
   padding-right: 5px;
   padding-left: 5px;
-}
+} */
 
-:global .rt-th {
+/* :global .rt-th {
   padding-bottom: 10px;
-
   outline: none;
-}
+} */
 
-:global .rt-td {
+/* :global .rt-td {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
+} */
 
-:global .rt-thead.-header {
+/* :global .rt-thead.-header {
   display: none;
-}
+} */
 
-:global .rt-tr-group .rt-td:first-child {
+/* :global .rt-tr-group .rt-td:first-child {
   justify-content: flex-end;
-}
+} */
 
-:global .-loading {
+/* :global .-loading {
   display: none;
-}
+} */
 
-:global .transport {
+/* :global .transport {
   margin: 0 5px;
   width: 14px;
-}
+} */
 
 /* transcript styling*/
 
-:global .arrowConnected {
+/* :global .arrowConnected {
   position: relative;
   display: flex;
   justify-content: space-between;
@@ -133,13 +132,13 @@
       content: "";
     }
   }
-}
+} */
 
-:global .rt-td > .transcriptWrapper {
+/* :global .rt-td > .transcriptWrapper {
   position: relative;
-}
+} */
 
-:global .transcriptWrapper {
+/* :global .transcriptWrapper {
   display: inline-flex;
   align-items: center;
   height: 100%;
@@ -151,19 +150,19 @@
 
   :global .rt-th & {
     position: relative;
-  }
+  } */
 
-  &.is__aligned {
+  /* &.is__aligned {
     justify-content: flex-end;
     margin-left: auto;
-  }
+  } */
 
   /*   &.is__alt__aligned {
     margin-right: auto;
     padding-left: 20px;
   } */
 
-  & .transcripted {
+  /* & .transcripted {
     position: absolute;
     top: -2px;
     bottom: 0;
@@ -180,7 +179,7 @@
     opacity: 0;
     background-color: #fffcdc;
     box-shadow: inset 0px -1px 0px 0px #fff8b8;
-  }
+  } */
 
   &.is__alt {
     width: 100%;
@@ -218,40 +217,40 @@
   }
 }
 
-:global .rt-td:hover .transcriptWrapper .transcripted,
+/* :global .rt-td:hover .transcriptWrapper .transcripted,
 :global .rt-th:hover .transcriptWrapper .transcripted {
   z-index: 31;
   visibility: visible;
   opacity: 1;
   transition: opacity 0.6s 0.6s;
-}
+} */
 
-:global .dotsConnected .alignedValue {
+/* :global .dotsConnected .alignedValue {
   flex-grow: 1;
   text-align: right;
-}
+} */
 
-:global .alignedValue {
+/* :global .alignedValue {
   display: inline-block;
   width: calc(var(--magicSpacing) * 2.3);
   text-align: right;
-}
+} */
 
-:global .alignedValue__big {
+/* :global .alignedValue__big {
   display: inline-block;
   text-align: left;
   //width: calc(var(--magicSpacing) * 3.5);
-}
+} */
 
 /* крепим итоговые колонки*/
 
-:global .rt-tr .rt-th:nth-last-child(-n + 2),
+/* :global .rt-tr .rt-th:nth-last-child(-n + 2),
 :global .rt-tr .rt-td:nth-last-child(-n + 2) {
   position: sticky;
   right: 0; /* справа появаляются нижние ряды при прокрутке*/
   z-index: 10;
   justify-content: flex-start;
-  background-color: white;
+  background-color: white; */
 
   :global .rt-tr-group.fixed & {
     z-index: 20;
@@ -263,7 +262,7 @@
   }
 }
 
-:global .rt-tr .rt-th:nth-last-child(2),
+/* :global .rt-tr .rt-th:nth-last-child(2),
 :global .rt-tr .rt-td:nth-last-child(2) {
   right: var(--lastColumnWidth);
   padding-left: 20px;
@@ -272,22 +271,21 @@
     position: absolute;
     top: 0;
     left: 0;
-
     width: 1px;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.2);
     content: "";
   }
-}
+} */
 
 /* крепим названия компаний*/
-:global .rt-th:nth-child(-n + 2),
+/* :global .rt-th:nth-child(-n + 2),
 :global .rt-td:nth-child(-n + 2) {
   position: sticky;
   left: 0;
   z-index: 10;
   min-width: 20px;
-  background-color: white;
+  background-color: white; */
 
   :global .rt-tr-group.fixed & {
     z-index: 20;
@@ -299,12 +297,12 @@
   }
 }
 
-:global .rt-tr .rt-th:nth-child(2),
+/* :global .rt-tr .rt-th:nth-child(2),
 :global .rt-tr .rt-td:nth-child(2) {
   left: var(--firstColumnWidth);
-  :global .is__scrolling .table.__main &::after {
+  :global .is__scrolling .table.__main &::after { */
     /* убрать main если полоску будем и на второй таблице показывать*/
-    position: absolute;
+    /* position: absolute;
     top: 0;
     right: 0;
     width: 1px;
@@ -313,7 +311,7 @@
     background-image: none;
     content: "";
   }
-}
+} */
 
 /* fixed rows*/
 
@@ -340,16 +338,16 @@
 
 /* filtered rows*/
 
-:global .rt-tr-group.filtered__out {
+/* :global .rt-tr-group.filtered__out {
   display: none;
-}
+} */
 /* underline*/
 
-:global .rt-tr .rt-td:nth-child(2) {
+/* :global .rt-tr .rt-td:nth-child(2) {
   text-decoration: underline;
-}
+} */
 
-:global .__noData .rt-td {
+/* :global .__noData .rt-td {
   &:last-child {
     padding-left: 40px;
     //color: #f33;
@@ -363,12 +361,12 @@
   &:second-child {
     width: var(--companiesWidth);
   }
-}
+} */
 
-:global .__noData .rt-td:nth-child(-n + 2) {
+/* :global .__noData .rt-td:nth-child(-n + 2) {
   position: sticky;
   z-index: 21;
-}
+} */
 
 /* .drugable {
   display: block;
@@ -387,7 +385,7 @@
 
 /* aligning */
 
-:global .rt-td {
+/* :global .rt-td {
   & .is__rightAlign {
     margin-left: -5px;
     width: 100%;
@@ -404,9 +402,9 @@
     width: 100%;
     text-align: right;
   }
-}
+} */
 
-:global .rt-table .rt-td,
+/* :global .rt-table .rt-td,
 :global .rt-table .rt-th {
   &:first-child {
     justify-content: flex-end;
@@ -416,7 +414,7 @@
     justify-content: flex-start;
     //padding-left: 15px;
   }
-}
+} */
 
 :global .firstChildrenColumn {
   padding-left: 20px;
