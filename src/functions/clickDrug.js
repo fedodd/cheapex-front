@@ -28,8 +28,6 @@ const clickDrugHandler = (slider) => {
     const x = e.pageX - slider.offsetLeft;
     const walk = (x - startX) * 1.5; //scroll-fast
     slider.scrollLeft = scrollLeft - walk;
-
-
   });
 
   slider.addEventListener('scroll', (e) => {
@@ -46,7 +44,6 @@ const clickDrugHandler = (slider) => {
     } else {
       slider.classList.remove(classes.is__scrolling);
     }
-
     sl = slider.scrollLeft;
   })
 

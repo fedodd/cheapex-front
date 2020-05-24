@@ -9,7 +9,7 @@ import { useTable, useFilters, useGlobalFilter, useAsyncDebounce } from 'react-t
 import classes from './Table.pcss';
 //import classes from './Table.pcss';
 
-function Table({ columns, data }) {
+function Table({ columns, data, filteredRows, isFiltered }) {
   // Use the state and functions returned from useTable to build your UI
 
   const {
@@ -66,6 +66,7 @@ function Table({ columns, data }) {
 
 
   // Render the UI for your table
+
   return (
     <table
       className={classes.table}>
@@ -90,13 +91,16 @@ function Table({ columns, data }) {
         {rows.map(
           (row, i) => {
             prepareRow(row);
-            return (
+            // filter rows only if array is not empty
+            return ( !isFiltered || (isFiltered && filteredRows.includes(i))) ?
+            (
               <tr className={classes.tr} {...row.getRowProps()}>
                 {row.cells.map(cell => {
                   return <td className={classes.td} {...cell.getCellProps()}>{cell.render('Cell')}</td>
                 })}
               </tr>
-            )}
+            )
+            : null}
         )}
       </tbody>
     </table>
