@@ -12,7 +12,6 @@ const search = (props) => {
   };
 
   return (
-			<div>
 				<input
 					className={classes.search}
 					type="text"
@@ -21,8 +20,7 @@ const search = (props) => {
 					onChange={onChange}
 					value={userQuery}
 					id="searchFilter"
-				></input>
-			</div>
+				 />
 		);
 };
 

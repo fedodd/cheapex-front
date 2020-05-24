@@ -9,6 +9,8 @@ import clickDrugHandler from "../../functions/clickDrug";
 import Search from "../../components/filters/search/Search";
 
 import classes from './ResultPage.pcss';
+import tableClasses from '../../components/table/Table.pcss';
+
 // import declOfNum from "../../functions/declOfNum";
 // import {
 //   useTable,
@@ -24,8 +26,8 @@ import classes from './ResultPage.pcss';
 
 function ResultPage(props) {
 
-  const [error, setError] = useState(null);
-  const [loaded, setLoaded] = useState(true);
+  // const [error, setError] = useState(null);
+  const [loaded, setLoaded] = useState(false);
   const [data, setData] = useState([
 
     // {web: '12',
@@ -64,21 +66,21 @@ function ResultPage(props) {
       const result = await axios(fullpath);
       console.log(result);
 
-              const fullData = result.data.data;
-              // const fullData = serverData;
+      const fullData = result.data.data;
+      // const fullData = serverData;
 
-              const fullResults = headerHelpers(fullData);
+      const fullResults = headerHelpers(fullData);
 
-              let jsxData = fullResults.data.map(row => {
-                let newRow = {};
-                for ( let [key, value] of Object.entries(row)) {
-                  newRow[key] = <TableCell column={key} data={value}/>
-                }
-                return newRow;
-              });
-              setData(jsxData);
-              setColumns(fullResults.columns);
-              setLoaded(true);
+      let jsxData = fullResults.data.map(row => {
+        let newRow = {};
+        for ( let [key, value] of Object.entries(row)) {
+          newRow[key] = <TableCell column={key} data={value}/>
+        }
+        return newRow;
+      });
+      setData(jsxData);
+      setColumns(fullResults.columns);
+      setLoaded(true);
     }
     fetchData();
   }, []);
@@ -103,23 +105,38 @@ function ResultPage(props) {
   // }, []);
 
 
-  const filterHandler = (event) => {
-    console.log(event)
+  const filterHandler = (target) => {
+    console.log(target)
+    console.log(data, columns)
   }
 
   const sliderRef = useRef();
+
+  const [scrollWidth, setScrollWidth] = useState(0);
+
+  useEffect(()=> {
+    const slider = sliderRef.current;
+    if (slider.scrollWidth !== slider.clientWidth) {
+      if ((slider.scrollWidth - slider.clientWidth) <= slider.scrollLeft + 5) {
+        slider.classList.remove(tableClasses.is__end);
+      } else {
+        slider.classList.add(tableClasses.is__end);
+      }
+    }
+  }, [loaded])
 
   return (
     <div  className={classes.resultPageWrapper}>
       <div>
         <Search filterHandler={filterHandler}/>
+        {/* <button></button> */}
       </div>
       <div
         className={classes.resultPage}
         ref={sliderRef}
         onScroll={e=> setTimeout(e=> clickDrugHandler(sliderRef.current), 100)}
       >
-          {loaded ? <Table columns={columns} data={data} /> : <p>loading</p>}
+        {loaded ? <Table columns={columns} data={data} /> : <p>loading</p>}
       </div>
     </div>
   );

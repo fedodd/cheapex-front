@@ -2,20 +2,10 @@ import classes from '../components/table/Table.pcss';
 
 const clickDrugHandler = (slider) => {
   //const slider = e.target;
-
   let isDown = false;
   let startX;
   let scrollLeft;
   let sl = 0;
-
-  if (slider.scrollWidth !== slider.clientWidth) {
-    if ((slider.scrollWidth - slider.clientWidth) <= slider.scrollLeft + 5) {
-      slider.classList.remove(classes.is__end);
-    } else {
-      slider.classList.add(classes.is__end);
-    }
-
-  }
 
   slider.addEventListener('mousedown', (e) => {
 

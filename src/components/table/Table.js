@@ -2,7 +2,8 @@ import React, {
   useRef,
   useState,
   useEffect,
-  useLayoutEffect
+  useLayoutEffect,
+  useMemo
 } from 'react';
 import { useTable, useFilters, useGlobalFilter, useAsyncDebounce } from 'react-table';
 import classes from './Table.pcss';
@@ -10,9 +11,6 @@ import classes from './Table.pcss';
 
 function Table({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
-
-  // const memoColumns = React.useMemo(() => columns, []);
-  // const memoData = [React.useMemo(() => data, [])]
 
   const {
     getTableProps,
@@ -24,7 +22,6 @@ function Table({ columns, data }) {
     columns,
     data,
   });
-  //console.log(columns, data);
 
   const lastColumnRef = useRef();
 
@@ -33,11 +30,13 @@ function Table({ columns, data }) {
 
   useEffect(() => {
     if (lastColumnRef && lastColumnRef.current) {
+      // problem need to id it by ref, not by getelementId
       setLastColumnWidth(document.getElementById('lastColumn').getBoundingClientRect().width)
       setFirstColumnWidth(document.getElementById('firstColumn').getBoundingClientRect().width)
     }
   }, lastColumnRef.current)
 
+   // no need to set id if fix getelementbyid problem
   const setIdToTh = (column, index, arrayLength) => {
     let addedProps = {
       id: null,
@@ -69,10 +68,6 @@ function Table({ columns, data }) {
   // Render the UI for your table
   return (
     <table
-      filterable
-      defaultFilterMethod={(filter, row) =>
-      String(row[filter.id]) === filter.value}
-      {...getTableProps()}
       className={classes.table}>
       <style>{`
         :root {
