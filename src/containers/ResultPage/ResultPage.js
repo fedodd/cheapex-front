@@ -69,6 +69,7 @@ function ResultPage(props) {
 
   const filterHandler = (target) => {
     setFilterValue(target)
+    setIsFiltered(true)
   }
 
   useEffect(() => {
@@ -76,11 +77,11 @@ function ResultPage(props) {
       return row['Веб-сайт_value'].value.includes(filterValue) ? acc.concat(index) : acc
     }, [])
     setFilteredRows(newFilteredRows)
-    setIsFiltered(true)
   }, [filterValue])
 
-  const sliderRef = useRef();
 
+  //scrolling table
+  const sliderRef = useRef();
 
   useEffect(()=> {
     const slider = sliderRef.current;
@@ -93,6 +94,8 @@ function ResultPage(props) {
     }
 
   }, [loaded])
+
+  // fix rows
 
   return (
     <div  className={classes.resultPageWrapper}>

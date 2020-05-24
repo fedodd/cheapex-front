@@ -66,7 +66,6 @@ function Table({ columns, data, filteredRows, isFiltered }) {
 
 
   // Render the UI for your table
-
   return (
     <table
       className={classes.table}>
