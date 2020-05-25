@@ -79,45 +79,47 @@ function Table({ columns, data, filteredRows, isFiltered }) {
 
   // Render the UI for your table
   return (
-    <table
-      className={classes.table}>
-      <style>{`
-        :root {
-          --lastColumnWidth: ${lastColumnWidth}px;
-          --firstColumnWidth: ${firstColumnWidth}px;
-          }
-        `}
-      </style>
-      <thead className={classes.thead}>
-        {headerGroups.map(headerGroup => (
+    <div className={classes.tableContainer}>
+      <table
+        className={classes.table}>
+        <style>{`
+          :root {
+            --lastColumnWidth: ${lastColumnWidth}px;
+            --firstColumnWidth: ${firstColumnWidth}px;
+            }
+          `}
+        </style>
+        <thead className={classes.thead}>
+          {headerGroups.map(headerGroup => (
 
-          <tr className={classes.tr} {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column, index)=> {
-              return setIdToTh(column, index, headerGroup.headers.length)
-            })}
-          </tr>
-        ))}
-      </thead>
-      <tbody className={classes.tbody} {...getTableBodyProps()}>
-        {rows.map(
-          (row, i) => {
-            prepareRow(row);
-            // filter rows only if array is not empty
-            return ( !isFiltered || (isFiltered && filteredRows.includes(i))) ?
-            (
-              <tr
-                className={fixedRows.includes(row.id) ? classes.tr + ' ' + classes.is__fixed : classes.tr }
-                onClick={e => rowClickHandler(row.id)}
-                {...row.getRowProps()}>
-                {row.cells.map(cell => {
-                  return <td className={classes.td} {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                })}
-              </tr>
-            )
-            : null}
-        )}
-      </tbody>
-    </table>
+            <tr className={classes.tr} {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column, index)=> {
+                return setIdToTh(column, index, headerGroup.headers.length)
+              })}
+            </tr>
+          ))}
+        </thead>
+        <tbody className={classes.tbody} {...getTableBodyProps()}>
+          {rows.map(
+            (row, i) => {
+              prepareRow(row);
+              // filter rows only if array is not empty
+              return ( !isFiltered || (isFiltered && filteredRows.includes(i))) ?
+              (
+                <tr
+                  className={fixedRows.includes(row.id) ? classes.tr + ' ' + classes.is__fixed : classes.tr }
+                  onClick={e => rowClickHandler(row.id)}
+                  {...row.getRowProps()}>
+                  {row.cells.map(cell => {
+                    return <td className={classes.td} {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                  })}
+                </tr>
+              )
+              : null}
+          )}
+        </tbody>
+      </table>
+    </div>
   )
 }
 
