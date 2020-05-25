@@ -91,7 +91,7 @@ function Table({ columns, data, filteredRows, isFiltered }) {
       <thead className={classes.thead}>
         {headerGroups.map(headerGroup => (
 
-          <tr className={classes.tr + ' ' + classes.__head} {...headerGroup.getHeaderGroupProps()}>
+          <tr className={classes.tr} {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column, index)=> {
               return setIdToTh(column, index, headerGroup.headers.length)
             })}

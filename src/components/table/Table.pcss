@@ -31,8 +31,8 @@
 }
 
 .thead {
-	/* position: sticky; */
-	top: 0;
+	/* position: sticky;
+	top: 0; */
 	z-index: 100;
 	padding-top: 15px;
 	background-color: white;
@@ -43,6 +43,11 @@
 }
 
 .tr {
+	.thead & {
+		position: sticky;
+		top: 0;
+	}
+
 	height: 44px;
 	.tbody &:hover {
 		background-color: #eef0f4;
@@ -54,6 +59,8 @@
 
 	&.is__fixed {
 		background-color: #fff9b8;
+		position: sticky;
+		top: 0;
 
 		& .td:nth-last-child(-n + 2),
 		& .td:nth-child(-n + 2) {
