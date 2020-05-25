@@ -41,18 +41,17 @@ function ResultPage(props) {
       setDirtyData(fullResults.data);
       let jsxData = fullResults.data.map((row, index) => {
         let newRow = {};
-        // let id = Symbol.for('id');
+        // // add symbol to hide id - index of row
+        // let id = Symbol('id');
 
         // newRow[id] = index;
         for ( let [key, value] of Object.entries(row)) {
           newRow[key] = <TableCell column={key} data={value}/>
         }
         return newRow;
-
       });
 
       setTableData(jsxData);
-      // console.log(jsxData[1].id)
       setTableColumns(fullResults.columns);
       setLoaded(true);
     }
@@ -85,6 +84,7 @@ function ResultPage(props) {
 
   useEffect(()=> {
     const slider = sliderRef.current;
+    // this thing must do in another function and use it after resize window
     if (slider.scrollWidth !== slider.clientWidth) {
       if ((slider.scrollWidth - slider.clientWidth) <= slider.scrollLeft + 5) {
         slider.classList.remove(tableClasses.is__end);
@@ -94,8 +94,6 @@ function ResultPage(props) {
     }
 
   }, [loaded])
-
-  // fix rows
 
   return (
     <div  className={classes.resultPageWrapper}>
@@ -108,7 +106,12 @@ function ResultPage(props) {
         ref={sliderRef}
         onScroll={e=> setTimeout(e=> clickDrugHandler(sliderRef.current), 100)}
       >
-        {loaded ? <Table columns={tableColumns} data={tableData} isFiltered={isFiltered} filteredRows={filteredRows}/> : <p>loading</p>}
+        {loaded ? <Table
+          columns={tableColumns}
+          data={tableData}
+          isFiltered={isFiltered}
+          filteredRows={filteredRows}
+          /> : <p>loading</p>}
       </div>
     </div>
   );

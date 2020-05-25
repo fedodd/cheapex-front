@@ -64,6 +64,18 @@ function Table({ columns, data, filteredRows, isFiltered }) {
             </th>
   }
 
+  // fix rows
+  const [fixedRows, setFixedRows] = useState([]);
+  const rowClickHandler = (rowIndex) => {
+
+
+
+    // we use here filtered rows cause we send in table oonly filtered rows
+    (fixedRows.includes(rowIndex)) ?
+      setFixedRows(fixedRows.filter(row => row !== rowIndex))
+      : setFixedRows(fixedRows.concat(rowIndex));
+    console.log(rowIndex, fixedRows);
+  }
 
   // Render the UI for your table
   return (
@@ -93,7 +105,10 @@ function Table({ columns, data, filteredRows, isFiltered }) {
             // filter rows only if array is not empty
             return ( !isFiltered || (isFiltered && filteredRows.includes(i))) ?
             (
-              <tr className={classes.tr} {...row.getRowProps()}>
+              <tr
+                className={fixedRows.includes(row.id) ? classes.tr + ' ' + classes.is__fixed : classes.tr }
+                onClick={e => rowClickHandler(row.id)}
+                {...row.getRowProps()}>
                 {row.cells.map(cell => {
                   return <td className={classes.td} {...cell.getCellProps()}>{cell.render('Cell')}</td>
                 })}

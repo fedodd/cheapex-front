@@ -44,8 +44,21 @@
 
 .tr {
 	height: 44px;
-	&:hover {
+	.tbody &:hover {
 		background-color: #eef0f4;
+		& .td:nth-last-child(-n + 2),
+		& .td:nth-child(-n + 2) {
+			background-color: #eef0f4;
+		}
+	}
+
+	&.is__fixed {
+		background-color: #fff9b8;
+
+		& .td:nth-last-child(-n + 2),
+		& .td:nth-child(-n + 2) {
+			background-color: #fff9b8;
+		}
 	}
 }
 
