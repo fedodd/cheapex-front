@@ -66,58 +66,76 @@ function Table({ columns, data, filteredRows, isFiltered }) {
 
   // fix rows
   const [fixedRows, setFixedRows] = useState([]);
+  const [fixedRowsHeight, setFixedRowsHeight] = useState(44);
+
   const rowClickHandler = (rowIndex) => {
     // we use here filtered rows cause we send in table only filtered rows
-    (fixedRows.includes(rowIndex)) ?
-      setFixedRows(fixedRows.filter(row => row !== rowIndex))
-      : setFixedRows(fixedRows.concat(rowIndex));
-    console.log(rowIndex, fixedRows);
+
+    fixedRows.includes(rowIndex)
+					? setFixedRows(fixedRows.filter((row) => row !== rowIndex))
+					: setFixedRows(fixedRows.concat(rowIndex).sort((a, b) => a - b));
+
+    // console.log(rowIndex, fixedRows);
   }
 
   // Render the UI for your table
   return (
-    <div className={classes.tableContainer}>
-      <table
-        className={classes.table}>
-        <style>{`
+			<div className={classes.tableContainer}>
+				<table className={classes.table}>
+					<style>
+						{`
           :root {
             --lastColumnWidth: ${lastColumnWidth}px;
             --firstColumnWidth: ${firstColumnWidth}px;
+            --fixedRows: ${fixedRows.length*44}px;
             }
           `}
-        </style>
-        <thead className={classes.thead}>
-          {headerGroups.map(headerGroup => (
-
-            <tr className={classes.tr} {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column, index)=> {
-                return setIdToTh(column, index, headerGroup.headers.length)
-              })}
-            </tr>
-          ))}
-        </thead>
-        <tbody className={classes.tbody} {...getTableBodyProps()}>
-          {rows.map(
-            (row, i) => {
-              prepareRow(row);
-              // filter rows only if array is not empty
-              return ( !isFiltered || (isFiltered && filteredRows.includes(i))) ?
-              (
-                <tr className={fixedRows.includes(row.id) ? classes.tr + ' ' + classes.is__fixed : classes.tr }
-                  onClick={e => rowClickHandler(row.id)}
-                  {...row.getRowProps()}
-                  >
-                    {row.cells.map(cell => {
-                      return <td className={classes.td} {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                    })}
-                </tr>
-              )
-              : null}
-          )}
-        </tbody>
-      </table>
-    </div>
-  )
+					</style>
+					<thead className={classes.thead}>
+						{headerGroups.map((headerGroup) => (
+							<tr className={classes.tr} {...headerGroup.getHeaderGroupProps()}>
+								{headerGroup.headers.map((column, index) => {
+									return setIdToTh(column, index, headerGroup.headers.length);
+								})}
+							</tr>
+						))}
+					</thead>
+					<tbody className={classes.tbody} {...getTableBodyProps()}>
+						{rows.map((row, i) => {
+							prepareRow(row);
+							// filter rows only if array is not empty
+							return !isFiltered || (isFiltered && filteredRows.includes(i)) ? (
+								<tr
+									className={
+										fixedRows.includes(row.id)
+											? classes.tr + " " + classes.is__fixed
+											: classes.tr
+									}
+									onClick={(e) => rowClickHandler(row.id)}
+									{...row.getRowProps()}
+								>
+									{row.cells.map((cell) => {
+										return (
+											<td
+												className={classes.td}
+												{...cell.getCellProps()}
+												style={
+													fixedRows.includes(row.id)
+														? { top: `${(fixedRows.indexOf(row.id) + 1)*44}px` }
+														: { top: "auto" }
+												}
+											>
+												{cell.render("Cell")}
+											</td>
+										);
+									})}
+								</tr>
+							) : null;
+						})}
+					</tbody>
+				</table>
+			</div>
+		);
 }
 
 export default Table;
