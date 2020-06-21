@@ -103,13 +103,13 @@ function Table({ columns, data, filteredRows, isFiltered }) {
               // filter rows only if array is not empty
               return ( !isFiltered || (isFiltered && filteredRows.includes(i))) ?
               (
-                <tr
-                  className={fixedRows.includes(row.id) ? classes.tr + ' ' + classes.is__fixed : classes.tr }
+                <tr className={fixedRows.includes(row.id) ? classes.tr + ' ' + classes.is__fixed : classes.tr }
                   onClick={e => rowClickHandler(row.id)}
-                  {...row.getRowProps()}>
-                  {row.cells.map(cell => {
-                    return <td className={classes.td} {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                  })}
+                  {...row.getRowProps()}
+                  >
+                    {row.cells.map(cell => {
+                      return <td className={classes.td} {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                    })}
                 </tr>
               )
               : null}

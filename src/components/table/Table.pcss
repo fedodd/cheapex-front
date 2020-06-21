@@ -34,12 +34,6 @@
 }
 
 .thead {
-	position: sticky;
-	top: 0;
-	z-index: 100;
-	padding-top: 15px;
-	background-color: white;
-	box-shadow: 0px 0px 5px -5px lightgrey;
 	& .tr:last-child {
 		display: none;
 	}
@@ -50,7 +44,7 @@
 }
 
 .tr {
-	position: relative;
+	/* position: relative; */
 	height: 44px;
 	.tbody &:hover {
 		background-color: #eef0f4;
@@ -59,28 +53,14 @@
 			background-color: #eef0f4;
 		}
 	}
-
-	&.is__fixed {
-		background-color: #fff9b8;
-		position: sticky;
-		top: 0;
-
-		& .td:nth-last-child(-n + 2),
-		& .td:nth-child(-n + 2) {
-			background-color: #fff9b8;
-		}
-
-		&:hover {
-			background-color: #f2f2e5;
-			& .td:nth-last-child(-n + 2),
-			& .td:nth-child(-n + 2) {
-				background-color: #f2f2e5;
-			}
-		}
-	}
 }
 
 .th {
+	position: sticky;
+	top: 0;
+	z-index: 100;
+	background-color: white;
+	box-shadow: 0px 0px 5px -5px lightgrey;
 	padding-left: var(--padding-cell);
 	text-align: left;
 	padding-bottom: 10px;
@@ -135,16 +115,45 @@
 .td {
 	padding: 0 var(--padding-cell);
 	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+	.tr.is__fixed & {
+		position: sticky;
+		top: 44px;
+		background-color: #fff9b8;
+		z-index: 25;
+
+		&:nth-last-child(-n + 2),
+		&:nth-child(-n + 2) {
+			z-index: 30;
+		}
+
+		&:hover .td {
+			background-color: #f2f2e5;
+		}
+	}
+
+	.tr.is__fixed:hover & {
+		background-color: #f2f2e5;
+
+		&:nth-last-child(-n + 2),
+		&:nth-child(-n + 2) {
+			background-color: #f2f2e5;
+		}
+	}
 }
 
 /* style sticky columns */
-.td:nth-last-child(-n + 2),
-.th:nth-last-child(-n + 2) {
+.td:nth-last-child(-n + 2) {
 	position: sticky;
-	right: 0; /* справа появаляются нижние ряды при прокрутке*/
+	right: 0;
 	z-index: 21;
 	justify-content: flex-start;
 	background-color: white;
+}
+
+.th:nth-last-child(-n + 2) {
+	right: 0;
+	z-index: 101; /* header index is 100 */
 }
 
 .td:nth-last-child(2),
@@ -163,13 +172,17 @@
 	}
 }
 
-.td:nth-child(-n + 2),
-.th:nth-child(-n + 2) {
+.td:nth-child(-n + 2) {
 	position: sticky;
 	left: 0;
 	z-index: 21;
 	min-width: 20px;
 	background-color: white;
+}
+
+.th:nth-child(-n + 2) {
+	left: 0;
+	z-index: 101; /* header index is 100 */
 }
 
 .td:nth-child(2),
