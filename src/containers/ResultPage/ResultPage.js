@@ -84,6 +84,7 @@ function ResultPage(props) {
 
   useEffect(()=> {
     const slider = sliderRef.current;
+    clickDrugHandler(sliderRef.current);
     // this thing must do in another function and use it after resize window
     if (slider.scrollWidth !== slider.clientWidth) {
       if ((slider.scrollWidth - slider.clientWidth) <= slider.scrollLeft + 5) {
@@ -104,7 +105,7 @@ function ResultPage(props) {
       <div
         className={classes.resultPage}
         ref={sliderRef}
-        onScroll={e=> setTimeout(e=> clickDrugHandler(sliderRef.current), 100)}
+
       >
         {loaded ? <Table
           columns={tableColumns}
