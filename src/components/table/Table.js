@@ -67,10 +67,7 @@ function Table({ columns, data, filteredRows, isFiltered }) {
   // fix rows
   const [fixedRows, setFixedRows] = useState([]);
   const rowClickHandler = (rowIndex) => {
-
-
-
-    // we use here filtered rows cause we send in table oonly filtered rows
+    // we use here filtered rows cause we send in table only filtered rows
     (fixedRows.includes(rowIndex)) ?
       setFixedRows(fixedRows.filter(row => row !== rowIndex))
       : setFixedRows(fixedRows.concat(rowIndex));
