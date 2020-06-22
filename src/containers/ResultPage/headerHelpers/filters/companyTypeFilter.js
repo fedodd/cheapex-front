@@ -4,7 +4,7 @@ import classes from '../../../../components/table/Table.pcss';
 
 function companyTypeFilter(props) {
   return (
-    <ul className={classes.companyTypeFilter}>
+    <ul className={classes.columnFilter}>
       <Checkbox label="Экспедиторы" />
       <Checkbox label="Перевозчики" />
       <Checkbox label="Сервис" />

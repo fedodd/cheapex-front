@@ -1,6 +1,7 @@
 import React from 'react';
 import classes from '../../../components/table/Table.pcss';
 import CompanyTypeFilter from './filters/companyTypeFilter';
+import ColumnFilter from './filters/columnFilter';
 
 export default (headerData) => {
   let columns = [];
@@ -95,12 +96,16 @@ function setTableHeader(columnName, transcriptedName) {
     : classes.headerCell;
 
   let filter = null;
+  console.log(columnName);
   switch (columnName) {
     case 'Веб-сайт':
       filter = <CompanyTypeFilter />;
+      // console.log(filter);
+      break;
+    case 'Ответили':
+      filter = <ColumnFilter />;
       console.log(filter);
       break;
-
     default:
       break;
   }
