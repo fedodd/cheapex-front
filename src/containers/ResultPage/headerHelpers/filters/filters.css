@@ -1,3 +1,11 @@
 .companyTypeFilter {
   position: absolute;
 }
+
+.rangeFilter label {
+  display: inline-block;
+}
+
+.rangeFilter input[type='text'] {
+  width: 60px;
+}

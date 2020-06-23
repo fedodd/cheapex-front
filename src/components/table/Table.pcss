@@ -73,6 +73,10 @@
     padding-right: 0;
   }
 
+  &:hover {
+    z-index: 101;
+  }
+
   /* &:after {
     position: static;
     content: "";
@@ -336,6 +340,11 @@
   flex-direction: column;
 }
 
-.headerCell:hover .columnFilter {
+.columnFilter.is__big {
+  width: 250px;
+}
+
+/* .headerCell:hover .columnFilter { */
+.headerCell .columnFilter {
   opacity: 1;
 }

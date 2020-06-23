@@ -4,11 +4,13 @@
 import React from 'react';
 // import Slider from '../src';
 import Slider, { Range } from 'rc-slider';
-import 'rc-slider/assets/index.css';
+import style from 'rc-slider/assets/index.css';
+
+console.log(style);
 
 // const { Range } = Slider;
 
-const style = { width: 400, margin: 50 };
+// const style = { width: 400, margin: 50 };
 
 function log(value) {
   console.log(value); //eslint-disable-line

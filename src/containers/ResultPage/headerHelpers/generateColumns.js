@@ -96,15 +96,12 @@ function setTableHeader(columnName, transcriptedName) {
     : classes.headerCell;
 
   let filter = null;
-  console.log(columnName);
   switch (columnName) {
     case 'Веб-сайт':
       filter = <CompanyTypeFilter />;
-      // console.log(filter);
       break;
     case 'Ответили':
       filter = <ColumnFilter />;
-      console.log(filter);
       break;
     default:
       break;
@@ -117,9 +114,8 @@ function setTableHeader(columnName, transcriptedName) {
     ) : (
       <span className={classNames}>
         {transcriptedName}
-        <span className={classes.transcript}>
-          {columnName} {filter}
-        </span>
+        {filter}
+        <span className={classes.transcript}>{columnName}</span>
       </span>
     );
   return header;

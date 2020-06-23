@@ -1,17 +1,18 @@
 import React from 'react';
 import Slider, { Range } from 'rc-slider';
 import 'rc-slider/assets/index.css';
-import CustomizedRange from './rangeFilter';
+import RangeFilter from './rangeFilter';
 
 import filterClasses from './filters.css';
 import tableClasses from '../../../../components/table/Table.pcss';
 import Checkbox from '../../../../components/checkbox/checkbox';
+import RadioButton from '../../../../components/radioButton/radioButton';
 import InputText from '../../../../components/inputText/inputText';
 // import InputText from '../../../../components/inputText/inputText';
 // import
 const columnFilter = () => {
   return (
-    <div className={tableClasses.columnFilter}>
+    <div className={tableClasses.columnFilter + ' ' + tableClasses.is__big}>
       <div className="sort">
         <button>По возрастанию</button>
         <button>По убыванию</button>
@@ -19,24 +20,24 @@ const columnFilter = () => {
       <div className="filter">
         <div className="">
           <form>
-            <fieldset>
-              <Checkbox styled="circle" />
+            <fieldset className={filterClasses.rangeFilter}>
+              <RadioButton name="rangeType" styled="circle" />
               <InputText defaultValue="8" />
               <span>дн ...</span>
               <InputText defaultValue="12" />
               <span>дн</span>
             </fieldset>
-            <fieldset>
-              <Checkbox styled="circle" />
+            <fieldset className={filterClasses.rangeFilter}>
+              <RadioButton name="rangeType" styled="circle" />
               <InputText defaultValue="435" />
               <span>$ ...</span>
               <InputText defaultValue="17433" />
-              <span>$ ...</span>
+              <span>$</span>
             </fieldset>
             <div>
               {/* <Slider />
               <Range /> */}
-              <CustomizedRange />
+              <RangeFilter min="0" max="20" />
             </div>
           </form>
         </div>

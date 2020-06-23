@@ -1,19 +1,19 @@
 .label {
-  cursor: pointer;
-  margin: 5px 0;
   position: relative;
   display: flex;
+  cursor: pointer;
   flex-direction: row-reverse;
   align-items: center;
+  margin: 5px 0;
   margin-right: auto;
 }
 
 .label input {
   left: 0;
-  height: 20px;
   width: 20px;
+  height: 20px;
 }
 
-.circle {
+/* .circle {
   border-radius: 50%;
-}
+} */

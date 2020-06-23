@@ -1,7 +1,7 @@
 import React from 'react';
-import classes from './checkbox.css';
+import classes from './radioButton.css';
 
-function checkbox(props) {
+const radioButton = (props) => {
   return (
     <label
       className={
@@ -10,9 +10,9 @@ function checkbox(props) {
           : classes.label
       }>
       {props.label}
-      <input type="checkbox"></input>
+      <input type="radio" name={props.name}></input>
     </label>
   );
-}
+};
 
-export default checkbox;
+export default radioButton;
