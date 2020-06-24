@@ -47,8 +47,8 @@ class CustomizedRange extends React.Component {
     return (
       <div className={classes.rangeTrack}>
         <Range
-          min={0}
-          max={120}
+          min={this.props.min}
+          max={this.props.max}
           value={this.state.value}
           onChange={this.onSliderChange}
           // railStyle={{
