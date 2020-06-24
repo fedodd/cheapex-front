@@ -14,8 +14,8 @@ const columnFilter = () => {
   return (
     <div className={tableClasses.columnFilter + ' ' + tableClasses.is__big}>
       <div className="sort">
-        <button>По возрастанию</button>
-        <button>По убыванию</button>
+        <button className={filterClasses.button}>&#8593; По возрастанию</button>
+        <button className={filterClasses.button}>&#8595; По убыванию</button>
       </div>
       <div className="filter">
         <div className="">
@@ -37,7 +37,7 @@ const columnFilter = () => {
             <div>
               {/* <Slider />
               <Range /> */}
-              <RangeFilter min="0" max="20" />
+              <RangeFilter min={0} max={100} />
             </div>
           </form>
         </div>

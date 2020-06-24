@@ -4,13 +4,9 @@
 import React from 'react';
 // import Slider from '../src';
 import Slider, { Range } from 'rc-slider';
-import style from 'rc-slider/assets/index.css';
-
-console.log(style);
-
-// const { Range } = Slider;
-
-// const style = { width: 400, margin: 50 };
+import 'rc-slider/assets/index.css';
+// import './rangeStyle.css';
+import classes from './filters.css';
 
 function log(value) {
   console.log(value); //eslint-disable-line
@@ -20,9 +16,10 @@ class CustomizedRange extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      lowerBound: 20,
-      upperBound: 40,
+      // lowerBound: 20,
+      // upperBound: 40,
       value: [20, 40],
+      // value: 0,
     };
   }
 
@@ -35,7 +32,7 @@ class CustomizedRange extends React.Component {
   };
 
   onSliderChange = (value) => {
-    log(value);
+    console.log(value);
     this.setState({
       value,
     });
@@ -46,32 +43,49 @@ class CustomizedRange extends React.Component {
     this.setState({ value: [lowerBound, upperBound] });
   };
 
+  // onClickHandler = (e) => {
+  //   console.log(e);
+  //   e.preventDefault();
+  //   // e.preventDefault();
+  // };
+
   render() {
     return (
-      <div>
-        <label>LowerBound: </label>
-        <input
-          type="number"
-          value={this.state.lowerBound}
-          onChange={this.onLowerBoundChange}
-        />
-        <br />
-        <label>UpperBound: </label>
-        <input
-          type="number"
-          value={this.state.upperBound}
-          onChange={this.onUpperBoundChange}
-        />
-        <br />
-        <button type="button" onClick={this.handleApply}>
-          Apply
-        </button>
-        <br />
-        <br />
+      <div className={classes.rangeTrack}>
         <Range
-          allowCross={false}
+          min={0}
+          max={120}
           value={this.state.value}
           onChange={this.onSliderChange}
+          // railStyle={{
+          //   height: 10,
+          // }}
+          handleStyle={[
+            {
+              height: 20,
+              width: 20,
+              marginLeft: 10,
+              marginTop: -5,
+              backgroundColor: 'white',
+              boxShadow: '0px 0px 5px 1px grey',
+            },
+            {
+              height: 20,
+              width: 20,
+              marginLeft: -10,
+              marginTop: -5,
+              backgroundColor: 'white',
+              borderColor: 'lightblue',
+              boxShadow: '0px 0px 5px 1px grey',
+            },
+          ]}
+          trackStyle={[
+            {
+              height: 10,
+              borderRadius: 0,
+              backgroundColor: 'lightblue',
+            },
+          ]}
         />
       </div>
     );
