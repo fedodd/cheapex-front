@@ -32,7 +32,7 @@ class CustomizedRange extends React.Component {
   };
 
   onSliderChange = (value) => {
-    console.log(value);
+    // console.log(value);
     this.setState({
       value,
     });
@@ -42,12 +42,6 @@ class CustomizedRange extends React.Component {
     const { lowerBound, upperBound } = this.state;
     this.setState({ value: [lowerBound, upperBound] });
   };
-
-  // onClickHandler = (e) => {
-  //   console.log(e);
-  //   e.preventDefault();
-  //   // e.preventDefault();
-  // };
 
   render() {
     return (
