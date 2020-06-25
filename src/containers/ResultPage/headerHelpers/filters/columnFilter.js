@@ -95,7 +95,9 @@ const columnFilter = () => {
               <div
                 className={
                   daysIsActive
-                    ? filterClasses.trackWrapper + ' is__active'
+                    ? filterClasses.trackWrapper +
+                      ' ' +
+                      filterClasses.is__active
                     : filterClasses.trackWrapper
                 }>
                 <RangeFilter
@@ -109,7 +111,9 @@ const columnFilter = () => {
               <div
                 className={
                   !daysIsActive
-                    ? filterClasses.trackWrapper + ' is__active'
+                    ? filterClasses.trackWrapper +
+                      ' ' +
+                      filterClasses.is__active
                     : filterClasses.trackWrapper
                 }>
                 <RangeFilter

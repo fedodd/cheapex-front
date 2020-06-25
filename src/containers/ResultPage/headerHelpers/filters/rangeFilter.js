@@ -56,7 +56,7 @@ class RangeFilter extends React.Component {
           max={this.props.max}
           value={this.props.values}
           disabled={this.props.disabled}
-          onChange={this.props.onChangeHandler(this.props.values)}
+          onChange={this.props.onChangeHandler}
           // railStyle={{
           //   height: 10,
           // }}
