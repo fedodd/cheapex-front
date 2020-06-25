@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Slider, { Range } from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import RangeFilter from './rangeFilter';
 
-import filterClasses from './filters.css';
+import filterClasses from './filters.pcss';
 import tableClasses from '../../../../components/table/Table.pcss';
 import Checkbox from '../../../../components/checkbox/checkbox';
 import RadioButton from '../../../../components/radioButton/radioButton';
@@ -13,12 +13,36 @@ import InputText from '../../../../components/inputText/inputText';
 const columnFilter = () => {
   // need to put here data
 
-  const [daysMin, setDaysMin] = useState(2);
-  const [daysMax, setDaysMax] = useState(20);
-  const [priceMin, setPriceMin] = useState(400);
-  const [priceMax, setPriceMax] = useState(20000);
+  const endPoints = {
+    days: {
+      min: 2,
+      max: 20,
+    },
+    price: {
+      min: 400,
+      max: 20000,
+    },
+  };
 
-  const [rangeType, setRangeType] = useState('price');
+  // const [daysMin, setDaysMin] = useState(4);
+  // const [daysMax, setDaysMax] = useState(14);
+  // const [priceMin, setPriceMin] = useState(879);
+  // const [priceMax, setPriceMax] = useState(12845);
+
+  const [days, setDays] = useState([endPoints.days.min, endPoints.days.max]);
+  const [price, setPrice] = useState([
+    endPoints.price.min,
+    endPoints.price.max,
+  ]);
+
+  const [daysIsActive, setDaysIsActive] = useState(true);
+
+  // const onInputChange = (e) => {
+  //   console.log('in input', e.target);
+
+  //   setDays(+e.target.value);
+  //   console.log(days);
+  // };
 
   return (
     <div className={tableClasses.columnFilter + ' ' + tableClasses.is__big}>
@@ -29,51 +53,91 @@ const columnFilter = () => {
       <div className="filter">
         <div className="">
           <form>
-            <fieldset className={filterClasses.rangeFilter}>
+            <fieldset className={filterClasses.rangeValues}>
               <RadioButton
                 name="rangeType"
                 styled="circle"
-                // rangeFilter="days"
-                onClick={(e) => setRangeType('days')}
+                isChecked={daysIsActive}
+                onClickHandler={(e) => setDaysIsActive(true)}
               />
               <InputText
-                value={daysMin}
-                onChange={(e) => setDaysMin(e.target.value)}
+                value={days[0]}
+                name="daysMin"
+                onChange={(e) => setDays([+e.target.value, days[1]])}
               />
               <span>дн ...</span>
               <InputText
-                value={daysMax}
-                onChange={(e) => setDaysMax(e.target.value)}
+                value={days[1]}
+                onChange={(e) => setDays([days[0], +e.target.value])}
               />
               <span>дн</span>
             </fieldset>
-            <fieldset className={filterClasses.rangeFilter}>
+            <fieldset className={filterClasses.rangeValues}>
               <RadioButton
+                isChecked={!daysIsActive}
                 name="rangeType"
                 styled="circle"
                 // rangeFilter="price"
-                onClick={(e) => setRangeType('price')}
+                onClickHandler={(e) => setDaysIsActive(false)}
               />
               <InputText
-                value={priceMin}
-                onChange={(e) => setPriceMin(e.target.value)}
+                value={price[0]}
+                onChange={(e) => setPrice([+e.target.value, price[1]])}
               />
               <span>$ ...</span>
               <InputText
-                value={priceMax}
-                onChange={(e) => setPriceMax(e.target.value)}
+                value={price[1]}
+                onChange={(e) => setPrice([price[0], +e.target.value])}
               />
               <span>$</span>
             </fieldset>
             <div>
-              {/* <Slider />
-              <Range /> */}
-              {rangeType === 'days' ? (
-                <RangeFilter min={daysMin} max={daysMax} />
-              ) : (
-                <RangeFilter min={priceMin} max={priceMax} />
-              )}
+              <div
+                className={
+                  daysIsActive
+                    ? filterClasses.trackWrapper + ' is__active'
+                    : filterClasses.trackWrapper
+                }>
+                <RangeFilter
+                  min={endPoints.days.min}
+                  max={endPoints.days.max}
+                  values={days}
+                  disabled={!daysIsActive}
+                  onChangeHandler={(values) => setDays(values)}
+                />
+              </div>
+              <div
+                className={
+                  !daysIsActive
+                    ? filterClasses.trackWrapper + ' is__active'
+                    : filterClasses.trackWrapper
+                }>
+                <RangeFilter
+                  min={endPoints.price.min}
+                  max={endPoints.price.max}
+                  values={price}
+                  onChangeHandler={(values) => setPrice(values)}
+                  disabled={daysIsActive}
+                />
+              </div>
             </div>
+
+            {/* <div
+              className={
+                rangeType === 'days'
+                  ? filterClasses.trackWrapper + ' is__active'
+                  : filterClasses.trackWrapper
+              }>
+              <RangeFilter min={daysMin} max={daysMax} disabled />
+            </div>
+            <div
+              className={
+                rangeType === 'price'
+                  ? filterClasses.trackWrapper + ' is__active'
+                  : filterClasses.trackWrapper
+              }>
+              <RangeFilter min={priceMin} max={priceMax} />
+            </div> */}
           </form>
         </div>
       </div>

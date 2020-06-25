@@ -6,42 +6,47 @@ import React from 'react';
 import Slider, { Range } from 'rc-slider';
 import 'rc-slider/assets/index.css';
 // import './rangeStyle.css';
-import classes from './filters.css';
+import classes from './filters.pcss';
 
 function log(value) {
   console.log(value); //eslint-disable-line
 }
 
-class CustomizedRange extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      // lowerBound: 20,
-      // upperBound: 40,
-      value: [20, 40],
-      // value: 0,
-    };
-  }
+class RangeFilter extends React.Component {
+  // constructor(props) {
+  //   super(props);
+  //   // this.state = {
+  //   //   values: [0, 0],
+  //   // };
+  // }
 
-  onLowerBoundChange = (e) => {
-    this.setState({ lowerBound: +e.target.value });
-  };
+  // onLowerBoundChange = (e) => {
+  //   this.setState({ lowerBound: +e.target.value });
+  // };
 
-  onUpperBoundChange = (e) => {
-    this.setState({ upperBound: +e.target.value });
-  };
+  // onUpperBoundChange = (e) => {
+  //   this.setState({ upperBound: +e.target.value });
+  // };
 
-  onSliderChange = (value) => {
-    // console.log(value);
-    this.setState({
-      value,
-    });
-  };
+  // onChange = (values) => {
+  //   this.props.onChangeHandler(values);
+  //   this.setState({
+  //     values,
+  //   });
+  // };
 
-  handleApply = () => {
-    const { lowerBound, upperBound } = this.state;
-    this.setState({ value: [lowerBound, upperBound] });
-  };
+  // handleApply = () => {
+  //   const { lowerBound, upperBound } = this.state;
+  //   this.setState({ value: [lowerBound, upperBound] });
+  // };
+
+  // componentDidMount() {
+  //   this.setState({ values: this.props.values });
+  // }
+
+  // componentDidUpdate() {
+  //   this.setState({ values: this.props.values });
+  // }
 
   render() {
     return (
@@ -49,8 +54,9 @@ class CustomizedRange extends React.Component {
         <Range
           min={this.props.min}
           max={this.props.max}
-          value={this.state.value}
-          onChange={this.onSliderChange}
+          value={this.props.values}
+          disabled={this.props.disabled}
+          onChange={this.props.onChangeHandler(this.props.values)}
           // railStyle={{
           //   height: 10,
           // }}
@@ -86,4 +92,4 @@ class CustomizedRange extends React.Component {
   }
 }
 
-export default CustomizedRange;
+export default RangeFilter;
