@@ -6,26 +6,34 @@ import useDebounce from "./../../hooks/debounce";
 const inputText = (props) => {
 
   const [value, setValue] = useState(props.limit.type === 'min' ? props.values[0] : props.values[1]);
-  // const [inputValues, setInputValues] = useState(props.limit.type === 'min' ? props.values[0] : props.values[1])
 
   const debouncedValue = useDebounce(value, 500);
-
+// debounce
   useEffect(
     () => {
-      console.log('here in use efefct for debounce');
-
       if (debouncedValue) {
         setValue(debouncedValue)
       }
     },
-    [debouncedValue] // Only call effect if debounced search term changes
+    [debouncedValue] // Only call effect if debounced input changes
   );
 
 
+// change on range slider move
+  useEffect(
+    () => {
+      if (debouncedValue) {
+        (props.limit.type === 'min' ) ? setValue(props.values[0]) : setValue(props.values[1])
+      }
+    },
+    [props.values] // Only call effect if debounced prop changes
+  );
+
+// on input change
   useEffect(() => {
     // console.log('use effect on  value');
     function onInputHandler() {
-      console.log('in handler', value);
+      // console.log('in handler', value);
       const limits = props.limit.values;
       let newValue = value;
 
@@ -47,39 +55,24 @@ const inputText = (props) => {
           newValue = props.values[0]
         }
       }
-      value === newValue  ? null : setValue(newValue);
+      // value === newValue  ? null : setValue(newValue);
+      setValue(newValue);
       props.onChange(newValue)
     }
 
-
-    console.log(props.values, value, props.values[0] === value, props.values[1] === value);
-
     onInputHandler(value)
-
-
 
   }, [debouncedValue]);
 
-  // useEffect(() => {
-  //       // console.log('use effect on  props' , props.values, value, props.values[0] === value, props.values[1] === value,);
-  //       console.log('changed', props.values, value);
-  //   if ((props.limit.type === 'min' && props.values[0] === value) || (props.limit.type === 'max' && props.values[1] === value)) {
-  //     console.log('true');
-  //     setValue(props.values[0])
-  //   }
-  // }, [props.values]);
-
-  // const onChangeHandler = (e) => {
-  //   console.log('in debounce');
-
-  //   debounce(+e.target.value, 500)
-  // }
+  const onChangeHandler = e => {
+    isNaN(+e.target.value) ? setValue(0): setValue(+e.target.value)
+  }
 
 
   return (
     <label>
       {props.label}
-      <input type="text" value={value} onChange={e => setValue(+e.target.value)} disabled={props.disabled}/>
+      <input type="text" value={value} onChange={e => onChangeHandler(e)} disabled={props.disabled}/>
     </label>
   );
 };
