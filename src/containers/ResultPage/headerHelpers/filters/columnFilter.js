@@ -15,11 +15,11 @@ const columnFilter = () => {
 
   const endPoints = {
     days: {
-      min: 2,
+      min: 1,
       max: 20,
     },
     price: {
-      min: 400,
+      min: 100,
       max: 20000,
     },
   };
@@ -37,10 +37,73 @@ const columnFilter = () => {
 
   const [daysIsActive, setDaysIsActive] = useState(true);
 
-  // const onInputChange = (e) => {
-  //   console.log('in input', e.target);
+  // const onInputChange = (e, callback) => {
+  //   console.log('in input', e.target.value, callback);
 
-  //   setDays(+e.target.value);
+  //   const value = +e.target.value;
+  //   // if (daysIsActive) {
+  //   //   if (value < endPoints.days.min) {
+  //   //     setTimeout(() => {
+  //   //       console.log('days min');
+
+  //   //       callback(endPoints.days.min)
+  //   //     }, 1000);
+  //   //   } else if (value > endPoints.days.max) {
+  //   //     setTimeout(() => {
+  //   //       console.log('days max');
+  //   //       callback(endPoints.days.max)
+  //   //     }, 1000);
+  //   //   }
+  //   // } else {
+  //   //   if (value < endPoints.price.min) {
+  //   //     setTimeout(() => {
+  //   //       console.log('price min');
+  //   //       callback(endPoints.price.min)
+  //   //     }, 1000);
+  //   //   } else if (value > endPoints.price.max) {
+  //   //     setTimeout(() => {
+  //   //       console.log('price max');
+  //   //       callback(endPoints.price.max)
+  //   //     }, 1000);
+  //   //   }
+  //   }
+
+  // const onInputHandler =(e, endPoint)=> {
+  //   const value = +e.target.value;
+  //   let newValue = value;
+  //   let type = daysIsActive ? 'days' : 'price';
+  //   console.log('in handler', value, endPoint, type);
+
+  //   if (endPoint === 'min' ) {
+
+  //     if (value < endPoint.min ) {
+  //       newValue = endPoint[type].min;
+  //     } else if (value > endPoint[type].max) {
+  //       newValue = endPoint[type].max
+  //     }
+
+
+  //   } else {
+  //     if (value > endPoint[type].max ) {
+  //       newValue = endPoint[type].max;
+  //     } else if (value < endPoint[type].min) {
+  //       newValue = endPoint[type].min
+  //     }
+  //   }
+
+  //   setTimeout(() => {
+  //       console.log('in time out', value, newValue);
+  //       // value === newValue  ? null : setValue(newValue);
+  //       if (daysIsActive) {
+  //         setDays
+  //       }
+  //       props.onChange(newValue);
+  //   }, 500);
+  // }
+
+  //   callback(value)
+  //   // setDays([e.target.value, days[1]]);
+  //   // setDays(+e.target.value);
   //   console.log(days);
   // };
 
@@ -61,14 +124,18 @@ const columnFilter = () => {
                 onClickHandler={(e) => setDaysIsActive(true)}
               />
               <InputText
-                value={days[0]}
+                limit={{type: 'min', values: endPoints.days}}
+                values={days}
                 name="daysMin"
-                onChange={(e) => setDays([+e.target.value, days[1]])}
+                disabled={!daysIsActive}
+                onChange={(value) => setDays([value, days[1]])}
               />
               <span>дн ...</span>
               <InputText
-                value={days[1]}
-                onChange={(e) => setDays([days[0], +e.target.value])}
+                limit={{type: 'max', values: endPoints.days}}
+                values={days}
+                disabled={!daysIsActive}
+                onChange={(value) => setDays([days[0], value]) }
               />
               <span>дн</span>
             </fieldset>
@@ -81,13 +148,17 @@ const columnFilter = () => {
                 onClickHandler={(e) => setDaysIsActive(false)}
               />
               <InputText
-                value={price[0]}
-                onChange={(e) => setPrice([+e.target.value, price[1]])}
+                limit={{type: 'min', values:  endPoints.price}}
+                values={price}
+                disabled={daysIsActive}
+                onChange={(value) => setPrice([value, price[1]]) }
               />
               <span>$ ...</span>
               <InputText
-                value={price[1]}
-                onChange={(e) => setPrice([price[0], +e.target.value])}
+                limit={{type: 'max', values: endPoints.price}}
+                values={price}
+                disabled={daysIsActive}
+                onChange={(value) => setPrice([price[0], value]) }
               />
               <span>$</span>
             </fieldset>

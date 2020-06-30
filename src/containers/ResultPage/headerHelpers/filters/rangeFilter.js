@@ -64,7 +64,7 @@ class RangeFilter extends React.Component {
             {
               height: 20,
               width: 20,
-              marginLeft: 10,
+              marginLeft: 0,
               marginTop: -5,
               backgroundColor: 'white',
               boxShadow: '0px 0px 5px 1px grey',
@@ -72,7 +72,7 @@ class RangeFilter extends React.Component {
             {
               height: 20,
               width: 20,
-              marginLeft: -10,
+              marginLeft: 0,
               marginTop: -5,
               backgroundColor: 'white',
               borderColor: 'lightblue',
