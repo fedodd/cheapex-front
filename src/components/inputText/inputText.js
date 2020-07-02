@@ -1,78 +1,76 @@
-import React, {useState ,useEffect} from 'react';
+import React, { useState, useEffect } from "react";
 // import { trottle } from "lodash";
 // import debounce from './../'
 import useDebounce from "./../../hooks/debounce";
 
 const inputText = (props) => {
-
-  const [value, setValue] = useState(props.limit.type === 'min' ? props.values[0] : props.values[1]);
-
-  const debouncedValue = useDebounce(value, 500);
-// debounce
-  useEffect(
-    () => {
-      if (debouncedValue) {
-        setValue(debouncedValue)
-      }
-    },
-    [debouncedValue] // Only call effect if debounced input changes
+  const [value, setValue] = useState(
+    props.limit.type === "min" ? props.values[0] : props.values[1]
   );
 
+  const debouncedValue = useDebounce(value, 600);
 
-// change on range slider move
+  // change on range slider move
   useEffect(
     () => {
-      if (debouncedValue) {
-        (props.limit.type === 'min' ) ? setValue(props.values[0]) : setValue(props.values[1])
-      }
+      // console.log(debouncedValue);
+      props.limit.type === "min"
+        ? setValue(props.values[0])
+        : setValue(props.values[1]);
     },
     [props.values] // Only call effect if debounced prop changes
   );
 
-// on input change
+  // on input change
   useEffect(() => {
-    // console.log('use effect on  value');
     function onInputHandler() {
-      // console.log('in handler', value);
       const limits = props.limit.values;
-      let newValue = value;
+      let newValue = debouncedValue;
 
-      if (props.limit.type === 'min' ) {
-        if (value < limits.min ) {
+      if (props.limit.type === "min") {
+        if (value < limits.min) {
           newValue = limits.min;
         } else if (value > limits.max) {
-          newValue = limits.max
+          newValue = limits.max;
         } else if (value > props.values[1]) {
-          newValue = props.values[1]
+          newValue = props.values[1];
         }
-
       } else {
-        if (value > limits.max ) {
+        if (value > limits.max) {
           newValue = limits.max;
         } else if (value < limits.min) {
-          newValue = limits.min
+          newValue = limits.min;
         } else if (value < props.values[0]) {
-          newValue = props.values[0]
+          newValue = props.values[0];
         }
       }
-      // value === newValue  ? null : setValue(newValue);
       setValue(newValue);
-      props.onChange(newValue)
+      props.onChange(newValue);
     }
 
-    onInputHandler(value)
-
+    onInputHandler(value);
   }, [debouncedValue]);
 
-  const onChangeHandler = e => {
-    isNaN(+e.target.value) ? setValue(0): setValue(+e.target.value)
-  }
-
+  const onChangeHandler = (e) => {
+    // here we check if debouncedValue is 0 to fix problem with very quick clean input field. its a bug, need to fix it.
+    if (isNaN(+e.target.value) || debouncedValue === 0) {
+      props.limit.type === "min"
+        ? setValue(props.limit.values.min)
+        : setValue(props.limit.values.max);
+    } else {
+      setValue(+e.target.value);
+    }
+  };
 
   return (
     <label>
       {props.label}
-      <input type="text" value={value} onChange={e => onChangeHandler(e)} disabled={props.disabled}/>
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => onChangeHandler(e)}
+        disabled={props.disabled}
+      />
     </label>
   );
 };

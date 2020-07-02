@@ -4,14 +4,14 @@ import React, {
   useEffect,
   useLayoutEffect,
   useMemo,
-} from 'react';
+} from "react";
 import {
   useTable,
   useFilters,
   useGlobalFilter,
   useAsyncDebounce,
-} from 'react-table';
-import classes from './Table.pcss';
+} from "react-table";
+import classes from "./Table.pcss";
 //import classes from './Table.pcss';
 
 function Table({ columns, data, filteredRows, isFiltered }) {
@@ -37,10 +37,10 @@ function Table({ columns, data, filteredRows, isFiltered }) {
     if (lastColumnRef && lastColumnRef.current) {
       // problem need to id it by ref, not by getelementId
       setLastColumnWidth(
-        document.getElementById('lastColumn').getBoundingClientRect().width
+        document.getElementById("lastColumn").getBoundingClientRect().width
       );
       setFirstColumnWidth(
-        document.getElementById('firstColumn').getBoundingClientRect().width
+        document.getElementById("firstColumn").getBoundingClientRect().width
       );
     }
   }, lastColumnRef.current);
@@ -53,10 +53,10 @@ function Table({ columns, data, filteredRows, isFiltered }) {
     };
     switch (index) {
       case 0:
-        addedProps.id = 'firstColumn';
+        addedProps.id = "firstColumn";
         break;
       case arrayLength - 1:
-        addedProps.id = 'lastColumn';
+        addedProps.id = "lastColumn";
         addedProps.ref = lastColumnRef;
         break;
 
@@ -67,7 +67,7 @@ function Table({ columns, data, filteredRows, isFiltered }) {
     // console.log({ id })
     return (
       <th className={classes.th} {...addedProps} {...column.getHeaderProps()}>
-        {column.render('Header')}
+        {column.render("Header")}
       </th>
     );
   };
@@ -116,7 +116,7 @@ function Table({ columns, data, filteredRows, isFiltered }) {
               <tr
                 className={
                   fixedRows.includes(row.id)
-                    ? classes.tr + ' ' + classes.is__fixed
+                    ? classes.tr + " " + classes.is__fixed
                     : classes.tr
                 }
                 onClick={(e) => rowClickHandler(row.id)}
@@ -132,10 +132,10 @@ function Table({ columns, data, filteredRows, isFiltered }) {
                               top: `${(fixedRows.indexOf(row.id) + 1) * 44}px`,
                             }
                           : {
-                              top: 'auto',
+                              top: "auto",
                             }
                       }>
-                      {cell.render('Cell')}
+                      {cell.render("Cell")}
                     </td>
                   );
                 })}

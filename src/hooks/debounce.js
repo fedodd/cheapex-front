@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 // Наш хук
 export default function useDebounce(value, delay) {
@@ -9,6 +9,8 @@ export default function useDebounce(value, delay) {
     () => {
       // Выставить debouncedValue равным value (переданное значение)
       // после заданной задержки
+      console.log("value in debounce", value);
+
       const handler = setTimeout(() => {
         setDebouncedValue(value);
       }, delay);

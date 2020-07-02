@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import Slider, { Range } from 'rc-slider';
-import 'rc-slider/assets/index.css';
-import RangeFilter from './rangeFilter';
+import React, { useState, useEffect } from "react";
+import Slider, { Range } from "rc-slider";
+import "rc-slider/assets/index.css";
+import RangeFilter from "./rangeFilter";
 
-import filterClasses from './filters.pcss';
-import tableClasses from '../../../../components/table/Table.pcss';
-import Checkbox from '../../../../components/checkbox/checkbox';
-import RadioButton from '../../../../components/radioButton/radioButton';
-import InputText from '../../../../components/inputText/inputText';
+import filterClasses from "./filters.pcss";
+import tableClasses from "../../../../components/table/Table.pcss";
+import Checkbox from "../../../../components/checkbox/checkbox";
+import RadioButton from "../../../../components/radioButton/radioButton";
+import InputText from "../../../../components/inputText/inputText";
 // import InputText from '../../../../components/inputText/inputText';
 // import
 const columnFilter = () => {
@@ -82,7 +82,6 @@ const columnFilter = () => {
   //       newValue = endPoint[type].max
   //     }
 
-
   //   } else {
   //     if (value > endPoint[type].max ) {
   //       newValue = endPoint[type].max;
@@ -108,7 +107,7 @@ const columnFilter = () => {
   // };
 
   return (
-    <div className={tableClasses.columnFilter + ' ' + tableClasses.is__big}>
+    <div className={tableClasses.columnFilter + " " + tableClasses.is__big}>
       <div className="sort">
         <button className={filterClasses.button}>&#8593; По возрастанию</button>
         <button className={filterClasses.button}>&#8595; По убыванию</button>
@@ -124,7 +123,7 @@ const columnFilter = () => {
                 onClickHandler={(e) => setDaysIsActive(true)}
               />
               <InputText
-                limit={{type: 'min', values: endPoints.days}}
+                limit={{ type: "min", values: endPoints.days }}
                 values={days}
                 name="daysMin"
                 disabled={!daysIsActive}
@@ -132,10 +131,10 @@ const columnFilter = () => {
               />
               <span>дн ...</span>
               <InputText
-                limit={{type: 'max', values: endPoints.days}}
+                limit={{ type: "max", values: endPoints.days }}
                 values={days}
                 disabled={!daysIsActive}
-                onChange={(value) => setDays([days[0], value]) }
+                onChange={(value) => setDays([days[0], value])}
               />
               <span>дн</span>
             </fieldset>
@@ -148,17 +147,17 @@ const columnFilter = () => {
                 onClickHandler={(e) => setDaysIsActive(false)}
               />
               <InputText
-                limit={{type: 'min', values:  endPoints.price}}
+                limit={{ type: "min", values: endPoints.price }}
                 values={price}
                 disabled={daysIsActive}
-                onChange={(value) => setPrice([value, price[1]]) }
+                onChange={(value) => setPrice([value, price[1]])}
               />
               <span>$ ...</span>
               <InputText
-                limit={{type: 'max', values: endPoints.price}}
+                limit={{ type: "max", values: endPoints.price }}
                 values={price}
                 disabled={daysIsActive}
-                onChange={(value) => setPrice([price[0], value]) }
+                onChange={(value) => setPrice([price[0], value])}
               />
               <span>$</span>
             </fieldset>
@@ -167,7 +166,7 @@ const columnFilter = () => {
                 className={
                   daysIsActive
                     ? filterClasses.trackWrapper +
-                      ' ' +
+                      " " +
                       filterClasses.is__active
                     : filterClasses.trackWrapper
                 }>
@@ -183,7 +182,7 @@ const columnFilter = () => {
                 className={
                   !daysIsActive
                     ? filterClasses.trackWrapper +
-                      ' ' +
+                      " " +
                       filterClasses.is__active
                     : filterClasses.trackWrapper
                 }>
