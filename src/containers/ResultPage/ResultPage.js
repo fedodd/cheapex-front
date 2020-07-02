@@ -1,16 +1,25 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
-import axios from 'axios';
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useRef,
+  useCallback,
+} from "react";
+import axios from "axios";
+import { shallowEqual, useSelector, useDispatch } from "react-redux";
+
+import { setEndPoints } from "../../redux/actions";
+import headerHelpers from "./headerHelpers/headerHelpers";
+import Table from "../../components/table/Table";
+import TableCell from "../../components/table/tableCell";
+import clickDrugHandler from "../../functions/clickDrug";
+import Search from "../../components/filters/search/Search";
+
+import classes from "./ResultPage.pcss";
+import tableClasses from "../../components/table/Table.pcss";
+
 //import { Route } from 'react-router-dom';
 // import Filters from "../../components/filters/Filters";
-import headerHelpers from './headerHelpers/headerHelpers';
-import Table from '../../components/table/Table';
-import TableCell from '../../components/table/tableCell';
-import clickDrugHandler from '../../functions/clickDrug';
-import Search from '../../components/filters/search/Search';
-
-import classes from './ResultPage.pcss';
-import tableClasses from '../../components/table/Table.pcss';
-
 // import declOfNum from "../../functions/declOfNum";
 // import {
 //   useTable,
@@ -21,7 +30,7 @@ import tableClasses from '../../components/table/Table.pcss';
 // import Spinner from "../../components/spinner/Spinner";
 // import clickDrugHandler from "../../functions/clickDrug";
 
-import RangeFilter from '../ResultPage/headerHelpers/filters/rangeFilter';
+import RangeFilter from "../ResultPage/headerHelpers/filters/rangeFilter";
 
 function ResultPage(props) {
   // const [error, setError] = useState(null);
@@ -30,16 +39,25 @@ function ResultPage(props) {
   const [tableColumns, setTableColumns] = useState([]);
   const [dirtyData, setDirtyData] = useState([]);
 
+  // const [endPoints, setEndPoints] = useState({});
+  // const [globalState, globalActions] = useState({});
+
+  const endPoints = useSelector((state) => state.table.endPoints, shallowEqual);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const fullpath =
-      'https://react-app-bc4e6.firebaseio.com/importedSheet/' +
+      "https://react-app-bc4e6.firebaseio.com/importedSheet/" +
       props.link +
-      '.json';
+      ".json";
     const fetchData = async () => {
       const result = await axios(fullpath);
       const fullData = result.data.data;
       const fullResults = headerHelpers(fullData);
+      //
       setDirtyData(fullResults.data);
+      dispatch(setEndPoints(fullResults.endPoints));
+
       let jsxData = fullResults.data.map((row, index) => {
         let newRow = {};
         // // add symbol to hide id - index of row
@@ -61,7 +79,7 @@ function ResultPage(props) {
 
   // filter block
   const [isFiltered, setIsFiltered] = useState(false);
-  const [filterValue, setFilterValue] = useState('');
+  const [filterValue, setFilterValue] = useState("");
   const [filteredRows, setFilteredRows] = useState([]);
 
   const filterHandler = (target) => {
@@ -71,7 +89,7 @@ function ResultPage(props) {
 
   useEffect(() => {
     const newFilteredRows = dirtyData.reduce((acc, row, index) => {
-      return row['Веб-сайт_value'].value.includes(filterValue)
+      return row["Веб-сайт_value"].value.includes(filterValue)
         ? acc.concat(index)
         : acc;
     }, []);
@@ -103,6 +121,7 @@ function ResultPage(props) {
       <div className={classes.resultPage} ref={sliderRef}>
         {loaded ? (
           <Table
+            endPoints={endPoints}
             columns={tableColumns}
             data={tableData}
             isFiltered={isFiltered}

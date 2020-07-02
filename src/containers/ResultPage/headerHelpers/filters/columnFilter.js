@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Slider, { Range } from "rc-slider";
+
+import { shallowEqual, useSelector, useDispatch } from "react-redux";
+
 import "rc-slider/assets/index.css";
 import RangeFilter from "./rangeFilter";
 
@@ -8,21 +11,23 @@ import tableClasses from "../../../../components/table/Table.pcss";
 import Checkbox from "../../../../components/checkbox/checkbox";
 import RadioButton from "../../../../components/radioButton/radioButton";
 import InputText from "../../../../components/inputText/inputText";
-// import InputText from '../../../../components/inputText/inputText';
-// import
+
 const columnFilter = () => {
   // need to put here data
+  const endPoints = useSelector((state) => state.table.endPoints, shallowEqual);
+  // const dispatch = useDispatch();
+  // console.log("endPOintsFormStore", endPOintsFormStore);
 
-  const endPoints = {
-    days: {
-      min: 1,
-      max: 20,
-    },
-    price: {
-      min: 100,
-      max: 20000,
-    },
-  };
+  // const endPoints = {
+  //   days: {
+  //     min: 1,
+  //     max: 20,
+  //   },
+  //   price: {
+  //     min: 100,
+  //     max: 20000,
+  //   },
+  // };
 
   // const [daysMin, setDaysMin] = useState(4);
   // const [daysMax, setDaysMax] = useState(14);
@@ -36,75 +41,6 @@ const columnFilter = () => {
   ]);
 
   const [daysIsActive, setDaysIsActive] = useState(true);
-
-  // const onInputChange = (e, callback) => {
-  //   console.log('in input', e.target.value, callback);
-
-  //   const value = +e.target.value;
-  //   // if (daysIsActive) {
-  //   //   if (value < endPoints.days.min) {
-  //   //     setTimeout(() => {
-  //   //       console.log('days min');
-
-  //   //       callback(endPoints.days.min)
-  //   //     }, 1000);
-  //   //   } else if (value > endPoints.days.max) {
-  //   //     setTimeout(() => {
-  //   //       console.log('days max');
-  //   //       callback(endPoints.days.max)
-  //   //     }, 1000);
-  //   //   }
-  //   // } else {
-  //   //   if (value < endPoints.price.min) {
-  //   //     setTimeout(() => {
-  //   //       console.log('price min');
-  //   //       callback(endPoints.price.min)
-  //   //     }, 1000);
-  //   //   } else if (value > endPoints.price.max) {
-  //   //     setTimeout(() => {
-  //   //       console.log('price max');
-  //   //       callback(endPoints.price.max)
-  //   //     }, 1000);
-  //   //   }
-  //   }
-
-  // const onInputHandler =(e, endPoint)=> {
-  //   const value = +e.target.value;
-  //   let newValue = value;
-  //   let type = daysIsActive ? 'days' : 'price';
-  //   console.log('in handler', value, endPoint, type);
-
-  //   if (endPoint === 'min' ) {
-
-  //     if (value < endPoint.min ) {
-  //       newValue = endPoint[type].min;
-  //     } else if (value > endPoint[type].max) {
-  //       newValue = endPoint[type].max
-  //     }
-
-  //   } else {
-  //     if (value > endPoint[type].max ) {
-  //       newValue = endPoint[type].max;
-  //     } else if (value < endPoint[type].min) {
-  //       newValue = endPoint[type].min
-  //     }
-  //   }
-
-  //   setTimeout(() => {
-  //       console.log('in time out', value, newValue);
-  //       // value === newValue  ? null : setValue(newValue);
-  //       if (daysIsActive) {
-  //         setDays
-  //       }
-  //       props.onChange(newValue);
-  //   }, 500);
-  // }
-
-  //   callback(value)
-  //   // setDays([e.target.value, days[1]]);
-  //   // setDays(+e.target.value);
-  //   console.log(days);
-  // };
 
   return (
     <div className={tableClasses.columnFilter + " " + tableClasses.is__big}>
