@@ -45,6 +45,8 @@ const inputText = (props) => {
         }
       }
       setValue(newValue);
+      console.log("new value");
+
       props.onChange(newValue);
     }
 
@@ -75,4 +77,4 @@ const inputText = (props) => {
   );
 };
 
-export default inputText;
+export default React.memo(inputText);

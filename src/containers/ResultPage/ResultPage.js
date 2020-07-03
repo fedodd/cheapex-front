@@ -8,7 +8,7 @@ import React, {
 import axios from "axios";
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 
-import { setEndPoints } from "../../redux/actions";
+import { setLimits, setStoreData, setErrorOnLoad } from "../../redux/actions";
 import headerHelpers from "./headerHelpers/headerHelpers";
 import Table from "../../components/table/Table";
 import TableCell from "../../components/table/tableCell";
@@ -34,15 +34,15 @@ import RangeFilter from "../ResultPage/headerHelpers/filters/rangeFilter";
 
 function ResultPage(props) {
   // const [error, setError] = useState(null);
-  const [loaded, setLoaded] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
+  const [payload, setPayload] = useState(null);
+
   const [tableData, setTableData] = useState([]);
   const [tableColumns, setTableColumns] = useState([]);
-  const [dirtyData, setDirtyData] = useState([]);
 
-  // const [endPoints, setEndPoints] = useState({});
-  // const [globalState, globalActions] = useState({});
-
-  const endPoints = useSelector((state) => state.table.endPoints, shallowEqual);
+  const storeData = useSelector((state) => state.table.storeData, shallowEqual);
+  const limits = useSelector((state) => state.table.limits, shallowEqual);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -50,30 +50,39 @@ function ResultPage(props) {
       "https://react-app-bc4e6.firebaseio.com/importedSheet/" +
       props.link +
       ".json";
+    setLoading(true);
+
     const fetchData = async () => {
-      const result = await axios(fullpath);
-      const fullData = result.data.data;
-      const fullResults = headerHelpers(fullData);
-      //
-      setDirtyData(fullResults.data);
-      dispatch(setEndPoints(fullResults.endPoints));
+      try {
+        const result = await axios(fullpath);
+        const fullData = result.data.data;
+        const fullResults = headerHelpers(fullData);
 
-      let jsxData = fullResults.data.map((row, index) => {
-        let newRow = {};
-        // // add symbol to hide id - index of row
-        // let id = Symbol('id');
+        dispatch(setStoreData(fullResults.data));
+        dispatch(setLimits(fullResults.limits));
 
-        // newRow[id] = index;
-        for (let [key, value] of Object.entries(row)) {
-          newRow[key] = <TableCell column={key} data={value} />;
-        }
-        return newRow;
-      });
+        let jsxData = fullResults.data.map((row, index) => {
+          let newRow = {};
+          // newRow[id] = index;
+          for (let [key, value] of Object.entries(row)) {
+            newRow[key] = <TableCell column={key} data={value} />;
+          }
+          return newRow;
+        });
+        setTableData(jsxData);
+        setTableColumns(fullResults.columns);
+        setLoading(false);
+      } catch (err) {
+        console.log(err);
 
-      setTableData(jsxData);
-      setTableColumns(fullResults.columns);
-      setLoaded(true);
+        // перехватит любую ошибку в блоке try: и в fetch, и в response.json
+        // alert(err);
+        dispatch(setErrorOnLoad(err));
+        setLoadError(true);
+        setLoading(false);
+      }
     };
+
     fetchData();
   }, []);
 
@@ -88,7 +97,7 @@ function ResultPage(props) {
   };
 
   useEffect(() => {
-    const newFilteredRows = dirtyData.reduce((acc, row, index) => {
+    const newFilteredRows = storeData.reduce((acc, row, index) => {
       return row["Веб-сайт_value"].value.includes(filterValue)
         ? acc.concat(index)
         : acc;
@@ -100,18 +109,20 @@ function ResultPage(props) {
   const sliderRef = useRef();
 
   useEffect(() => {
-    const slider = sliderRef.current;
-    clickDrugHandler(sliderRef.current);
+    if (!loading) {
+      const slider = sliderRef.current;
+      clickDrugHandler(sliderRef.current);
 
-    // this thing must do in another function and use it after resize window
-    if (slider.scrollWidth !== slider.clientWidth) {
-      if (slider.scrollWidth - slider.clientWidth <= slider.scrollLeft + 5) {
-        slider.classList.remove(tableClasses.is__end);
-      } else {
-        slider.classList.add(tableClasses.is__end);
+      // this thing must do in another function and use it after resize window
+      if (slider.scrollWidth !== slider.clientWidth) {
+        if (slider.scrollWidth - slider.clientWidth <= slider.scrollLeft + 5) {
+          slider.classList.remove(tableClasses.is__end);
+        } else {
+          slider.classList.add(tableClasses.is__end);
+        }
       }
     }
-  }, [loaded]);
+  }, [loading]);
 
   return (
     <div className={classes.resultPageWrapper}>
@@ -119,16 +130,16 @@ function ResultPage(props) {
         <Search filterHandler={filterHandler} />
       </div>
       <div className={classes.resultPage} ref={sliderRef}>
-        {loaded ? (
+        {loading ? (
+          <p>loading</p>
+        ) : (
           <Table
-            endPoints={endPoints}
+            limits={limits}
             columns={tableColumns}
             data={tableData}
             isFiltered={isFiltered}
             filteredRows={filteredRows}
           />
-        ) : (
-          <p>loading</p>
         )}
       </div>
     </div>

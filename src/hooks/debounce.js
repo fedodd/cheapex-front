@@ -9,8 +9,6 @@ export default function useDebounce(value, delay) {
     () => {
       // Выставить debouncedValue равным value (переданное значение)
       // после заданной задержки
-      console.log("value in debounce", value);
-
       const handler = setTimeout(() => {
         setDebouncedValue(value);
       }, delay);

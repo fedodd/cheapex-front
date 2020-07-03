@@ -1,7 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Slider, { Range } from "rc-slider";
 
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
+
+import {
+  setFilter,
+  setEndPoints,
+  setFilterDays,
+  setFilterPrice,
+} from "../../../../redux/actions";
 
 import "rc-slider/assets/index.css";
 import RangeFilter from "./rangeFilter";
@@ -14,33 +21,55 @@ import InputText from "../../../../components/inputText/inputText";
 
 const columnFilter = () => {
   // need to put here data
-  const endPoints = useSelector((state) => state.table.endPoints, shallowEqual);
-  // const dispatch = useDispatch();
-  // console.log("endPOintsFormStore", endPOintsFormStore);
+  const limits = useSelector((state) => state.table.limits, shallowEqual);
+  const endPoints = useSelector(
+    (state) => state.filters.endPoints,
+    shallowEqual
+  );
+  const dispatch = useDispatch();
 
-  // const endPoints = {
-  //   days: {
-  //     min: 1,
-  //     max: 20,
-  //   },
-  //   price: {
-  //     min: 100,
-  //     max: 20000,
-  //   },
-  // };
-
-  // const [daysMin, setDaysMin] = useState(4);
-  // const [daysMax, setDaysMax] = useState(14);
-  // const [priceMin, setPriceMin] = useState(879);
-  // const [priceMax, setPriceMax] = useState(12845);
-
-  const [days, setDays] = useState([endPoints.days.min, endPoints.days.max]);
-  const [price, setPrice] = useState([
-    endPoints.price.min,
-    endPoints.price.max,
-  ]);
+  const days = useSelector((state) => state.filters.days, shallowEqual);
+  const price = useSelector((state) => state.filters.price, shallowEqual);
 
   const [daysIsActive, setDaysIsActive] = useState(true);
+
+  useEffect(() => {
+    console.log(limits, endPoints);
+    dispatch(setFilterDays(days), shallowEqual);
+    dispatch(setFilterPrice(price), shallowEqual);
+    // dispatch(setEndPoints(limits), shallowEqual);
+  }, []);
+
+  useEffect(() => {
+    dispatch(setFilterDays(days), shallowEqual);
+  }, [days]);
+
+  useEffect(() => {
+    dispatch(setFilterPrice(price), shallowEqual);
+  }, [price]);
+
+  // onInputChange = (value) => {
+  //   dispatch(setFilterDays(days.min), shallowEqual);
+  // }
+  const onInputChange = useCallback(
+    (value, type) => {
+      // type === min ?
+      console.log("in callback onInputChange", value, type);
+
+      // return dispatch(setFilterDays(days), shallowEqual);
+    },
+    [dispatch]
+  );
+
+  const onRangeChange = useCallback(
+    (value, type) => {
+      // type === min ?
+      console.log("in callback onRangeChange", value);
+
+      // return dispatch(setFilterDays(days), shallowEqual);
+    },
+    [dispatch]
+  );
 
   return (
     <div className={tableClasses.columnFilter + " " + tableClasses.is__big}>
@@ -59,18 +88,18 @@ const columnFilter = () => {
                 onClickHandler={(e) => setDaysIsActive(true)}
               />
               <InputText
-                limit={{ type: "min", values: endPoints.days }}
-                values={days}
+                limit={{ type: "min", values: limits.days }}
+                values={[days.min, days.max]}
                 name="daysMin"
                 disabled={!daysIsActive}
-                onChange={(value) => setDays([value, days[1]])}
+                onChange={(value) => onInputChange(value, "Dmin")}
               />
               <span>дн ...</span>
               <InputText
-                limit={{ type: "max", values: endPoints.days }}
-                values={days}
+                limit={{ type: "max", values: limits.days }}
+                values={[days.min, days.max]}
                 disabled={!daysIsActive}
-                onChange={(value) => setDays([days[0], value])}
+                onChange={(value) => onInputChange(value, "Dmax")}
               />
               <span>дн</span>
             </fieldset>
@@ -83,17 +112,17 @@ const columnFilter = () => {
                 onClickHandler={(e) => setDaysIsActive(false)}
               />
               <InputText
-                limit={{ type: "min", values: endPoints.price }}
-                values={price}
+                limit={{ type: "min", values: limits.price }}
+                values={[price.min, price.max]}
                 disabled={daysIsActive}
-                onChange={(value) => setPrice([value, price[1]])}
+                onChange={(value) => onInputChange(value, "Pmin")}
               />
               <span>$ ...</span>
               <InputText
-                limit={{ type: "max", values: endPoints.price }}
-                values={price}
+                limit={{ type: "max", values: limits.price }}
+                values={[price.min, price.max]}
                 disabled={daysIsActive}
-                onChange={(value) => setPrice([price[0], value])}
+                onChange={(value) => onInputChange(value, "Pmax")}
               />
               <span>$</span>
             </fieldset>
@@ -107,11 +136,11 @@ const columnFilter = () => {
                     : filterClasses.trackWrapper
                 }>
                 <RangeFilter
-                  min={endPoints.days.min}
-                  max={endPoints.days.max}
-                  values={days}
+                  min={limits.days.min}
+                  max={limits.days.max}
+                  values={[days.min, days.max]}
                   disabled={!daysIsActive}
-                  onChangeHandler={(values) => setDays(values)}
+                  onChangeHandler={(values) => onRangeChange(values)}
                 />
               </div>
               <div
@@ -123,10 +152,10 @@ const columnFilter = () => {
                     : filterClasses.trackWrapper
                 }>
                 <RangeFilter
-                  min={endPoints.price.min}
-                  max={endPoints.price.max}
-                  values={price}
-                  onChangeHandler={(values) => setPrice(values)}
+                  min={limits.price.min}
+                  max={limits.price.max}
+                  values={[price.min, price.max]}
+                  onChangeHandler={(values) => onRangeChange(values)}
                   disabled={daysIsActive}
                 />
               </div>

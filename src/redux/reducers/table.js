@@ -1,9 +1,17 @@
-import { SET_END_POINTS } from "../actionTypes";
+import {
+  SET_LIMITS,
+  SET_STORE_DATA,
+  FETCH_TABLE_DATA,
+  SET_ERROR_ON_LOAD,
+} from "../actionTypes";
 
 const initialState = {
   // allIds: [],
   // byIds: {},
-  endPoints: {
+  err: null,
+  fetchedData: {},
+  storeData: [],
+  limits: {
     days: {
       min: 0,
       max: 0,
@@ -17,12 +25,37 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case SET_END_POINTS: {
-      const endPoints = action.payload;
+    case SET_LIMITS: {
+      const limits = action.payload;
 
       return {
         ...state,
-        ...endPoints,
+        ...limits,
+      };
+    }
+
+    case FETCH_TABLE_DATA: {
+      const fetchedData = action.payload;
+
+      return {
+        ...state,
+        ...fetchedData,
+      };
+    }
+    case SET_STORE_DATA: {
+      // need to get storeData cause payload is object, but we send array
+      const storeData = action.payload.storeData;
+      return {
+        ...state,
+        storeData,
+      };
+    }
+    case SET_ERROR_ON_LOAD: {
+      const err = action.payload;
+
+      return {
+        ...state,
+        ...err,
       };
     }
     // case TOGGLE_TODO: {

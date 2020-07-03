@@ -36,7 +36,7 @@ const headerHelpers = (fullData) => {
     }
   });
 
-  let endPoints = {
+  let limits = {
     days: {
       min: dMin,
       max: dMax,
@@ -50,7 +50,7 @@ const headerHelpers = (fullData) => {
   return {
     columns: columns,
     data: superData,
-    endPoints,
+    limits,
   };
 };
 
