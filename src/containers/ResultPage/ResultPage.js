@@ -103,7 +103,7 @@ function ResultPage(props) {
     fetchData();
   }, []);
 
-  // filter block
+  // filter company name block
   const [isFiltered, setIsFiltered] = useState(false);
   const [filterValue, setFilterValue] = useState("");
   const [filteredRows, setFilteredRows] = useState([]);
@@ -121,6 +121,32 @@ function ResultPage(props) {
     }, []);
     setFilteredRows(newFilteredRows);
   }, [filterValue]);
+
+  useEffect(() => {
+    const newFilteredRows = storeData.reduce((acc, row, index) => {
+      return row["Дней"]["dMin"] >= days.min &&
+        row["Дней"]["dMax(connect(…))"] <= days.max
+        ? acc.concat(index)
+        : acc;
+    }, []);
+    setIsFiltered(true);
+    setFilteredRows(newFilteredRows);
+  }, [days]);
+
+  useEffect(() => {
+    const newFilteredRows = storeData.reduce((acc, row, index) => {
+      return row["Цена"]["price($)"] >= price.min &&
+        row["Цена"]["price($)"] <= price.max
+        ? acc.concat(index)
+        : acc;
+    }, []);
+    setIsFiltered(true);
+    setFilteredRows(newFilteredRows);
+  }, [price]);
+
+  useEffect(() => {
+    console.log("filteredRows", filteredRows);
+  }, [filteredRows]);
 
   //scrolling table
   const sliderRef = useRef();
