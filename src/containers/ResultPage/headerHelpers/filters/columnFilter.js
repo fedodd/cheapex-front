@@ -22,51 +22,46 @@ import InputText from "../../../../components/inputText/inputText";
 const columnFilter = () => {
   // need to put here data
   const limits = useSelector((state) => state.table.limits, shallowEqual);
-  const endPoints = useSelector(
-    (state) => state.filters.endPoints,
-    shallowEqual
-  );
   const dispatch = useDispatch();
+
+  const [daysIsActive, setDaysIsActive] = useState(true);
 
   const days = useSelector((state) => state.filters.days, shallowEqual);
   const price = useSelector((state) => state.filters.price, shallowEqual);
 
-  const [daysIsActive, setDaysIsActive] = useState(true);
+  // need to usecallback here, and after that i think i can concat this to range change fuctions
+  const onRangeDaysChange = (values) => {
+    // console.log("values days:", daysIsActive, values === days);
 
-  useEffect(() => {
-    console.log(limits, endPoints);
-    dispatch(setFilterDays(days), shallowEqual);
-    dispatch(setFilterPrice(price), shallowEqual);
-    // dispatch(setEndPoints(limits), shallowEqual);
-  }, []);
+    dispatch(setFilterDays(values), shallowEqual);
+  };
 
-  useEffect(() => {
-    dispatch(setFilterDays(days), shallowEqual);
-  }, [days]);
+  const onRangePriceChange = (values) => {
+    // console.log("values days:", daysIsActive, values === days);
 
-  useEffect(() => {
-    dispatch(setFilterPrice(price), shallowEqual);
-  }, [price]);
+    dispatch(setFilterPrice(values), shallowEqual);
+  };
 
-  // onInputChange = (value) => {
-  //   dispatch(setFilterDays(days.min), shallowEqual);
-  // }
   const onInputChange = useCallback(
     (value, type) => {
-      // type === min ?
-      console.log("in callback onInputChange", value, type);
+      switch (type) {
+        case "dmin":
+          dispatch(setFilterDays(value), shallowEqual);
+          break;
+        case "dmax":
+          dispatch(setFilterDays(value), shallowEqual);
 
-      // return dispatch(setFilterDays(days), shallowEqual);
-    },
-    [dispatch]
-  );
+          break;
+        case "pmin":
+          dispatch(setFilterPrice(value), shallowEqual);
+          break;
+        case "pmax":
+          dispatch(setFilterPrice(value), shallowEqual);
+          break;
 
-  const onRangeChange = useCallback(
-    (value, type) => {
-      // type === min ?
-      console.log("in callback onRangeChange", value);
-
-      // return dispatch(setFilterDays(days), shallowEqual);
+        default:
+          break;
+      }
     },
     [dispatch]
   );
@@ -88,18 +83,20 @@ const columnFilter = () => {
                 onClickHandler={(e) => setDaysIsActive(true)}
               />
               <InputText
-                limit={{ type: "min", values: limits.days }}
-                values={[days.min, days.max]}
+                limits={limits.days}
+                type="min"
+                values={days}
                 name="daysMin"
                 disabled={!daysIsActive}
-                onChange={(value) => onInputChange(value, "Dmin")}
+                onChange={(value) => onInputChange(value, "dmin")}
               />
               <span>дн ...</span>
               <InputText
-                limit={{ type: "max", values: limits.days }}
-                values={[days.min, days.max]}
+                limits={limits.days}
+                type="max"
+                values={days}
                 disabled={!daysIsActive}
-                onChange={(value) => onInputChange(value, "Dmax")}
+                onChange={(value) => onInputChange(value, "dmax")}
               />
               <span>дн</span>
             </fieldset>
@@ -112,17 +109,19 @@ const columnFilter = () => {
                 onClickHandler={(e) => setDaysIsActive(false)}
               />
               <InputText
-                limit={{ type: "min", values: limits.price }}
-                values={[price.min, price.max]}
+                limits={limits.price}
+                type="min"
+                values={price}
                 disabled={daysIsActive}
-                onChange={(value) => onInputChange(value, "Pmin")}
+                onChange={(value) => onInputChange(value, "pmin")}
               />
               <span>$ ...</span>
               <InputText
-                limit={{ type: "max", values: limits.price }}
-                values={[price.min, price.max]}
+                limits={limits.price}
+                type="max"
+                values={price}
                 disabled={daysIsActive}
-                onChange={(value) => onInputChange(value, "Pmax")}
+                onChange={(value) => onInputChange(value, "pmax")}
               />
               <span>$</span>
             </fieldset>
@@ -138,9 +137,9 @@ const columnFilter = () => {
                 <RangeFilter
                   min={limits.days.min}
                   max={limits.days.max}
-                  values={[days.min, days.max]}
+                  values={days}
                   disabled={!daysIsActive}
-                  onChangeHandler={(values) => onRangeChange(values)}
+                  onChangeHandler={(values) => onRangeDaysChange(values)}
                 />
               </div>
               <div
@@ -154,29 +153,12 @@ const columnFilter = () => {
                 <RangeFilter
                   min={limits.price.min}
                   max={limits.price.max}
-                  values={[price.min, price.max]}
-                  onChangeHandler={(values) => onRangeChange(values)}
+                  values={price}
+                  onChangeHandler={(values) => onRangePriceChange(values)}
                   disabled={daysIsActive}
                 />
               </div>
             </div>
-
-            {/* <div
-              className={
-                rangeType === 'days'
-                  ? filterClasses.trackWrapper + ' is__active'
-                  : filterClasses.trackWrapper
-              }>
-              <RangeFilter min={daysMin} max={daysMax} disabled />
-            </div>
-            <div
-              className={
-                rangeType === 'price'
-                  ? filterClasses.trackWrapper + ' is__active'
-                  : filterClasses.trackWrapper
-              }>
-              <RangeFilter min={priceMin} max={priceMax} />
-            </div> */}
           </form>
         </div>
       </div>

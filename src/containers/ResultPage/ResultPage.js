@@ -8,7 +8,13 @@ import React, {
 import axios from "axios";
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 
-import { setLimits, setStoreData, setErrorOnLoad } from "../../redux/actions";
+import {
+  setLimits,
+  setStoreData,
+  setErrorOnLoad,
+  setFilterDays,
+  setFilterPrice,
+} from "../../redux/actions";
 import headerHelpers from "./headerHelpers/headerHelpers";
 import Table from "../../components/table/Table";
 import TableCell from "../../components/table/tableCell";
@@ -43,6 +49,17 @@ function ResultPage(props) {
 
   const storeData = useSelector((state) => state.table.storeData, shallowEqual);
   const limits = useSelector((state) => state.table.limits, shallowEqual);
+
+  // set new days and price when update limits...
+
+  const days = useSelector((state) => state.filters.days, shallowEqual);
+  const price = useSelector((state) => state.filters.price, shallowEqual);
+  useEffect(() => {
+    dispatch(setFilterDays(limits.days), shallowEqual);
+    dispatch(setFilterPrice(limits.price), shallowEqual);
+    // dispatch(setEndPoints(limits), shallowEqual);
+  }, [limits]);
+
   const dispatch = useDispatch();
 
   useEffect(() => {

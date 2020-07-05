@@ -4,50 +4,44 @@ import React, { useState, useEffect } from "react";
 import useDebounce from "./../../hooks/debounce";
 
 const inputText = (props) => {
-  const [value, setValue] = useState(
-    props.limit.type === "min" ? props.values[0] : props.values[1]
-  );
-
+  const [value, setValue] = useState(props.values[props.type]);
   const debouncedValue = useDebounce(value, 600);
 
   // change on range slider move
   useEffect(
     () => {
-      // console.log(debouncedValue);
-      props.limit.type === "min"
-        ? setValue(props.values[0])
-        : setValue(props.values[1]);
+      setValue(props.values[props.type]);
     },
-    [props.values] // Only call effect if debounced prop changes
+    [props.values[props.type]] // Only call effect if debounced prop changes
   );
 
   // on input change
   useEffect(() => {
     function onInputHandler() {
-      const limits = props.limit.values;
+      const limits = props.limits;
       let newValue = debouncedValue;
 
-      if (props.limit.type === "min") {
+      if (props.type === "min") {
         if (value < limits.min) {
           newValue = limits.min;
-        } else if (value > limits.max) {
-          newValue = limits.max;
-        } else if (value > props.values[1]) {
-          newValue = props.values[1];
+        } else if (value > props.values.max) {
+          newValue = props.values.max;
         }
       } else {
         if (value > limits.max) {
           newValue = limits.max;
-        } else if (value < limits.min) {
-          newValue = limits.min;
-        } else if (value < props.values[0]) {
-          newValue = props.values[0];
+        } else if (value < props.values.min) {
+          newValue = props.values.min;
         }
       }
-      setValue(newValue);
-      console.log("new value");
 
-      props.onChange(newValue);
+      // didn't set new value if it's not change
+      if (value !== newValue) setValue(newValue);
+      props.onChange(
+        props.type === "min"
+          ? { min: newValue, max: props.values.max }
+          : { min: props.values.min, max: newValue }
+      );
     }
 
     onInputHandler(value);
@@ -56,9 +50,7 @@ const inputText = (props) => {
   const onChangeHandler = (e) => {
     // here we check if debouncedValue is 0 to fix problem with very quick clean input field. its a bug, need to fix it.
     if (isNaN(+e.target.value) || debouncedValue === 0) {
-      props.limit.type === "min"
-        ? setValue(props.limit.values.min)
-        : setValue(props.limit.values.max);
+      setValue(props.limits[props.type]);
     } else {
       setValue(+e.target.value);
     }
@@ -77,4 +69,4 @@ const inputText = (props) => {
   );
 };
 
-export default React.memo(inputText);
+export default inputText;

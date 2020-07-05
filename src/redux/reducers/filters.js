@@ -23,7 +23,7 @@ const initialState = {
 const visibilityFilter = (state = initialState, action) => {
   switch (action.type) {
     case SET_FILTER: {
-      console.log(action.payload);
+      // console.log(action.payload);
       const filtered = action.payload;
 
       return {
@@ -43,7 +43,7 @@ const visibilityFilter = (state = initialState, action) => {
     // }
 
     case SET_FILTER_DAYS: {
-      console.log(action.payload);
+      // console.log("days", action.payload);
       // if (has)
       const days = action.payload;
       return {
@@ -53,7 +53,7 @@ const visibilityFilter = (state = initialState, action) => {
     }
 
     case SET_FILTER_PRICE: {
-      console.log(action.payload);
+      // console.log("price", action.payload);
       // if (has)
       const price = action.payload;
       return {
