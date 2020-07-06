@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter, Route, NavLink } from "react-router-dom";
+import { BrowserRouter, Route, NavLink, Switch } from "react-router-dom";
 import classes from "./App.pcss";
 
 import ResultPage from "./ResultPage/ResultPage";
@@ -50,6 +50,7 @@ class App extends Component {
       return (
         <Route
           path={"/" + link}
+          exact
           render={(routeProps) => <ResultPage {...routeProps} link={link} />}
           key={"table" + link}
         />
@@ -59,22 +60,24 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className={classes.holder}>
-          <Route exact path="/">
+          <Switch>
+            <Route exact path="/">
+              <ul
+                className={classes.navlinks}
+                // style={{ position: "absolute", zIndex: "-1", top: "0" }}
+              >
+                {resultLinks[resultLinks.length - 1]}
+              </ul>
+              <NavLink
+                to={{ pathname: "/import" }}
+                className={classes.link}
+                style={{ position: "static" }}>
+                Страница для загрузки данных
+              </NavLink>
+            </Route>
             {resultTables}
-            <ul
-              className={classes.navlinks}
-              // style={{ position: "absolute", zIndex: "-1", top: "0" }}
-            >
-              {resultLinks}
-            </ul>
-            <NavLink
-              to={{ pathname: "/import" }}
-              className={classes.link}
-              style={{ position: "static" }}>
-              Страница для загрузки данных
-            </NavLink>
-          </Route>
-          <Route path="/import" component={Form} />
+            <Route path="/import" exact component={Form} />
+          </Switch>
         </div>
       </BrowserRouter>
     );

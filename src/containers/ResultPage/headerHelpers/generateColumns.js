@@ -1,7 +1,7 @@
-import React from 'react';
-import classes from '../../../components/table/Table.pcss';
-import CompanyTypeFilter from './filters/companyTypeFilter';
-import ColumnFilter from './filters/columnFilter';
+import React from "react";
+import classes from "../../../components/table/Table.pcss";
+import CompanyTypeFilter from "./filters/companyTypeFilter";
+import ColumnFilter from "./filters/columnFilter";
 
 export default (headerData) => {
   let columns = [];
@@ -15,19 +15,19 @@ export default (headerData) => {
         columns: [
           {
             Header: columnName,
-            id: columnName + '_',
-            accessor: columnName + '_' + columnType,
+            id: columnName + "_",
+            accessor: columnName + "_" + columnType,
             cellIndexes: [[index, columnType]],
             dataType: columnType,
           },
         ],
       };
     } else {
-      if (['dMin', 'price($)', 'image'].find((elem) => elem === columnType)) {
+      if (["dMin", "price($)", "image"].find((elem) => elem === columnType)) {
         columns[columnName].columns.push({
           Header: columnType,
-          id: columnName + '_' + columnType,
-          accessor: columnName + '_' + columnType,
+          id: columnName + "_" + columnType,
+          accessor: columnName + "_" + columnType,
           cellIndexes: [[index, columnType]],
           dataType: columnType,
         });
@@ -44,13 +44,13 @@ export default (headerData) => {
   });
 
   columns = {
-    '№': {
-      Header: setTableHeader('№'),
-      id: '№',
+    "№": {
+      Header: setTableHeader("№"),
+      id: "№",
       columns: [
         {
-          Header: '№',
-          accessor: '№',
+          Header: "№",
+          accessor: "№",
           dataType: null,
           cellIndexes: [],
         },
@@ -58,25 +58,25 @@ export default (headerData) => {
     },
     ...columns,
     Дней: {
-      Header: setTableHeader('=Дней'),
-      id: 'Дней',
+      Header: setTableHeader("=Дней"),
+      id: "Дней",
       columns: [
         {
-          Header: '=Дней',
-          accessor: 'Дней',
+          Header: "=Дней",
+          accessor: "Дней",
           dataType: null,
           cellIndexes: [],
         },
       ],
     },
     Цена: {
-      Header: setTableHeader('=Цена'),
-      id: 'Цена',
+      Header: setTableHeader("=Цена"),
+      id: "Цена",
       columns: [
         {
-          Header: '=Цена',
-          accessor: 'Цена',
-          dataType: 'price($)',
+          Header: "=Цена",
+          accessor: "Цена",
+          dataType: "price($)",
           cellIndexes: [],
         },
       ],
@@ -90,18 +90,18 @@ export default (headerData) => {
 };
 
 function setTableHeader(columnName, transcriptedName) {
-  const alignedColumns = ['№', 'Ответили', 'Сертификат', 'Комиссия'];
+  const alignedColumns = ["№", "Ответили", "Сертификат", "Комиссия"];
   let classNames = alignedColumns.includes(columnName)
-    ? classes.headerCell + ' ' + classes.is__aligned
+    ? classes.headerCell + " " + classes.is__aligned
     : classes.headerCell;
 
   let filter = null;
   switch (columnName) {
-    case 'Веб-сайт':
-      filter = <CompanyTypeFilter />;
+    case "Веб-сайт":
+      filter = <CompanyTypeFilter parentClassName={classes.headerCell} />;
       break;
-    case 'Ответили':
-      filter = <ColumnFilter />;
+    case "Ответили":
+      filter = <ColumnFilter parentClassName={classes.headerCell} />;
       break;
     default:
       break;
