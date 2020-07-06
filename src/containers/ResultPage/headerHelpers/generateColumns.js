@@ -98,10 +98,10 @@ function setTableHeader(columnName, transcriptedName) {
   let filter = null;
   switch (columnName) {
     case "Веб-сайт":
-      filter = <CompanyTypeFilter parentClassName={classes.headerCell} />;
+      filter = <CompanyTypeFilter />;
       break;
     case "Ответили":
-      filter = <ColumnFilter parentClassName={classes.headerCell} />;
+      filter = <ColumnFilter />;
       break;
     default:
       break;

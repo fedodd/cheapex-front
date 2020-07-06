@@ -325,7 +325,9 @@
   text-align: right;
 }
 
-/* .headerCell:hover .columnFilter { */
-/* .headerCell .columnFilter {
+.headerCell:hover [class*="columnFilter"] {
   opacity: 1;
-} */
+  transform: translateY(100%);
+  /* height: auto; */
+  transition-delay: 0.3s;
+}
