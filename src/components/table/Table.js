@@ -11,10 +11,11 @@ import {
   useGlobalFilter,
   useAsyncDebounce,
 } from "react-table";
+import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import classes from "./Table.pcss";
 //import classes from './Table.pcss';
 
-function Table({ columns, data, filteredRows, isFiltered }) {
+function Table({ columns, data, isFiltered }) {
   // Use the state and functions returned from useTable to build your UI
 
   const {
@@ -87,6 +88,12 @@ function Table({ columns, data, filteredRows, isFiltered }) {
   };
 
   // Render the UI for your table
+
+  const filteredRows = useSelector(
+    (state) => state.filters.filteredRows,
+    shallowEqual
+  );
+
   return (
     <div className={classes.tableContainer}>
       <table className={classes.table}>

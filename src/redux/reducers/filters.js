@@ -1,5 +1,5 @@
 import {
-  SET_FILTER,
+  SET_FILTERED_ROWS,
   SET_END_POINTS,
   SET_FILTER_DAYS,
   SET_FILTER_PRICE,
@@ -8,7 +8,7 @@ import {
 
 // const initialState = VISIBILITY_FILTERS.ALL;
 const initialState = {
-  filtered: [],
+  filteredRows: [],
 
   days: {
     min: 0,
@@ -22,13 +22,14 @@ const initialState = {
 
 const visibilityFilter = (state = initialState, action) => {
   switch (action.type) {
-    case SET_FILTER: {
+    case SET_FILTERED_ROWS: {
       // console.log(action.payload);
-      const filtered = action.payload;
+      const filteredRows = action.payload;
+      // console.log("in action", filteredRows);
 
       return {
         ...state,
-        filtered,
+        ...filteredRows,
       };
     }
 

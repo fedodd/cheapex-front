@@ -2,7 +2,7 @@ import {
   SET_LIMITS,
   // SET_END_POINTS,
   SET_STORE_DATA,
-  SET_FILTER,
+  SET_FILTERED_ROWS,
   FETCH_TABLE_DATA,
   SET_ERROR_ON_LOAD,
   SET_FILTER_DAYS,
@@ -29,8 +29,8 @@ export const setErrorOnLoad = (err) => ({
   payload: { err },
 });
 
-export const setFilter = (filteredRows) => ({
-  type: SET_FILTER,
+export const setFilteredRows = (filteredRows) => ({
+  type: SET_FILTERED_ROWS,
   payload: { filteredRows },
 });
 
