@@ -122,6 +122,8 @@ function ResultPage(props) {
     setFilteredRows(newFilteredRows);
   }, [filterValue]);
 
+  // filter by days and price
+
   useEffect(() => {
     const newFilteredRows = storeData.reduce((acc, row, index) => {
       return row["Дней"]["dMin"] >= days.min &&
@@ -143,10 +145,6 @@ function ResultPage(props) {
     setIsFiltered(true);
     setFilteredRows(newFilteredRows);
   }, [price]);
-
-  useEffect(() => {
-    console.log("filteredRows", filteredRows);
-  }, [filteredRows]);
 
   //scrolling table
   const sliderRef = useRef();
@@ -177,7 +175,6 @@ function ResultPage(props) {
           <p>loading</p>
         ) : (
           <Table
-            limits={limits}
             columns={tableColumns}
             data={tableData}
             isFiltered={isFiltered}

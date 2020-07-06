@@ -14,9 +14,11 @@ import "rc-slider/assets/index.css";
 import RangeFilter from "./rangeFilter";
 
 import filterClasses from "./filters.pcss";
+
 import tableClasses from "../../../../components/table/Table.pcss";
 import Checkbox from "../../../../components/checkbox/checkbox";
 import RadioButton from "../../../../components/radioButton/radioButton";
+import Button from "../../../../components/button/button";
 import InputText from "../../../../components/inputText/inputText";
 
 const columnFilter = () => {
@@ -29,18 +31,14 @@ const columnFilter = () => {
   const days = useSelector((state) => state.filters.days, shallowEqual);
   const price = useSelector((state) => state.filters.price, shallowEqual);
 
-  // need to usecallback here, and after that i think i can concat this to range change fuctions
-  const onRangeDaysChange = (values) => {
-    // console.log("values days:", daysIsActive, values === days);
-
-    dispatch(setFilterDays(values), shallowEqual);
-  };
-
-  const onRangePriceChange = (values) => {
-    // console.log("values days:", daysIsActive, values === days);
-
-    dispatch(setFilterPrice(values), shallowEqual);
-  };
+  const onRangeChange = useCallback(
+    (values, type) => {
+      type === "days"
+        ? dispatch(setFilterDays(values), shallowEqual)
+        : dispatch(setFilterPrice(values), shallowEqual);
+    },
+    [dispatch]
+  );
 
   const onInputChange = useCallback(
     (value, type) => {
@@ -66,11 +64,40 @@ const columnFilter = () => {
     [dispatch]
   );
 
+  // sorting
+  const [sortDirection, setSortDirection] = useState(null);
+  const [isSorting, setIsSorting] = useState(false);
+
+  const onSortHandler = (e, direction) => {
+    e.preventDefault();
+
+    //  on click on same filter second time we set off sorting
+    if (direction === sortDirection) {
+      setIsSorting(false);
+      setSortDirection(null);
+    } else {
+      setIsSorting(true);
+      setSortDirection(direction);
+    }
+  };
+
+  // useEffect(()=> {
+  //   isSorting ?
+  // }, [isSorting])
+
   return (
-    <div className={tableClasses.columnFilter + " " + tableClasses.is__big}>
+    <div className={filterClasses.columnFilter + " " + filterClasses.is__big}>
       <div className="sort">
-        <button className={filterClasses.button}>&#8593; По возрастанию</button>
-        <button className={filterClasses.button}>&#8595; По убыванию</button>
+        <Button
+          isActive={sortDirection === "up"}
+          onClickHandler={(e) => onSortHandler(e, "up")}
+          content={<span>&#8593; По возрастанию</span>}
+        />
+        <Button
+          isActive={sortDirection === "down"}
+          onClickHandler={(e) => onSortHandler(e, "down")}
+          content={<span>&#8595; По убыванию</span>}
+        />
       </div>
       <div className="filter">
         <div className="">
@@ -139,7 +166,7 @@ const columnFilter = () => {
                   max={limits.days.max}
                   values={days}
                   disabled={!daysIsActive}
-                  onChangeHandler={(values) => onRangeDaysChange(values)}
+                  onChangeHandler={(values) => onRangeChange(values, "days")}
                 />
               </div>
               <div
@@ -154,7 +181,7 @@ const columnFilter = () => {
                   min={limits.price.min}
                   max={limits.price.max}
                   values={price}
-                  onChangeHandler={(values) => onRangePriceChange(values)}
+                  onChangeHandler={(values) => onRangeChange(values, "price")}
                   disabled={daysIsActive}
                 />
               </div>

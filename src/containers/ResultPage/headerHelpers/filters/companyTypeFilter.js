@@ -1,6 +1,6 @@
-import React from 'react';
-import Checkbox from '../../../../components/checkbox/checkbox';
-import classes from '../../../../components/table/Table.pcss';
+import React from "react";
+import Checkbox from "../../../../components/checkbox/checkbox";
+import classes from "./filters.pcss";
 
 function companyTypeFilter(props) {
   return (
