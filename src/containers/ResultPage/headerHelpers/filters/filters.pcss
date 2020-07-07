@@ -1,0 +1,51 @@
+.companyTypeFilter {
+  position: absolute;
+}
+
+.rangeValues label {
+  display: inline-block;
+}
+
+.rangeValues input[type="text"] {
+  width: 60px;
+}
+
+.rangeTrack {
+  height: 50px;
+  padding: 10px;
+}
+
+.trackWrapper {
+  visibility: hidden;
+  position: absolute;
+  &.is__active {
+    visibility: visible;
+    position: static;
+  }
+}
+
+.columnFilter {
+  border: 1px solid black;
+  box-sizing: border-box;
+}
+
+/* header filters */
+.columnFilter {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  opacity: 0;
+  background-color: white;
+  transform: translateY(0);
+  transition: opacity 0s 0.7s, transform 0s 0.7s;
+  /* height: 0; */
+  overflow: hidden;
+}
+
+.columnFilter.is__big {
+  width: 250px;
+}

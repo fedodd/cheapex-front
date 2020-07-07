@@ -12,35 +12,31 @@ import { Object } from "core-js";
 import calculateFunc from "./calculateFunc";
 
 const headerHelpers = (fullData) => {
-
-
   let toJsonData = [...fullData];
- // console.log('full data' , jsonData);
-
+  // console.log('full data' , jsonData);
 
   let jsonData = [];
 
   for (let i = 4; i < toJsonData.length; i++) {
     let rowData = {
       data: {
-        currency: '$',
+        currency: "$",
       },
       days: {
-        title: '=Дней',
+        title: "=Дней",
         shortName: null,
         dMax: null,
         dMin: null,
       },
       price: {
-        title: '=Цена',
+        title: "=Цена",
         shortName: null,
         totalPrice: null,
-      }
+      },
     };
 
     toJsonData[0].map((column, index) => {
       if (!rowData.hasOwnProperty(column)) {
-
         // [3] - type of data, toJsonData[i][index] - value for each row
         rowData[column] = {
           header: {
@@ -48,17 +44,30 @@ const headerHelpers = (fullData) => {
             shortName: toJsonData[2][index],
           },
           [toJsonData[3][index]]: toJsonData[i][index],
-        }
+        };
         // calculate data for summary columns put column name, index, imported row data and row obj
-        rowData = calculateFunc(toJsonData[3][index], index, toJsonData[i], rowData);
-
+        rowData = calculateFunc(
+          toJsonData[3][index],
+          index,
+          toJsonData[i],
+          rowData
+        );
       } else {
         // calculate data for summary columns
-        rowData = calculateFunc(toJsonData[3][index], index, toJsonData[i], rowData);
+        rowData = calculateFunc(
+          toJsonData[3][index],
+          index,
+          toJsonData[i],
+          rowData
+        );
 
         //if hint prop already exsist then add prop name that need to hint
-        if (toJsonData[3][index] === 'hint' && rowData[column].hasOwnProperty('hint') ) {
-          rowData[column]['hint_' + toJsonData[3][index-1]] = toJsonData[i][index];
+        if (
+          toJsonData[3][index] === "hint" &&
+          rowData[column].hasOwnProperty("hint")
+        ) {
+          rowData[column]["hint_" + toJsonData[3][index - 1]] =
+            toJsonData[i][index];
         }
 
         rowData[column][toJsonData[3][index]] = toJsonData[i][index];
@@ -70,39 +79,44 @@ const headerHelpers = (fullData) => {
 
   // console.log(jsonData);
 
-
-
-  let answeredData = jsonData.filter(row =>
-    !isNaN(row['Ответили']['add(hours)'])
-    );
+  let answeredData = jsonData.filter(
+    (row) => !isNaN(row["Ответили"]["add(hours)"])
+  );
   answeredData.forEach((row, index) => {
-      row['index'] = index +1;
-    });
+    row["index"] = index + 1;
+  });
 
   //console.log(answwe);
 
-
-  let answeredHeader = answeredData.reduce( (acc, row) => {
-
-    Object.keys(row).map(key => {
+  let answeredHeader = answeredData.reduce((acc, row) => {
+    Object.keys(row).map((key) => {
       switch (key) {
         case "Веб-сайт":
-          return [...acc, {
-            'Header': row[key].header.title,
-            'accessor': 'веб-сайт',
-          }]
+          return [
+            ...acc,
+            {
+              Header: row[key].header.title,
+              accessor: "веб-сайт",
+            },
+          ];
           break;
         case "Ответили":
-          return [...acc, {
-            'Header': row[key].header.title,
-            'accessor': 'ответили',
-          }]
+          return [
+            ...acc,
+            {
+              Header: row[key].header.title,
+              accessor: "ответили",
+            },
+          ];
           break;
         case "Офис":
-          return [...acc, {
-            'Header': row[key].header.title,
-            'accessor': 'офис',
-          }]
+          return [
+            ...acc,
+            {
+              Header: row[key].header.title,
+              accessor: "офис",
+            },
+          ];
           break;
         case "Перевозка по Китаю":
           return acc;
@@ -139,49 +153,23 @@ const headerHelpers = (fullData) => {
           return acc;
           break;
       }
-    })
+    });
   }, []);
-
-  console.log(answeredHeader);
-
-  // console.log(answeredData);
 
   let resultData = [];
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   // массивы заголовков и их коротких значений и очищенные данные + добавим сразу итоговые колонки и номер строки
 
-  const header = ['№', ...fullData[0], 'Дней', 'Дней', 'Цена'];
+  const header = ["№", ...fullData[0], "Дней", "Дней", "Цена"];
   let headerShort = [];
   /* firebase recieve object not array if it's less data in array. that's why we check on array */
   if (Array.isArray(fullData[1])) {
     headerShort = [null, ...fullData[1], null, null, null];
   } else {
     let headerArray = [];
-    Object.keys(fullData[1]).map(index => headerArray[index] = fullData[1][index]);
+    Object.keys(fullData[1]).map(
+      (index) => (headerArray[index] = fullData[1][index])
+    );
     headerShort = [null, ...headerArray, null, null, null];
   }
   // если сокращенного названия нет, то покажем полное название, сохраним индексы сокращенных колонок, чтобы потом раскрывать их значение
@@ -190,52 +178,61 @@ const headerHelpers = (fullData) => {
   headerShort.map((elem, index) => {
     if (elem !== null) {
       headerToTranscript = headerToTranscript.concat(index);
-    };
+    }
     return null;
   });
 
-
   //здесь надо подумать, как потом в другой валюте данные закидывать.
-  const helpHeader = [null, ...fullData[2], 'dMin', 'dMax(connect(…))', 'add($)'];
-  const transcriptedHeader = transcriptHeaderHandler(header, headerShort, headerToTranscript);
+  const helpHeader = [
+    null,
+    ...fullData[2],
+    "dMin",
+    "dMax(connect(…))",
+    "add($)",
+  ];
+  const transcriptedHeader = transcriptHeaderHandler(
+    header,
+    headerShort,
+    headerToTranscript
+  );
 
   // распределяем данные по helpHeader
   const helpers = {
     addons: {
       addHour: {
-        unit: 'ч.',
-        columns: []
+        unit: "ч.",
+        columns: [],
       },
       addDollar: {
-        unit: '$',
-        columns: []
+        unit: "$",
+        columns: [],
       },
       addPercent: {
-        unit: '%',
-        columns: []
+        unit: "%",
+        columns: [],
       },
     },
 
     calculators: {
       priceDollar: {
-        unit: '$',
-        columns: []
+        unit: "$",
+        columns: [],
       },
       dMin: [],
       dMaxConnectDots: {
-        unit: '...',
-        columns: []
+        unit: "...",
+        columns: [],
       },
     },
 
     transcript: [],
     hint: [],
     connectArrow: {
-      unit: '→',
-      columns: []
+      unit: "→",
+      columns: [],
     },
     images: [],
-    addedColumnsLength: []
+    addedColumnsLength: [],
   };
 
   // соберем индексы колонок с доп функциями
@@ -272,7 +269,9 @@ const headerHelpers = (fullData) => {
         break;
       case "dMax(connect(…))":
         helpers.calculators.dMaxConnectDots.columns.push(index);
-        helpers.addedColumnsLength[index] = 1; /* 1 length for dots and 1 and 1 for second number */
+        helpers.addedColumnsLength[
+          index
+        ] = 1; /* 1 length for dots and 1 and 1 for second number */
         //helpers.addedColumnsLength[index - 1] = helpers.addedColumnsLength[index - 1] + 3; /* [ index -1 ]cause this column will be deleted */
         break;
       case "price($)":
@@ -290,19 +289,22 @@ const headerHelpers = (fullData) => {
     return null;
   });
 
-
   // убираем из данных заголовки
   fullData.splice(0, 3);
 
   //отфильтровываем компании без данных и сохраняем их в отдельный массив noDataCompanies и добавляем нумерацию рядов
 
-  const data = fullData.filter(row => row.length > 4).reduce((acc, row, index) => {
-    return [...acc, [index + 1, ...row]];
-  }, []);
+  const data = fullData
+    .filter((row) => row.length > 4)
+    .reduce((acc, row, index) => {
+      return [...acc, [index + 1, ...row]];
+    }, []);
 
-  let noDataCompanies = fullData.filter(row => row.length <= 4).reduce((acc, row, index) => {
-    return [...acc, [index + 1 + data.length, ...row]];
-  }, []);
+  let noDataCompanies = fullData
+    .filter((row) => row.length <= 4)
+    .reduce((acc, row, index) => {
+      return [...acc, [index + 1 + data.length, ...row]];
+    }, []);
   noDataCompanies = companiesHandler(noDataCompanies);
 
   // функции для обработки helperHeader
@@ -315,12 +317,11 @@ const headerHelpers = (fullData) => {
 
   const columnsWidth = calculatedDataCopy.reduce((acc, row) => {
     row.map((cell, index) => {
-
       const addedValue = helpers.addedColumnsLength[index];
       let valueLength;
-/* company name tighter than other columns, cause it's latin and all - lower case */
+      /* company name tighter than other columns, cause it's latin and all - lower case */
       if (index === 1) {
-        valueLength = cell.toString().length * .75 ;
+        valueLength = cell.toString().length * 0.75;
       } else if (helpers.transcript.includes(index) || cell === null) {
         valueLength = 0;
       } else {
@@ -329,8 +330,7 @@ const headerHelpers = (fullData) => {
 
       //console.log('cell', cell, 'acc[i]', acc[index], 'added', addedValue,'value',  valueLength);
 
-      if (!acc[index] || (acc[index] < valueLength)) {
-
+      if (!acc[index] || acc[index] < valueLength) {
         acc[index] = valueLength;
       }
       return null;
@@ -340,9 +340,10 @@ const headerHelpers = (fullData) => {
 
   const concatedColumnsWidth = columnsWidth.reduce((acc, column, index) => {
     if (helpers.connectArrow.columns.includes(index)) {
-      acc[index - 1] = acc[index-1] + column;
-    } else if (helpers.calculators.dMaxConnectDots.columns.includes(index)) {/* т.к. мы делаем с расчетом на двузначные числа, то делаем минимальной ширину с учетом этого */
-      if (acc[index-1] < 5) {
+      acc[index - 1] = acc[index - 1] + column;
+    } else if (helpers.calculators.dMaxConnectDots.columns.includes(index)) {
+      /* т.к. мы делаем с расчетом на двузначные числа, то делаем минимальной ширину с учетом этого */
+      if (acc[index - 1] < 5) {
         acc[index - 1] = 5;
       } else {
         acc[index - 1] = acc[index - 1] + column;
@@ -350,15 +351,19 @@ const headerHelpers = (fullData) => {
     }
 
     /* check width of header  and if its longer than 1 and shorter than 2, add 1 length, cause enother one it's only a dot. if its longer, no case to do something  */
-    if (headerShort[index] && headerShort[index].length - column <= 2 && headerShort[index].length - column > 1  )  {
+    if (
+      headerShort[index] &&
+      headerShort[index].length - column <= 2 &&
+      headerShort[index].length - column > 1
+    ) {
       acc[index] = column + 1;
     } else {
-      acc[index] = column
-    };
+      acc[index] = column;
+    }
     return acc;
   }, []);
   //console.log(concatedColumnsWidth, header, headerShort);
- // console.log('columnsWidth, helpers.transcript, helpers.addedColumnsLength, calculatedData[0]', concatedColumnsWidth, helpers.transcript, helpers.addedColumnsLength, calculatedData[0]);
+  // console.log('columnsWidth, helpers.transcript, helpers.addedColumnsLength, calculatedData[0]', concatedColumnsWidth, helpers.transcript, helpers.addedColumnsLength, calculatedData[0]);
 
   // делаем ссылками сайты компаний
   const linkedCompaniesData = companiesHandler(calculatedDataCopy);
@@ -368,7 +373,11 @@ const headerHelpers = (fullData) => {
   const withUnitsData = addUnitHandler(linkedCompaniesData, helpers.addons);
   //функция добавления transcript
 
-  const transcriptedData = transcriptHandler(withUnitsData, helpers.transcript, helpers.hint);
+  const transcriptedData = transcriptHandler(
+    withUnitsData,
+    helpers.transcript,
+    helpers.hint
+  );
 
   //функция по замене текста на картинки
 
@@ -377,32 +386,41 @@ const headerHelpers = (fullData) => {
   const withImagesData = transcriptedData;
 
   //функция по объединению колонок
-  const connectedArrowData = connectorHandler(withImagesData, helpers.connectArrow);
-  const connectedDaysData = connectorHandler(connectedArrowData, helpers.calculators.dMaxConnectDots);
+  const connectedArrowData = connectorHandler(
+    withImagesData,
+    helpers.connectArrow
+  );
+  const connectedDaysData = connectorHandler(
+    connectedArrowData,
+    helpers.calculators.dMaxConnectDots
+  );
 
   //функция по удалению вспомогательных колонок
-  const deleteColumns = [...helpers.connectArrow.columns].concat(helpers.calculators.dMaxConnectDots.columns).concat(helpers.transcript).concat(helpers.hint);
+  const deleteColumns = [...helpers.connectArrow.columns]
+    .concat(helpers.calculators.dMaxConnectDots.columns)
+    .concat(helpers.transcript)
+    .concat(helpers.hint);
   const cleanedData = deleteHandler(connectedDaysData, deleteColumns);
-  const cleanedColumnsWidth = concatedColumnsWidth.filter((value, index) => !deleteColumns.includes(index));
-/*   console.log(concatedColumnsWidth, cleanedColumnsWidth, deleteColumns, cleanedData[0]);
- */
+  const cleanedColumnsWidth = concatedColumnsWidth.filter(
+    (value, index) => !deleteColumns.includes(index)
+  );
+  /*   console.log(concatedColumnsWidth, cleanedColumnsWidth, deleteColumns, cleanedData[0]);
+   */
   //удалим колонки из header
   const headerForClean = {
     header: transcriptedHeader,
     headerShort: transcriptedHeader,
-    headerToTranscript: headerToTranscript
+    headerToTranscript: headerToTranscript,
   };
   const cleanedHeader = deleteHandler(headerForClean, deleteColumns);
 
   const indexData = cleanedData.reduce((acc, elem, index) => {
     const currentRow = {
       index: index,
-      data: elem
+      data: elem,
     };
     return [...acc, currentRow];
   }, []);
-
-
 
   // const exportData = {
   //   numericData: calculatedData,
@@ -414,16 +432,9 @@ const headerHelpers = (fullData) => {
   //   jsonData: answeredData
   // };
 
-   // return exportData;
+  // return exportData;
 
   return answeredData;
-}
-
-
-
-
-
-
-
+};
 
 export default headerHelpers;

@@ -1,8 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './containers/App';
-import registerServiceWorker from './registerServiceWorker';
+import React from "react";
+import ReactDOM from "react-dom";
 
-ReactDOM.render(<App appTitle="Cheapex" />, document.getElementById('root'));
+import { Provider } from "react-redux";
+import store from "./redux/store";
+
+import "./index.css";
+import App from "./containers/App";
+import registerServiceWorker from "./registerServiceWorker";
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App appTitle="Cheapex" />
+  </Provider>,
+  document.getElementById("root")
+);
 registerServiceWorker();
