@@ -1,4 +1,4 @@
-import classes from '../components/table/Table.pcss';
+import classes from "../components/table/Table.pcss";
 
 const clickDrugHandler = (slider) => {
   //const slider = e.target;
@@ -8,24 +8,35 @@ const clickDrugHandler = (slider) => {
   let scrollLeft;
   let sl = 0;
 
-  slider.addEventListener('mousedown', (e) => {
+  const checkIfColumnFilter = (e) => {
+    const isColumnFilter = e.path.findIndex((domElem) => {
+      if (domElem.className === undefined) return false;
+      return domElem.className.includes("columnFilter");
+    });
+
+    return isColumnFilter !== -1;
+  };
+
+  slider.addEventListener("mousedown", (e) => {
     // check if its on slider then pass this action. now need to move all this code to a component
-    if (e.target.classList.contains('rc-slider-handle')) return;
+    if (checkIfColumnFilter(e)) return;
+
     //
     isDown = true;
     slider.classList.add(classes.is__active);
     startX = e.pageX - slider.offsetLeft;
     scrollLeft = slider.scrollLeft;
   });
-  slider.addEventListener('mouseleave', () => {
+
+  slider.addEventListener("mouseleave", () => {
     isDown = false;
     slider.classList.remove(classes.is__active);
   });
-  slider.addEventListener('mouseup', () => {
+  slider.addEventListener("mouseup", () => {
     isDown = false;
     slider.classList.remove(classes.is__active);
   });
-  slider.addEventListener('mousemove', (e) => {
+  slider.addEventListener("mousemove", (e) => {
     if (!isDown) return;
     e.preventDefault();
     const x = e.pageX - slider.offsetLeft;
@@ -33,7 +44,7 @@ const clickDrugHandler = (slider) => {
     slider.scrollLeft = scrollLeft - walk;
   });
 
-  slider.addEventListener('scroll', (e) => {
+  slider.addEventListener("scroll", (e) => {
     if (slider.scrollLeft === sl) return;
     if (slider.scrollWidth - slider.clientWidth <= slider.scrollLeft + 5) {
       slider.classList.remove(classes.is__end);
