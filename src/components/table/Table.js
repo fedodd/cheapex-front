@@ -11,12 +11,19 @@ import {
   useGlobalFilter,
   useAsyncDebounce,
 } from "react-table";
+import { setStoreData } from "../../redux/actions";
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import TableCell from "./tableCell";
 import classes from "./Table.pcss";
 //import classes from './Table.pcss';
 
-function Table({ columns, data, isFiltered }) {
+function Table({ columns, /*data,*/ isFiltered }) {
+  const dispatch = useDispatch();
+  const rowId = Symbol.for("id");
   // Use the state and functions returned from useTable to build your UI
+  const storeData = useSelector((state) => state.table.storeData, shallowEqual);
+
+  const [data, setData] = useState([]);
 
   const {
     getTableProps,
@@ -75,14 +82,20 @@ function Table({ columns, data, isFiltered }) {
 
   // fix rows
   const [fixedRows, setFixedRows] = useState([]);
-  // const [fixedRowsHeight, setFixedRowsHeight] = useState(44);
 
   const rowClickHandler = (rowIndex) => {
     // we use here filtered rows cause we send in table only filtered rows
-
-    fixedRows.includes(rowIndex)
-      ? setFixedRows(fixedRows.filter((row) => row !== rowIndex))
-      : setFixedRows(fixedRows.concat(rowIndex).sort((a, b) => a - b));
+    // fixedRows
+    if (fixedRows.includes(rowIndex)) {
+      setFixedRows(fixedRows.filter((row) => row !== rowIndex));
+    } else {
+      let concatedFixed = [...fixedRows, rowIndex];
+      let sortedFixedRows = storeData.reduce((acc, row) => {
+        return concatedFixed.includes(row[rowId]) ? [...acc, row[rowId]] : acc;
+      }, []);
+      console.log("filtered", sortedFixedRows);
+      setFixedRows(sortedFixedRows);
+    }
 
     // console.log(rowIndex, fixedRows);
   };
@@ -93,6 +106,57 @@ function Table({ columns, data, isFiltered }) {
     (state) => state.filters.filteredRows,
     shallowEqual
   );
+
+  //sorting
+
+  const sortDirection = useSelector(
+    (state) => state.filters.sortDirection,
+    shallowEqual
+  );
+
+  const [sortedData, setSortingData] = useState(filteredRows);
+
+  useEffect(() => {
+    let NewSort = storeData;
+    switch (sortDirection) {
+      case "up":
+        // let sortedData
+        NewSort.sort((a, b) => {
+          return a["Цена"]["price($)"] - b["Цена"]["price($)"];
+        });
+
+        break;
+      case "down":
+        NewSort.sort((b, a) => {
+          return a["Цена"]["price($)"] - b["Цена"]["price($)"];
+        });
+        break;
+
+      default:
+        NewSort.sort((a, b) => {
+          return a[rowId] - b[rowId];
+        });
+        break;
+    }
+
+    dispatch(setStoreData(NewSort));
+    // here on sort direction we rebuild table
+    let jsxData = storeData.map((row, index) => {
+      let newRow = {};
+      for (let [key, value] of Object.entries(row)) {
+        newRow[key] = <TableCell column={key} data={value} />;
+      }
+      return newRow;
+    });
+    setData(jsxData);
+
+    // and here we need fix sort
+
+    let sortedFixedRows = storeData.reduce((acc, row) => {
+      return fixedRows.includes(row[rowId]) ? [...acc, row[rowId]] : acc;
+    }, []);
+    setFixedRows(sortedFixedRows);
+  }, [sortDirection]);
 
   return (
     <div className={classes.tableContainer}>
@@ -119,14 +183,17 @@ function Table({ columns, data, isFiltered }) {
           {rows.map((row, i) => {
             prepareRow(row);
             // filter rows only if array is not empty
-            return !isFiltered || (isFiltered && filteredRows.includes(i)) ? (
+            // get id of row only by № - its bad
+            let id = row.values["№"].props.data.value - 1;
+            return !isFiltered || (isFiltered && filteredRows.includes(id)) ? (
               <tr
+                // getProps={() => customProps}
                 className={
-                  fixedRows.includes(row.id)
+                  fixedRows.includes(id)
                     ? classes.tr + " " + classes.is__fixed
                     : classes.tr
                 }
-                onClick={(e) => rowClickHandler(row.id)}
+                onClick={(e) => rowClickHandler(id)}
                 {...row.getRowProps()}>
                 {row.cells.map((cell) => {
                   return (
@@ -134,9 +201,9 @@ function Table({ columns, data, isFiltered }) {
                       className={classes.td}
                       {...cell.getCellProps()}
                       style={
-                        fixedRows.includes(row.id)
+                        fixedRows.includes(id)
                           ? {
-                              top: `${(fixedRows.indexOf(row.id) + 1) * 44}px`,
+                              top: `${(fixedRows.indexOf(id) + 1) * 44}px`,
                             }
                           : {
                               top: "auto",

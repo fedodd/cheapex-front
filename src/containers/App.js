@@ -56,7 +56,7 @@ class App extends Component {
         />
       );
     });
-    console.log(window.location.href);
+    // console.log(window.location.href);
     return (
       <BrowserRouter>
         <div className={classes.holder}>

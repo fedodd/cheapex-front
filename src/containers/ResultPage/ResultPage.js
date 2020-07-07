@@ -33,7 +33,6 @@ function ResultPage(props) {
   const [loadError, setLoadError] = useState(false);
   const [payload, setPayload] = useState(null);
 
-  const [tableData, setTableData] = useState([]);
   const [tableColumns, setTableColumns] = useState([]);
 
   const storeData = useSelector((state) => state.table.storeData, shallowEqual);
@@ -57,7 +56,8 @@ function ResultPage(props) {
   }, [limits]);
 
   const dispatch = useDispatch();
-
+  const rowId = Symbol.for("id");
+  // let id = Symbol.for("id");
   useEffect(() => {
     const fullpath =
       "https://react-app-bc4e6.firebaseio.com/importedSheet/" +
@@ -74,20 +74,10 @@ function ResultPage(props) {
         dispatch(setStoreData(fullResults.data));
         // put all row indexex at filtered array
         const allrows = Array.from(Array(fullResults.data.length).keys());
-        // console.log("allrows", allrows);
 
         dispatch(setFilteredRows(allrows));
         dispatch(setLimits(fullResults.limits));
 
-        let jsxData = fullResults.data.map((row, index) => {
-          let newRow = {};
-          // newRow[id] = index;
-          for (let [key, value] of Object.entries(row)) {
-            newRow[key] = <TableCell column={key} data={value} />;
-          }
-          return newRow;
-        });
-        setTableData(jsxData);
         setTableColumns(fullResults.columns);
         setLoading(false);
       } catch (err) {
@@ -104,6 +94,7 @@ function ResultPage(props) {
   }, []);
 
   // filter company name block
+
   const [isNameFiltered, setIsNameFiltered] = useState(false);
   const [filterValue, setFilterValue] = useState("");
 
@@ -134,8 +125,6 @@ function ResultPage(props) {
     // console.log("filtered", filtered, filterValue);
     return filtered;
   };
-
-  const rowId = Symbol.for("id");
 
   useEffect(() => {
     // this didnt work but we nned to do this check for optimization
@@ -190,7 +179,7 @@ function ResultPage(props) {
         ) : (
           <Table
             columns={tableColumns}
-            data={tableData}
+            // data={tableData}
             isFiltered={isNameFiltered || isDaysFiltered || isPriceFiltered}
           />
         )}

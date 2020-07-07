@@ -8,6 +8,7 @@ import {
   setEndPoints,
   setFilterDays,
   setFilterPrice,
+  setSortDirection,
 } from "../../../../redux/actions";
 
 import "rc-slider/assets/index.css";
@@ -65,7 +66,11 @@ const columnFilter = () => {
   );
 
   // sorting
-  const [sortDirection, setSortDirection] = useState(null);
+  // const [sortDirection, setSortDirection] = useState(null);
+  const sortDirection = useSelector(
+    (state) => state.filters.sortDirection,
+    shallowEqual
+  );
   const [isSorting, setIsSorting] = useState(false);
 
   const onSortHandler = (e, direction) => {
@@ -74,16 +79,12 @@ const columnFilter = () => {
     //  on click on same filter second time we set off sorting
     if (direction === sortDirection) {
       setIsSorting(false);
-      setSortDirection(null);
+      dispatch(setSortDirection(null), shallowEqual);
     } else {
       setIsSorting(true);
-      setSortDirection(direction);
+      dispatch(setSortDirection(direction), shallowEqual);
     }
   };
-
-  // useEffect(()=> {
-  //   isSorting ?
-  // }, [isSorting])
 
   return (
     <div className={filterClasses.columnFilter + " " + filterClasses.is__big}>

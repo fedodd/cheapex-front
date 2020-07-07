@@ -7,6 +7,7 @@ import {
   SET_ERROR_ON_LOAD,
   SET_FILTER_DAYS,
   SET_FILTER_PRICE,
+  SET_SORT_DIRECTION,
 } from "./../actionTypes";
 
 export const setLimits = (limits) => ({
@@ -47,6 +48,11 @@ export const setFilterDays = (days) => ({
 export const setFilterPrice = (price) => ({
   type: SET_FILTER_PRICE,
   payload: { price },
+});
+
+export const setSortDirection = (direction) => ({
+  type: SET_SORT_DIRECTION,
+  payload: direction,
 });
 
 // let nextTodoId = 0;

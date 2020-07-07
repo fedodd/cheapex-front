@@ -3,12 +3,14 @@ import {
   SET_END_POINTS,
   SET_FILTER_DAYS,
   SET_FILTER_PRICE,
+  SET_SORT_DIRECTION,
 } from "../actionTypes";
 // import { VISIBILITY_FILTERS } from "../constants";
 
 // const initialState = VISIBILITY_FILTERS.ALL;
 const initialState = {
   filteredRows: [],
+  sortDirection: null,
 
   days: {
     min: 0,
@@ -60,6 +62,14 @@ const visibilityFilter = (state = initialState, action) => {
       return {
         ...state,
         ...price,
+      };
+    }
+
+    case SET_SORT_DIRECTION: {
+      const sortDirection = action.payload;
+      return {
+        ...state,
+        sortDirection,
       };
     }
 
