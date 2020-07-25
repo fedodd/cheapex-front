@@ -98,10 +98,13 @@ function setTableHeader(columnName, transcriptedName) {
   let filter = null;
   switch (columnName) {
     case "Веб-сайт":
-      filter = <CompanyTypeFilter />;
-      break;
-    case "Ответили":
+      // filter = <CompanyTypeFilter />;
       filter = <ColumnFilter />;
+      break;
+      // case "=Цена":
+      //   filter = <ColumnFilter />;
+      // case "=Дней":
+      //   filter = <ColumnFilter />;
       break;
     default:
       break;
