@@ -31,7 +31,7 @@
     "lodash": "^4.17.15",
     "match-sorter": "^3.0.0",
     "object-assign": "4.1.1",
-    "papaparse": "^4.6.3",
+    "papaparse": "^5.2.0",
     "postcss": "^6.0.21",
     "postcss-conditionals": "^2.1.0",
     "postcss-easy-import": "^3.0.0",
